@@ -8,10 +8,10 @@ The project to develop a smart backpack is being carried out due to a huge deman
 # Getting Started
 To get started with Innovate, follow these steps:
 
-1. Clone the repository -
-git clone https://github.com/BramVeninga/project-innovate-IC-INF-1A.git
-2. Navigate to the folder if needed -
-cd project-innovate-IC-INF-1A--{branch}
+1. Clone the repository
+```git clone https://github.com/BramVeninga/project-innovate-IC-INF-1A.git ```
+2. Navigate to the folder if needed
+```cd project-innovate-IC-INF-1A--{branch}```
 3. Run the project.
 4. Youre ready to go.
 
