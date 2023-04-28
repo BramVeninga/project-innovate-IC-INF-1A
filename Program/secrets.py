@@ -1,0 +1,2 @@
+SSID = "Galaxy"
+PASSWORD = "6eZA3r9Y"
