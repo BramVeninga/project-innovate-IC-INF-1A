@@ -1,3 +1,6 @@
+# This is a blueprint for an App Connection object.
+# This object handles all the communication with the mobile application.
+# It talks via bluetooth
 class AppConnection:
     def __init__(self):
         # connection is a boolean that can be used to determine if the connection to the app has been establist

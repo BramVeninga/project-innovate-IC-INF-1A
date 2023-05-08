@@ -1,8 +1,12 @@
 from machine import Pin
 from AppConnection import *
 
+# This is a blueprint for a backpack.
+# This backpack is the nexus of the program.
+# It holds multiple compartments, a battery and an App Connection object.
 class Backpack:
-    # parameter: compartments, this is a tuple that holds al the Compartment objects that should be added to the bagpack
+    # parameters:
+    # - compartments, this is a tuple that holds al the Compartment objects that should be added to the bagpack
     def __init__(self, compartments):
         # bagContent is an tuple that holds the different Compartment objects
         self.bagContent = compartments

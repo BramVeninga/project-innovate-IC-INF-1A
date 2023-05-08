@@ -1,3 +1,5 @@
+# This is a blueprint for a battery that can be added to the backpack.
+# It can check it's battery percentage.
 class Battery:
     def __init__(self):
         self.batteryPercentage = 0
