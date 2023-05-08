@@ -5,8 +5,8 @@ class AppConnection:
     def __init__(self):
         # connection is a boolean that can be used to determine if the connection to the app has been establist
         self.connection = False
-        # data is a list that holds a the strings that should be sent to the app via bluetooth
-        self.data = []
+        # data is a dictionary that holds the compartment data that will be sent to the mobile application
+        self.data = {}
     
     # checks if a connection has been establist with the app
     def isConnected(self):

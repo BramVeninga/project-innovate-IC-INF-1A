@@ -22,5 +22,10 @@ class Backpack:
     # NEEDS TO BE DELETED BEFORE DELIVERY
     def test(self):
         self.led.on()
-        
-        
+    
+    def checkContents(self):
+        self.appConnection.data.clear()
+        for compartment in self.bagContent:
+            compartment.isFilled()
+            data = "{} : {}"
+            self.appConnection.data.update(data.format(compartment.id, compartment.filled))
