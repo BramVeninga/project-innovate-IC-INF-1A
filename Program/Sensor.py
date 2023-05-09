@@ -8,12 +8,12 @@ class Sensor:
     # - pinNumber, this is the number of the pin, of the raspberry pi pico, to which the sensor is connected
     def __init__(self, pinNumber):
         self.pinNumber = pinNumber
-        input = Pin(self.pinNumber, Pin.IN)
+        self.input = Pin(self.pinNumber, Pin.IN, Pin.PULL_UP)
     
     # checks if the sensor is activated
     def isPressed(self):
         # INSERT ANTI JITTER
-        if input.value() == 1:
+        if self.input.value() == 0:
             return True
         
         return False

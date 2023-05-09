@@ -5,9 +5,9 @@ from Sensor import *
 class Compartment:
     # parameters:
     # - sensors, a tuple that holds all the sensors that are present in the compartment
-    def __init__(self, id, sensors):
+    def __init__(self, id):
         self.id = id
-        self.sensors = sensors
+        self.sensors = []
         self.filled = False
     
     # checks if the compartment is filled with an physical object or not
