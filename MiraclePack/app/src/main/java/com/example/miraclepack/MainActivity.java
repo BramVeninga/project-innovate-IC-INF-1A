@@ -42,13 +42,13 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
         if (fragment instanceof HomeFragment) {
-            setTitle("Home");
+            setTitle("Miracle-Pack");
         } else if (fragment instanceof BagFragment) {
-            setTitle("Bag");
+            setTitle("Tas");
         } else if (fragment instanceof ProfileFragment) {
-            setTitle("Profile");
+            setTitle("Profiel");
         } else if (fragment instanceof SettingsFragment) {
-            setTitle("Settings");
+            setTitle("Instellingen");
         }
     }
 }
