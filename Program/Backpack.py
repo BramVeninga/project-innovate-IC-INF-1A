@@ -25,13 +25,14 @@ class Backpack:
     # NEEDS TO BE DELETED BEFORE DELIVERY
     def test(self):
         self.checkContents()
-        print(self.testList)
+        print(self.appConnection.data)
+        self.appConnection.sendData()
     
     def checkContents(self):
-        # self.appConnection.data.clear()
+        self.appConnection.data.clear()
         self.testList.clear()
         for compartment in tuple(self.bagContent):
-            if compartment.isFilled():
-                self.testList.append(compartment.id)
-#             data = { str(compartment.id) : compartment.filled }
-#             self.appConnection.data.update(**data)
+            compartment.isFilled()
+            data = {}
+            data[str(compartment.id)] = compartment.filled
+            self.appConnection.data.update(**data)

@@ -2,7 +2,7 @@ from Backpack import *
 from Sensor import *
 from Compartment import *
 from time import sleep
-from machine import Pin
+from machine import Pin, UART
 
 # sensorsComp0 = (Sensor(0), Sensor(1))
 # sensorsComp1 = (Sensor(2))
@@ -20,11 +20,5 @@ backpack.bagContent.append(compartment1)
 while 1:  
     backpack.test()
     sleep(1)
-
-# led = Pin('LED', Pin.OUT)
-# led.off()
-# 
-# input = Pin(2, Pin.IN, Pin.PULL_UP)
-# while 1:
-#     print(input.value())
-#     sleep(1)
+    
+    
