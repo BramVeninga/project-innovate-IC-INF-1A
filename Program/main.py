@@ -17,6 +17,8 @@ backpack = Backpack()
 backpack.bagContent.append(compartment0)
 backpack.bagContent.append(compartment1)
 
+# backpack.appConnection.atCommands('AT+NAME=MiraclePack\r\n')
+
 while 1:  
     backpack.test()
     sleep(1)

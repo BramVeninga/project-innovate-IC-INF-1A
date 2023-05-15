@@ -18,8 +18,6 @@ class Backpack:
         # led is an object that is used to talk to the onboard test led
         self.led = Pin('LED', Pin.OUT)
         self.led.off()
-        
-        self.testList = []
     
     # a function that is used to test inputs and outputs
     # NEEDS TO BE DELETED BEFORE DELIVERY
@@ -27,10 +25,12 @@ class Backpack:
         self.checkContents()
         print(self.appConnection.data)
         self.appConnection.sendData()
+        print(self.appConnection.isConnected())
+        if self.appConnection.isConnected():
+            self.led.on()
     
     def checkContents(self):
         self.appConnection.data.clear()
-        self.testList.clear()
         for compartment in tuple(self.bagContent):
             compartment.isFilled()
             data = {}
