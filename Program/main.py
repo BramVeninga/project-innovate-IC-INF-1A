@@ -4,20 +4,16 @@ from Compartment import *
 from time import sleep
 from machine import Pin, UART
 
-# sensorsComp0 = (Sensor(0), Sensor(1))
-# sensorsComp1 = (Sensor(2))
-compartment0 = Compartment(0)
-compartment0.sensors.append(Sensor(0))
-compartment0.sensors.append(Sensor(1))
+sensorsComp0 = (Sensor(0), )
+sensorsComp1 = (Sensor(1), Sensor(2))
+sensorsComp2 = (Sensor(3), )
+sensorsComp3 = (Sensor(4), )
 
-compartment1 = Compartment(1)
-compartment1.sensors.append(Sensor(2))
+sensors = (sensorsComp0, sensorsComp1, sensorsComp2, sensorsComp3)
 
 backpack = Backpack()
-backpack.bagContent.append(compartment0)
-backpack.bagContent.append(compartment1)
+backpack.addMultipleCompartments(sensors)
 
-# backpack.appConnection.atCommands('AT+NAME=MiraclePack\r\n')
 
 while 1:  
     backpack.test()

@@ -5,12 +5,12 @@ from time import sleep
 # This object handles all the communication with the mobile application.
 # It talks via bluetooth
 class AppConnection:
-    def __init__(self):
+    def __init__(self, uartPinTx, uartPinRx):
         # connection is a boolean that can be used to determine if the connection to the app has been establist
         # self.connection = False
         # data is a dictionary that holds the compartment data that will be sent to the mobile application
         self.data = {}
-        self.uart = UART(1, baudrate=9600, bits=8, parity=None, stop=1, tx=Pin(4), rx=Pin(5))
+        self.uart = UART(1, baudrate=9600, bits=8, parity=None, stop=1, tx=Pin(uartPinTx), rx=Pin(uartPinRx))
         self.connectionPin = Pin(15, Pin.IN)
     
     # checks if a connection has been establist with the app
