@@ -18,19 +18,34 @@ class Backpack:
         # led is an object that is used to talk to the onboard test led
         self.led = Pin('LED', Pin.OUT)
         self.led.off()
-    
-    def addCompartment(self, sensors, compartmentCount):
-        compartment = Compartment(compartmentCount)
+   
+    # a function to add comparments to the bagContent list of the backpack.
+    # it requiers a list of sensors to be added, and an id for the the compartment 
+    def addCompartment(self, sensors, compartmentId):
+        compartment = Compartment(compartmentId)
         self.bagContent.append(compartment)
         for sensor in sensors:
-            self.bagContent[compartmentCount].sensors.append(sensor)
+            self.bagContent[compartmentId].sensors.append(sensor)
     
-    def addMultipleCompartments(self, sensors):
-        count = 0
+    # a function that allows a multitude of compartments to be added.
+    # if needs a 2d matrix with all the sensors, on row per compartment
+    # the compartmentCount is to be used if there are already compartments present in bagContent. It should be the next available index of the list.
+    def addMultipleCompartments(self, sensors, compartmentCount = 0):
+        count = compartmentCount
         for tempSensors in sensors:
             self.addCompartment(tempSensors, count)
             count += 1
     
+    # a function that checks all the compartments and looks if they are filled or not
+    def checkContents(self):
+        self.appConnection.data.clear()
+        for compartment in tuple(self.bagContent):
+            compartment.isFilled()
+            data = {}
+            data[str(compartment.id)] = compartment.filled
+            self.appConnection.data.update(**data)
+
+
     # a function that is used to test inputs and outputs
     # NEEDS TO BE DELETED BEFORE DELIVERY
     def test(self):
@@ -40,11 +55,3 @@ class Backpack:
 #         print(self.appConnection.isConnected())
 #         if self.appConnection.isConnected():
 #             self.led.on()
-    
-    def checkContents(self):
-        self.appConnection.data.clear()
-        for compartment in tuple(self.bagContent):
-            compartment.isFilled()
-            data = {}
-            data[str(compartment.id)] = compartment.filled
-            self.appConnection.data.update(**data)

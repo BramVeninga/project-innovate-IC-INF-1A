@@ -42,6 +42,8 @@ class AppConnection:
         if self.listen() == b'send;':
             self.uart.write(str(self.data) + ";")
     
+    # this function is used to gather information from the UART ports to determine if any and what data has been received from the bluetooth module.
+    # on top of that, it will sent 'received' back to the device that send the data, if any was send.
     def listen(self):
         bufferMessage = self.uart.read(0)   
         while not self.uart.any() == 0:
@@ -54,6 +56,8 @@ class AppConnection:
                 return tempMessage
         return None
 
+    # a function that can be used to send AT Commands to the bluetooth device.
+    # the device should be rebooted in Command mode before this function is used.
     def atCommands(self, command):
         self.uart.deinit()
         self.uart.init(baudrate=38400, bits=8, parity=None, stop=1)
