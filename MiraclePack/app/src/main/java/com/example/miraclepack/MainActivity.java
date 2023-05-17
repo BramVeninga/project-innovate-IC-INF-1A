@@ -12,7 +12,6 @@ import android.view.View;
 import com.example.miraclepack.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-
     ActivityMainBinding binding;
 
     @Override
@@ -20,7 +19,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         setSupportActionBar(binding.toolbar);
+
         replaceFragment(new HomeFragment());
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -48,10 +49,10 @@ public class MainActivity extends AppCompatActivity {
         } else if (fragment instanceof BagFragment) {
             setTitle("Tas");
         } else if (fragment instanceof LoginFragment) {
-            setTitle("Profiel");
+            setTitle("Inhoud van de tas");
         } else if (fragment instanceof SettingsFragment) {
             setTitle("Instellingen");
-        }
+        } 
     }
 
     public void openSignUpActivity(View view) {
