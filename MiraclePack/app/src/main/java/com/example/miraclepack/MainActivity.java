@@ -10,7 +10,6 @@ import android.os.Bundle;
 import com.example.miraclepack.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-
     ActivityMainBinding binding;
 
     @Override
@@ -18,7 +17,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         setSupportActionBar(binding.toolbar);
+
         replaceFragment(new HomeFragment());
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         if (fragment instanceof HomeFragment) {
             setTitle("Miracle-Pack");
         } else if (fragment instanceof BagFragment) {
-            setTitle("Tas");
+            setTitle("Inhoud van de tas");
         } else if (fragment instanceof ProfileFragment) {
             setTitle("Profiel");
         } else if (fragment instanceof SettingsFragment) {
