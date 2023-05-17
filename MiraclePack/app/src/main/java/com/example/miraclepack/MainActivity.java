@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
             setTitle("Profiel");
         } else if (fragment instanceof SettingsFragment) {
             setTitle("Instellingen");
-        } else if (fragment instanceof HomeBagContentFragment) {
-            setTitle("Place Holder");
-        }
+        } 
     }
 }
