@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <dimen name="_320sdp">320spd</dimen>
+    <dimen name="_50sdp">50spd</dimen>
+    <!-- Andere dimensies -->
+</resources>
