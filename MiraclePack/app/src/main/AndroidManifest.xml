@@ -11,22 +11,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.MiraclePack"
-
         tools:targetApi="31">
+
         <activity
-            android:name=".AddActivity"
-            android:label="Inhoud toevoegen"
-            android:exported="true" />
+            android:name=".ProfileActivity"
+            android:exported="true"
+            android:label="Profile Activity" />
+
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="true"
+            android:label="Sign Up" />
+
+        <!-- Rest of your activities -->
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="Miracle Pack Library" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

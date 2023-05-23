@@ -1,6 +1,8 @@
 package com.example.miraclepack;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -26,4 +28,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Handle database schema upgrades if needed
     }
+
+    public void insertUserCredentials(String email, String wachtwoord) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("email", email);
+        values.put("wachtwoord", wachtwoord);
+        db.insert("users", null, values);
+        db.close();
+    }
+
+    public boolean checkCredentials(String email, String wachtwoord) {
+        SQLiteDatabase db = getReadableDatabase();
+        String selection = "email = ? AND wachtwoord = ?";
+        String[] selectionArgs = {email, wachtwoord};
+        Cursor cursor = db.query("users", null, selection, selectionArgs, null, null, null);
+        boolean hasCredentials = cursor.moveToFirst();
+        cursor.close();
+        db.close();
+        return hasCredentials;
+    }
 }
+

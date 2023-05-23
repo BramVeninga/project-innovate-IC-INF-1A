@@ -13,6 +13,7 @@ import com.example.miraclepack.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
+    private boolean isLoggedIn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +23,14 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.toolbar);
 
-        replaceFragment(new HomeFragment());
+        // Check if the user is logged in
+        isLoggedIn = checkIfLoggedIn();
+
+        if (isLoggedIn) {
+            replaceFragment(new HomeFragment());
+        } else {
+            replaceFragment(new LoginFragment());
+        }
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
@@ -31,17 +39,23 @@ public class MainActivity extends AppCompatActivity {
             } else if (itemId == R.id.bag) {
                 replaceFragment(new BagFragment());
             } else if (itemId == R.id.profile) {
-                replaceFragment(new LoginFragment());
+                if (isLoggedIn) {
+                    replaceFragment(new ProfileFragment());
+                } else {
+                    // Handle the case when the user is not logged in
+                    replaceFragment(new LoginFragment());
+                }
             } else if (itemId == R.id.settings) {
                 replaceFragment(new SettingsFragment());
             }
             return true;
         });
     }
+
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout,fragment);
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
 
         if (fragment instanceof HomeFragment) {
@@ -52,7 +66,14 @@ public class MainActivity extends AppCompatActivity {
             setTitle("Inhoud van de tas");
         } else if (fragment instanceof SettingsFragment) {
             setTitle("Instellingen");
-        } 
+        }
+    }
+
+    private boolean checkIfLoggedIn() {
+        // Implement your authentication mechanism here
+        // Return true if user is logged in, false otherwise
+        // You can use a shared preference, database, or any other method to check the login status
+        return false; // Replace with your logic
     }
 
     public void openSignUpActivity(View view) {
