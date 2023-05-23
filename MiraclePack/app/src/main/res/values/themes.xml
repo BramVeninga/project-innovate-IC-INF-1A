@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.MiraclePack" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.MiraclePack" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/black</item>
     </style>
@@ -13,4 +13,11 @@
     <style name="BottomNavigationTheme">
         <item name="colorSurface">@android:color/white</item>
     </style>
+
+    <style name="FloatingActionButtonShape" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+
 </resources>

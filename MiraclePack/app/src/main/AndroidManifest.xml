@@ -15,6 +15,9 @@
         <activity
             android:name=".HomeBagContentActivity"
             android:exported="false" />
+
+
+
         <activity
             android:name=".AddActivity"
             android:exported="true"
