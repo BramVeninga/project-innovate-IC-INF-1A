@@ -1,5 +1,6 @@
 package com.example.miraclepack;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,16 +34,8 @@ public class HomeFragment extends Fragment {
         viewContentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Fragment fragment = new HomeBagContentFragment();
-                FragmentTransaction transaction = getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction();
-
-                transaction.replace(R.id.frame_layout, fragment)
-                        .addToBackStack("name")
-                        .commit();
-
+                Intent intent = new Intent(getActivity(), HomeBagContentActivity.class);
+                startActivity(intent);
             }
         });
         return view;

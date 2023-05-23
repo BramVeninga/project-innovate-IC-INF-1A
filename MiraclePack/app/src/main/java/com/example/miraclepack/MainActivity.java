@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             setTitle("Inhoud van de tas");
         } else if (fragment instanceof SettingsFragment) {
             setTitle("Instellingen");
-        } 
+        }
     }
 
     public void openSignUpActivity(View view) {
