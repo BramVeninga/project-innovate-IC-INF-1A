@@ -72,7 +72,7 @@
             tools:ignore="MissingConstraints">
 
             <LinearLayout
-                android:id="@+id/batteryStatus"
+                android:id="@+id/NotificationOnOff"
                 android:layout_width="@dimen/_245sdp"
                 android:layout_height="@dimen/_39sdp"
                 android:layout_marginStart="@dimen/_11sdp"
