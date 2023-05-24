@@ -2,6 +2,7 @@ package com.example.miraclepack;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,12 +37,15 @@ public class BagFragment extends Fragment {
     CustomAdapter customAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_bag, container, false);
 
         Spinner weekDaySpinner = view.findViewById(R.id.weekdaySpinner);
+
+        myDB = new MyDatabaseHelper(getContext());
+        SQLiteDatabase db = this.myDB.getReadableDatabase();
+        db.close();
 
         List<String> weekDays = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();

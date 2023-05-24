@@ -10,16 +10,14 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
-
-    private Context context;
     private static final String DATABASE_NAME = "MiraclePack.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION =2;
 
     // Tables
-    private static final String TABLE_ITEM = "item";
-    private static final String TABLE_CONFIG = "config";
-    private static final String TABLE_COMPARTMENT = "compartment";
-    private static final String TABLE_CONFIG_ITEM = "configItem";
+//    private static final String TABLE_ITEM = "item";
+    private static final String TABLE_CONFIG = "CONFIGURATION";
+    private static final String TABLE_COMPARTMENT = "COMPARTMENT";
+    private static final String TABLE_CONFIG_ITEM = "CONFIGURATIONITEM";
 
     // Columns
     private static final String COLUMN_ID = "id";
@@ -27,42 +25,70 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_WEEKDAY = "weekDay";
     private static final String COLUMN_COMPARTMENT_NUMBER = "compartmentNumber";
     private static final String COLUMN_DESCRIPTION = "description";
-    private static final String COLUMN_ITEM_ID = "itemID";
+    private static final String COLUMN_ITEM_NAME = "itemID";
     private static final String COLUMN_CONFIG_ID = "configID";
     private static final String COLUMN_COMPARTMENT_ID = "compartmentID";
 
     public MyDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createItemTableQuery = "CREATE TABLE " + TABLE_ITEM + " (" +
-                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_NAME + " VARCHAR(255))";
-        db.execSQL(createItemTableQuery);
-
         String createConfigTableQuery = "CREATE TABLE " + TABLE_CONFIG + " (" +
-                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_NAME + " VARCHAR(255), " +
-                COLUMN_WEEKDAY + " VARCHAR(255))";
+                COLUMN_NAME + " TEXT, " +
+                COLUMN_WEEKDAY + " TEXT, PRIMARY KEY (" + COLUMN_NAME + " ))";
         db.execSQL(createConfigTableQuery);
 
         String createCompartmentTableQuery = "CREATE TABLE " + TABLE_COMPARTMENT + " (" +
-                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_COMPARTMENT_NUMBER + " INT, " +
-                COLUMN_DESCRIPTION + " VARCHAR(255))";
+                COLUMN_COMPARTMENT_ID + " INTEGER, " +
+                COLUMN_DESCRIPTION + " TEXT, PRIMARY KEY (" + COLUMN_COMPARTMENT_ID + " ))";
         db.execSQL(createCompartmentTableQuery);
 
         String createConfigItemTableQuery = "CREATE TABLE " + TABLE_CONFIG_ITEM + " (" +
-                COLUMN_ITEM_ID + " INT, " +
-                COLUMN_CONFIG_ID + " INT, " +
-                COLUMN_COMPARTMENT_ID + " INT, " +
-                "FOREIGN KEY (" + COLUMN_ITEM_ID + ") REFERENCES " + TABLE_ITEM + "(" + COLUMN_ID + "), " +
-                "FOREIGN KEY (" + COLUMN_CONFIG_ID + ") REFERENCES " + TABLE_CONFIG + "(" + COLUMN_ID + "), " +
+                COLUMN_NAME + " TEXT, " +
+                COLUMN_COMPARTMENT_ID + " INTEGER, " +
+                COLUMN_ITEM_NAME + "TEXT, " +
+                "PRIMARY KEY (" + COLUMN_NAME + ", " + COLUMN_COMPARTMENT_ID + "), " +
+                "FOREIGN KEY (" + COLUMN_NAME + ") REFERENCES " + TABLE_CONFIG + "(" + COLUMN_NAME + "), " +
                 "FOREIGN KEY (" + COLUMN_COMPARTMENT_ID + ") REFERENCES " + TABLE_COMPARTMENT + "(" + COLUMN_ID + "))";
         db.execSQL(createConfigItemTableQuery);
+
+        String testDataConfiguraitonTable = "INSERT INTO " + TABLE_CONFIG + "(" + COLUMN_NAME + ", " + COLUMN_WEEKDAY + ")\n" +
+                "VALUES\n" +
+                "\t('testMaandag', 'Monday'),\n" +
+                "\t('testDinsdag', 'Tuesday'),\n" +
+                "\t('testDonderdag', 'Thursday'),\n" +
+                "\t('testVrijdag', 'Friday')";
+        db.execSQL(testDataConfiguraitonTable);
+
+        String testDataCompartmentTable = "INSERT INTO " + TABLE_COMPARTMENT + " (" + COLUMN_COMPARTMENT_ID + ", " + COLUMN_DESCRIPTION + ")\n" +
+                "VALUES\n" +
+                "\t(0, 'Laptop compartment'),\n" +
+                "\t(1, 'First main compartment'),\n" +
+                "\t(2, 'Second main compartment'),\n" +
+                "\t(3, 'Small compartment')";
+        db.execSQL(testDataCompartmentTable);
+
+        String testDataConfigurationItemTable = "INSERT INTO " + TABLE_CONFIG_ITEM + " (" + COLUMN_NAME + ", " + COLUMN_COMPARTMENT_ID + ")\n" +
+                "VALUES\n" +
+                "\t('testMaandag', 0),\n" +
+                "\t('testMaandag', 1),\n" +
+                "\t('testMaandag', 2),\n" +
+                "\t('testMaandag', 3),\n" +
+                "\t('testDinsdag', 0),\n" +
+                "\t('testDinsdag', 1),\n" +
+                "\t('testDinsdag', 2),\n" +
+                "\t('testDinsdag', 3),\n" +
+                "\t('testDonderdag', 0),\n" +
+                "\t('testDonderdag', 1),\n" +
+                "\t('testDonderdag', 2),\n" +
+                "\t('testDonderdag', 3),\n" +
+                "\t('testVrijdag', 0),\n" +
+                "\t('testVrijdag', 1),\n" +
+                "\t('testVrijdag', 2),\n" +
+                "\t('testVrijdag', 3)";
+        db.execSQL(testDataConfigurationItemTable);
     }
 
     @Override
@@ -70,35 +96,24 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONFIG_ITEM);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_COMPARTMENT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONFIG);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEM);
         onCreate(db);
     }
 
-    void addBagContent(int itemID, int configID, int compartmentID) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    public void updateConfigItem(ConfigurationItem item){
+        SQLiteDatabase database = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(COLUMN_ITEM_ID, itemID);
-        cv.put(COLUMN_CONFIG_ID, configID);
-        cv.put(COLUMN_COMPARTMENT_ID, compartmentID);
+        Cursor compartmentId = this.getCompartmentId(item);
+        compartmentId.moveToFirst();
 
-        long result = db.insert(TABLE_CONFIG_ITEM, null, cv);
-
-        if (result == -1) {
-            Toast.makeText(context, "Fout bij het toevoegen", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Succesvol toegevoegd!", Toast.LENGTH_SHORT).show();
-        }
+        cv.put(COLUMN_ITEM_NAME, item.getName());
+        database.update(TABLE_CONFIG_ITEM, cv, COLUMN_NAME + "=? AND", new String[]{item.getConfigurationName(), compartmentId.getString(0)});
     }
 
-    Cursor readAllData() {
-        String query = "SELECT * FROM "; // Query to select all data
-        SQLiteDatabase db = this.getReadableDatabase();
+    public Cursor getCompartmentId(ConfigurationItem item) {
+        SQLiteDatabase database = this.getReadableDatabase();
 
-        Cursor cursor = null;
-        if(db != null) {
-            cursor = db.rawQuery(query, null);
-        }
-        return cursor;
+        Cursor query = database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID}, COLUMN_DESCRIPTION + "=?", new String[]{item.getCompartmentName()}, null, null, null);
+        return  query;
     }
 }
