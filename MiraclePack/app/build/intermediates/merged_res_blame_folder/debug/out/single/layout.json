@@ -1,0 +1,46 @@
+[
+    {
+        "merged": "com.example.miraclepack.app-mergeDebugResources-30:/layout/fragment_settings.xml",
+        "source": "com.example.miraclepack.app-main-33:/layout/fragment_settings.xml"
+    },
+    {
+        "merged": "com.example.miraclepack.app-mergeDebugResources-30:/layout/my_row.xml",
+        "source": "com.example.miraclepack.app-main-33:/layout/my_row.xml"
+    },
+    {
+        "merged": "com.example.miraclepack.app-mergeDebugResources-30:/layout/activity_home_bag_content.xml",
+        "source": "com.example.miraclepack.app-main-33:/layout/activity_home_bag_content.xml"
+    },
+    {
+        "merged": "com.example.miraclepack.app-mergeDebugResources-30:/layout/fragment_passwordreset.xml",
+        "source": "com.example.miraclepack.app-main-33:/layout/fragment_passwordreset.xml"
+    },
+    {
+        "merged": "com.example.miraclepack.app-mergeDebugResources-30:/layout/fragment_signup.xml",
+        "source": "com.example.miraclepack.app-main-33:/layout/fragment_signup.xml"
+    },
+    {
+        "merged": "com.example.miraclepack.app-mergeDebugResources-30:/layout/activity_main.xml",
+        "source": "com.example.miraclepack.app-main-33:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.example.miraclepack.app-mergeDebugResources-30:/layout/fragment_profile.xml",
+        "source": "com.example.miraclepack.app-main-33:/layout/fragment_profile.xml"
+    },
+    {
+        "merged": "com.example.miraclepack.app-mergeDebugResources-30:/layout/fragment_loginpage.xml",
+        "source": "com.example.miraclepack.app-main-33:/layout/fragment_loginpage.xml"
+    },
+    {
+        "merged": "com.example.miraclepack.app-mergeDebugResources-30:/layout/activity_add.xml",
+        "source": "com.example.miraclepack.app-main-33:/layout/activity_add.xml"
+    },
+    {
+        "merged": "com.example.miraclepack.app-mergeDebugResources-30:/layout/fragment_home.xml",
+        "source": "com.example.miraclepack.app-main-33:/layout/fragment_home.xml"
+    },
+    {
+        "merged": "com.example.miraclepack.app-mergeDebugResources-30:/layout/fragment_bag.xml",
+        "source": "com.example.miraclepack.app-main-33:/layout/fragment_bag.xml"
+    }
+]
