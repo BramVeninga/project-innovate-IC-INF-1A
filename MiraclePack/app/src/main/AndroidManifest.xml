@@ -23,6 +23,11 @@
             android:exported="true"
             android:label="Sign Up" />
 
+        <activity
+            android:name=".PasswordResetActivity"
+            android:label="Password Reset" />
+
+
         <!-- Rest of your activities -->
 
         <activity

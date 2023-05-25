@@ -1,5 +1,6 @@
 package com.example.miraclepack;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -11,9 +12,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
-
-import com.example.miraclepack.DatabaseHelper;
-import com.example.miraclepack.R;
 
 public class LoginFragment extends Fragment {
     private TextView email;
@@ -37,6 +35,7 @@ public class LoginFragment extends Fragment {
         email = view.findViewById(R.id.email);
         wachtwoord = view.findViewById(R.id.password);
         AppCompatButton buttonLogin = view.findViewById(R.id.buttonLogin);
+        AppCompatButton buttonPasswordReset = view.findViewById(R.id.buttonPasswordReset);
 
         // Initialize database
         DatabaseHelper dbHelper = new DatabaseHelper(requireContext());
@@ -57,6 +56,15 @@ public class LoginFragment extends Fragment {
                     // Login failed
                     Toast.makeText(requireContext(), "Invalid email or password", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        buttonPasswordReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Launch the PasswordResetActivity
+                Intent intent = new Intent(requireContext(), PasswordResetActivity.class);
+                startActivity(intent);
             }
         });
     }
