@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_12sdp"
                 android:gravity="center"
-                android:text="Place Holder"
+                android:text="Place holder"
                 android:textColor="@color/mainTextColor"
                 android:textSize="@dimen/_23sdp"
                 android:textStyle="bold" />
