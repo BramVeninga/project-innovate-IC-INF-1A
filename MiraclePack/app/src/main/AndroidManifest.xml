@@ -31,9 +31,14 @@
         <!-- Rest of your activities -->
 
         <activity
+            android:name=".HomeBagContentActivity"
+            android:exported="true" />
+
+        <activity
             android:name=".AddActivity"
             android:exported="true"
             android:label="Inhoud toevoegen" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
