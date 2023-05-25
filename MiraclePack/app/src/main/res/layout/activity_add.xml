@@ -32,24 +32,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <Spinner
-            android:id="@+id/weekdaySpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginTop="10dp" />
-
         <EditText
-            android:id="@+id/subjectName"
+            android:id="@+id/itemName"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginTop="10dp"
             android:ems="10"
-            android:hint="Naam van het vak"
+            android:hint="Voorwerp naam"
             android:inputType="text"
             android:textAlignment="center" />
 
         <EditText
-            android:id="@+id/compartment"
+            android:id="@+id/compartmentNameInput"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginTop="10dp"

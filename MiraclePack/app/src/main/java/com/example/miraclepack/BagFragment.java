@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -35,23 +36,11 @@ public class BagFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myDB = new MyDatabaseHelper(getContext());
-        SQLiteDatabase db = this.myDB.getReadableDatabase();
-        db.close();
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_bag, container, false);
 
         Spinner weekDaySpinner = view.findViewById(R.id.weekdaySpinner);
-
-//        List<String> weekDays = new ArrayList<>();
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-//
-//        for (int i = 0; i < 7; i++) {
-//            String day = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
-//            weekDays.add(day);
-//            calendar.add(Calendar.DAY_OF_WEEK, 1);
-//        }
 
         List<Configuration> weekDays = myDB.fillConfigurations(myDB.getConfiguration());
 
@@ -63,21 +52,9 @@ public class BagFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         weekDaySpinner.setAdapter(adapter);
 
-//        Calendar today = Calendar.getInstance();
-//        int currentDayOfWeek = today.get(Calendar.DAY_OF_WEEK);
-//        int selectedPosition = currentDayOfWeek - 1;
-
         Calendar today = Calendar.getInstance();
         String day = today.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
-
-        Integer count = 0;
-        for (Configuration configuration: weekDays) {
-            if(day == configuration.getWeekday()) {
-                break;
-            }
-            count++;
-        }
-
+        Integer count = determineSpinnerStartIndex(weekDays, day);
         weekDaySpinner.setSelection(count);
 
         addBagContent = view.findViewById(R.id.addBagContent);
@@ -85,11 +62,32 @@ public class BagFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddActivity.class);
+                String configName = "";
+                for (Configuration configuration: weekDays) {
+                    if (weekDaySpinner.getSelectedItem().toString() == configuration.getWeekday()) {
+                        configName = configuration.getName();
+                        break;
+                    }
+                }
+                intent.putExtra("selectedConfig", configName);
                 startActivity(intent);
             }
         });
 
         return view;
+    }
+
+    @NonNull
+    private static Integer determineSpinnerStartIndex(List<Configuration> list, String day) {
+        Integer count = 0;
+        for (Configuration configuration: list) {
+            if(day == configuration.getWeekday()) {
+                return count;
+            } else {
+                count++;
+            }
+        }
+        return 0;
     }
 
     private void changeImageViewColor() {
@@ -104,29 +102,3 @@ public class BagFragment extends Fragment {
         }
     }
 }
-
-
-//        myDB = new MyDatabaseHelper(BagFragment.this);
-//        //
-//
-//        storeDataInArrays();
-//
-//        customAdapter = new CustomAdapter(BagFragment.this, );
-//        recyclerView.setAdapter(customAdapter);
-//        recyclerView.setLayoutManger(new LinearLayoutManager(BagFragment.this));
-//
-//    }
-
-
-
-//
-//    void storeDataInArrays() {
-//        Cursor cursor = myDB.readAllData();
-//        if(cursor.getCount() == 0) {
-//            Toast.makeText(this, "No data.", Toast.LENGTH_SHORT).show();
-//        }
-//        else {
-//            while (cursor.moveToNext()) {
-//
-//            }
-//        }

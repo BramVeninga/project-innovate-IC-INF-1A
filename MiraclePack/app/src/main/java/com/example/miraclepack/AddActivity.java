@@ -1,6 +1,8 @@
 package com.example.miraclepack;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -10,8 +12,7 @@ import android.widget.Spinner;
 
 public class AddActivity extends AppCompatActivity {
 
-    Spinner weekdaySpinnerInput;
-    EditText subjectNameInput, compartmentIdInput;
+    EditText itemNameInput, compartmentNameInput;
     Button addButton;
 
     @Override
@@ -20,6 +21,13 @@ public class AddActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add);
 
         setSupportActionBar(findViewById(R.id.toolbar));
+
+        Intent intent = getIntent();
+        String selectedConfig = intent.getStringExtra("selectedConfig");
+
+        itemNameInput = (EditText) findViewById(R.id.itemName);
+        compartmentNameInput = (EditText) findViewById(R.id.compartmentNameInput);
+        addButton = (Button) findViewById(R.id.addButton);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

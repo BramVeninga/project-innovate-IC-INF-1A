@@ -112,7 +112,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         compartmentId.moveToFirst();
 
         cv.put(COLUMN_ITEM_NAME, item.getName());
-        database.update(TABLE_CONFIG_ITEM, cv, COLUMN_NAME + "=? AND", new String[]{item.getConfigurationName(), compartmentId.getString(0)});
+        database.update(TABLE_CONFIG_ITEM, cv, COLUMN_NAME + "=? AND " + COLUMN_COMPARTMENT_ID + "=?", new String[]{item.getConfigurationName(), compartmentId.getString(0)});
+        database.close();
     }
 
     public Cursor getCompartmentId(ConfigurationItem item) {
