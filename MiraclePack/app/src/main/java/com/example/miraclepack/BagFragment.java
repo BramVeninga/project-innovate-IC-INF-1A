@@ -1,7 +1,6 @@
 package com.example.miraclepack;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,13 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -38,35 +34,51 @@ public class BagFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        myDB = new MyDatabaseHelper(getContext());
+        SQLiteDatabase db = this.myDB.getReadableDatabase();
+        db.close();
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_bag, container, false);
 
         Spinner weekDaySpinner = view.findViewById(R.id.weekdaySpinner);
 
-        myDB = new MyDatabaseHelper(getContext());
-        SQLiteDatabase db = this.myDB.getReadableDatabase();
-        db.close();
+//        List<String> weekDays = new ArrayList<>();
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+//
+//        for (int i = 0; i < 7; i++) {
+//            String day = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+//            weekDays.add(day);
+//            calendar.add(Calendar.DAY_OF_WEEK, 1);
+//        }
 
-        List<String> weekDays = new ArrayList<>();
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        List<Configuration> weekDays = myDB.fillConfigurations(myDB.getConfiguration());
 
-        for (int i = 0; i < 7; i++) {
-            String day = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
-            weekDays.add(day);
-            calendar.add(Calendar.DAY_OF_WEEK, 1);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item);
+        for (Configuration configuration: weekDays) {
+            adapter.add(configuration.getWeekday());
         }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, weekDays);
+        
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         weekDaySpinner.setAdapter(adapter);
 
+//        Calendar today = Calendar.getInstance();
+//        int currentDayOfWeek = today.get(Calendar.DAY_OF_WEEK);
+//        int selectedPosition = currentDayOfWeek - 1;
+
         Calendar today = Calendar.getInstance();
-        int currentDayOfWeek = today.get(Calendar.DAY_OF_WEEK);
-        int selectedPosition = currentDayOfWeek - 1;
+        String day = today.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
 
-        weekDaySpinner.setSelection(selectedPosition);
+        Integer count = 0;
+        for (Configuration configuration: weekDays) {
+            if(day == configuration.getWeekday()) {
+                break;
+            }
+            count++;
+        }
 
+        weekDaySpinner.setSelection(count);
 
         addBagContent = view.findViewById(R.id.addBagContent);
         addBagContent.setOnClickListener(new View.OnClickListener() {

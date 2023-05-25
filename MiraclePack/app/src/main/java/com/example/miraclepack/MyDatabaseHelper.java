@@ -9,6 +9,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+
 public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "MiraclePack.db";
     private static final int DATABASE_VERSION =2;
@@ -115,5 +120,25 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         Cursor query = database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID}, COLUMN_DESCRIPTION + "=?", new String[]{item.getCompartmentName()}, null, null, null);
         return  query;
+    }
+
+    public Cursor getConfiguration() {
+        SQLiteDatabase database = this.getReadableDatabase();
+
+        Cursor query = database.query(TABLE_CONFIG, new String[]{COLUMN_NAME, COLUMN_WEEKDAY}, null, null, null, null, null);
+        return query;
+    }
+
+    public List<Configuration> fillConfigurations(Cursor query) {
+        List<Configuration> configurations = new ArrayList<>();
+        if (query.moveToFirst()) {
+            do {
+                String name = query.getString(0);
+                String weekday = query.getString(1);
+                Configuration configuration = new Configuration(name, weekday);
+                configurations.add(configuration);
+            } while (query.moveToNext());
+        }
+        return configurations;
     }
 }
