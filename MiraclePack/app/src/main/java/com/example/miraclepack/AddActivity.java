@@ -3,7 +3,9 @@ package com.example.miraclepack;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,6 +34,21 @@ public class AddActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        MyDatabaseHelper myDB = new MyDatabaseHelper(AddActivity.this);
+        ConfigurationItem item = new ConfigurationItem();
+        item.setConfigurationName(selectedConfig);
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = itemNameInput.getText().toString();
+                String compartmentName = compartmentNameInput.getText().toString();
+                item.setName(name);
+                item.setCompartmentName(compartmentName);
+                myDB.updateConfigItem(item);
+            }
+        });
 
 //        Spinner spinner = findViewById(R.id.weekdaySpinner);
 //        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.weekdays, android.R.layout.simple_spinner_item);

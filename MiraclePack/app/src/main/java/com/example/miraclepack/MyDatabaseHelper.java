@@ -5,21 +5,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "MiraclePack.db";
-    private static final int DATABASE_VERSION =2;
+    private static final int DATABASE_VERSION =3;
 
     // Tables
-//    private static final String TABLE_ITEM = "item";
     private static final String TABLE_CONFIG = "CONFIGURATION";
     private static final String TABLE_COMPARTMENT = "COMPARTMENT";
     private static final String TABLE_CONFIG_ITEM = "CONFIGURATIONITEM";
@@ -33,6 +29,11 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ITEM_NAME = "itemID";
     private static final String COLUMN_CONFIG_ID = "configID";
     private static final String COLUMN_COMPARTMENT_ID = "compartmentID";
+    public static final String GEOFENCE = "GEOFENCE";
+    public static final String COLUMN_GEOFENCE_LATITUDE = "LATITUDE";
+    public static final String COLUMN_GEOFENCE_LONGITUDE = "LONGITUDE";
+    public static final String COLUMN_GEOFENCE_RADIUS = "RADIUS";
+    public static final String COLUMN_GEOFENCE_NAME = "NAME";
 
     public MyDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -53,11 +54,17 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         String createConfigItemTableQuery = "CREATE TABLE " + TABLE_CONFIG_ITEM + " (" +
                 COLUMN_NAME + " TEXT, " +
                 COLUMN_COMPARTMENT_ID + " INTEGER, " +
-                COLUMN_ITEM_NAME + "TEXT, " +
+                COLUMN_ITEM_NAME + " TEXT, " +
                 "PRIMARY KEY (" + COLUMN_NAME + ", " + COLUMN_COMPARTMENT_ID + "), " +
                 "FOREIGN KEY (" + COLUMN_NAME + ") REFERENCES " + TABLE_CONFIG + "(" + COLUMN_NAME + "), " +
                 "FOREIGN KEY (" + COLUMN_COMPARTMENT_ID + ") REFERENCES " + TABLE_COMPARTMENT + "(" + COLUMN_ID + "))";
         db.execSQL(createConfigItemTableQuery);
+
+        String createGeofenceTableQuery = "CREATE TABLE " + GEOFENCE + " (" + COLUMN_GEOFENCE_NAME + " TEXT, " +
+                COLUMN_GEOFENCE_LATITUDE + " REAL, " +
+                COLUMN_GEOFENCE_LONGITUDE + " REAL, " +
+                COLUMN_GEOFENCE_RADIUS + " INTEGER, PRIMARY KEY (" + COLUMN_GEOFENCE_NAME + "))";
+        db.execSQL(createGeofenceTableQuery);
 
         String testDataConfiguraitonTable = "INSERT INTO " + TABLE_CONFIG + "(" + COLUMN_NAME + ", " + COLUMN_WEEKDAY + ")\n" +
                 "VALUES\n" +
@@ -113,6 +120,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         cv.put(COLUMN_ITEM_NAME, item.getName());
         database.update(TABLE_CONFIG_ITEM, cv, COLUMN_NAME + "=? AND " + COLUMN_COMPARTMENT_ID + "=?", new String[]{item.getConfigurationName(), compartmentId.getString(0)});
+        compartmentId.close();
         database.close();
     }
 
@@ -123,9 +131,13 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return  query;
     }
 
+    public Cursor getCompartments() {
+        SQLiteDatabase database = this.getReadableDatabase();
+        database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID, COLUMN_DESCRIPTION}, null, null, null, null, null);
+    }
+
     public Cursor getConfiguration() {
         SQLiteDatabase database = this.getReadableDatabase();
-
         Cursor query = database.query(TABLE_CONFIG, new String[]{COLUMN_NAME, COLUMN_WEEKDAY}, null, null, null, null, null);
         return query;
     }
@@ -140,6 +152,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 configurations.add(configuration);
             } while (query.moveToNext());
         }
+        query.close();
         return configurations;
     }
 }
