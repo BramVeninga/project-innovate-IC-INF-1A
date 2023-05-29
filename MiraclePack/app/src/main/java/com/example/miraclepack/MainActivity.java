@@ -42,14 +42,14 @@ public class MainActivity extends AppCompatActivity {
                 if (isLoggedIn) {
                     replaceFragment(new ProfileFragment());
                 } else {
-                    // Handle the case when the user is not logged in
-                    replaceFragment(new LoginFragment());
+                    replaceFragment(new LoginFragment()); // Show the LoginFragment for the user to log in
                 }
             } else if (itemId == R.id.settings) {
                 replaceFragment(new SettingsFragment());
             }
             return true;
         });
+
     }
 
     private void replaceFragment(Fragment fragment) {

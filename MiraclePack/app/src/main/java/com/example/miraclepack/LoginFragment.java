@@ -59,9 +59,11 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        buttonPasswordReset.setOnClickListener(new View.OnClickListener() {
+        buttonPasswordReset.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 // Launch the PasswordResetActivity
                 Intent intent = new Intent(requireContext(), PasswordResetActivity.class);
                 startActivity(intent);
