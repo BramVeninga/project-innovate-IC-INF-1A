@@ -15,14 +15,16 @@ import java.util.ArrayList;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
     private Context context;
-    private ArrayList item_name, compartment_id;
+    private ArrayList<ConfigurationItem> configItems;
+    MyDatabaseHelper myDB;
 
-    CustomAdapter(Context context,
-                  ArrayList item_name,
-                  ArrayList compartment_id) {
+    CustomAdapter(Context context, ArrayList<ConfigurationItem> configItems) {
         this.context = context;
-        this.item_name = item_name;
-        this.compartment_id = compartment_id;
+        this.configItems = configItems;
+        this.myDB = new MyDatabaseHelper(context.getApplicationContext());
+        for (ConfigurationItem configItem : configItems) {
+            this.myDB.filloutCompInConfigItem(this.myDB.getCompartment(configItem.getCompartment().getCompartmentId()), configItem);
+        }
     }
     @NonNull
     @Override
@@ -34,9 +36,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.item_name_txt.setText(String.valueOf(item_name.get(position)));
-        holder.compartment_id_txt.setText(String.valueOf(compartment_id.get(position)));
-
+        holder.item_name_txt.setText(configItems.get(position).getName());
+        holder.compartment_id_txt.setText(configItems.get(position).getCompartment().getDescription());
     }
 
     @Override

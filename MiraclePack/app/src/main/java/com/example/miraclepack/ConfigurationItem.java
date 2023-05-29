@@ -2,18 +2,17 @@ package com.example.miraclepack;
 
 public class ConfigurationItem {
     private String name;
-    private Integer compartmentId;
-    private String compartmentName;
+    private Compartment compartment;
     private String configurationName;
 
-    public ConfigurationItem(String name, Integer compartmentId, String compartmentName, String configurationName) {
+    public ConfigurationItem(String name, Compartment compartment, String configurationName) {
         this.name = name;
-        this.compartmentId = compartmentId;
-        this.compartmentName = compartmentName;
+        this.compartment = compartment;
         this.configurationName = configurationName;
     }
 
     public ConfigurationItem() {
+        this.compartment = new Compartment();
     }
 
     public String getName() {
@@ -24,20 +23,12 @@ public class ConfigurationItem {
         this.name = name;
     }
 
-    public Integer getCompartmentId() {
-        return compartmentId;
+    public Compartment getCompartment() {
+        return compartment;
     }
 
-    public void setCompartmentId(Integer compartmentId) {
-        this.compartmentId = compartmentId;
-    }
-
-    public String getCompartmentName() {
-        return compartmentName;
-    }
-
-    public void setCompartmentName(String compartmentName) {
-        this.compartmentName = compartmentName;
+    public void setCompartment(Compartment compartment) {
+        this.compartment = compartment;
     }
 
     public String getConfigurationName() {

@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -30,8 +31,12 @@ public class BagFragment extends Fragment {
     }
 
     MyDatabaseHelper myDB;
+    List<Configuration> weekDays;
     ArrayList<String> bagContentName, bagContentCompartment;
     CustomAdapter customAdapter;
+    RecyclerView itemList;
+    Spinner weekDaySpinner;
+    ArrayList<ConfigurationItem> configItems;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,10 +45,10 @@ public class BagFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_bag, container, false);
 
-        Spinner weekDaySpinner = view.findViewById(R.id.weekdaySpinner);
+        weekDaySpinner = view.findViewById(R.id.weekdaySpinner);
+        itemList = (RecyclerView) view.findViewById(R.id.itemList);
 
-        List<Configuration> weekDays = myDB.fillConfigurations(myDB.getConfiguration());
-
+        weekDays = myDB.fillConfigurations(myDB.getConfiguration());
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item);
         for (Configuration configuration: weekDays) {
             adapter.add(configuration.getWeekday());
@@ -55,6 +60,7 @@ public class BagFragment extends Fragment {
         String day = today.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
         Integer count = determineSpinnerStartIndex(weekDays, day);
         weekDaySpinner.setSelection(count);
+        configItems = myDB.fillConfigItems(myDB.getConfigItems(weekDays.get(count)));
 
         addBagContent = view.findViewById(R.id.addBagContent);
         addBagContent.setOnClickListener(new View.OnClickListener() {

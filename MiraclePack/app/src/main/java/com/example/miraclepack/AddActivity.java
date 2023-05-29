@@ -46,7 +46,7 @@ public class AddActivity extends AppCompatActivity {
         ConfigurationItem item = new ConfigurationItem();
         item.setConfigurationName(selectedConfig);
 
-        this.fillCompartmentNameSpinner();
+        this.fillCompartmentNameSpinner(compartments);
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +54,7 @@ public class AddActivity extends AppCompatActivity {
                 String name = itemNameInput.getText().toString();
                 String compartmentName = compartmentNameSpinner.getSelectedItem().toString();
                 item.setName(name);
-                item.setCompartmentName(compartmentName);
+                item.getCompartment().setDescription(compartmentName);
                 myDB.updateConfigItem(item);
             }
         });
@@ -66,10 +66,10 @@ public class AddActivity extends AppCompatActivity {
         return true;
     }
 
-    public void fillCompartmentNameSpinner() {
-        compartments = myDB.fillCompartments(myDB.getCompartments());
+    public void fillCompartmentNameSpinner(List<Compartment> compartmentsList) {
+        compartmentsList = myDB.fillCompartments(myDB.getCompartments());
         ArrayAdapter<String> adapter = new ArrayAdapter<>(AddActivity.this, android.R.layout.simple_spinner_item);
-        for (Compartment compartment: compartments) {
+        for (Compartment compartment: compartmentsList) {
             adapter.add(compartment.getDescription());
         }
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

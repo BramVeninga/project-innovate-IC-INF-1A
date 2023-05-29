@@ -1,23 +1,23 @@
 package com.example.miraclepack;
 
 public class Compartment {
-    private Integer compartmentIDd;
+    private Integer compartmentId;
     private String description;
 
     public Compartment() {
     }
 
-    public Compartment(Integer compartmentIDd, String description) {
-        this.compartmentIDd = compartmentIDd;
+    public Compartment(Integer compartmentId, String description) {
+        this.compartmentId = compartmentId;
         this.description = description;
     }
 
-    public Integer getCompartmentIDd() {
-        return compartmentIDd;
+    public Integer getCompartmentId() {
+        return compartmentId;
     }
 
-    public void setCompartmentIDd(Integer compartmentIDd) {
-        this.compartmentIDd = compartmentIDd;
+    public void setCompartmentId(Integer compartmentId) {
+        this.compartmentId = compartmentId;
     }
 
     public String getDescription() {

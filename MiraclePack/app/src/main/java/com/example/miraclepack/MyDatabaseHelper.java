@@ -24,6 +24,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_WEEKDAY = "weekDay";
+    private static final String COLUMN_MAIN = "MAIN";
     private static final String COLUMN_COMPARTMENT_NUMBER = "compartmentNumber";
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_ITEM_NAME = "itemID";
@@ -35,6 +36,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_GEOFENCE_RADIUS = "RADIUS";
     public static final String COLUMN_GEOFENCE_NAME = "NAME";
 
+
     public MyDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -43,7 +45,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String createConfigTableQuery = "CREATE TABLE " + TABLE_CONFIG + " (" +
                 COLUMN_NAME + " TEXT, " +
-                COLUMN_WEEKDAY + " TEXT, PRIMARY KEY (" + COLUMN_NAME + " ))";
+                COLUMN_WEEKDAY + " TEXT, " +
+                COLUMN_MAIN + " INTEGER, PRIMARY KEY (" + COLUMN_NAME + " ))";
         db.execSQL(createConfigTableQuery);
 
         String createCompartmentTableQuery = "CREATE TABLE " + TABLE_COMPARTMENT + " (" +
@@ -124,17 +127,57 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         database.close();
     }
 
+    public Cursor getConfigItems(Configuration configuration) {
+        SQLiteDatabase database = this.getReadableDatabase();
+        Cursor query = database.query(TABLE_CONFIG_ITEM, new String[]{COLUMN_NAME, COLUMN_COMPARTMENT_ID, COLUMN_ITEM_NAME}, COLUMN_NAME + "=?", new String[]{configuration.getName()}, null, null, null);
+        return query;
+    }
+
+    public ArrayList<ConfigurationItem> fillConfigItems (Cursor query) {
+        ArrayList<ConfigurationItem> configItems = new ArrayList<>();
+        if (query.moveToFirst()) {
+            do {
+                String configName = query.getString(0);
+                int compId = query.getInt(1);
+                String itemName = query.getString(2);
+                ConfigurationItem configItem = new ConfigurationItem();
+                configItem.setName(itemName);
+                configItem.getCompartment().setCompartmentId(compId);
+                configItem.setConfigurationName(configName);
+                configItems.add(configItem);
+            } while (query.moveToNext());
+        }
+        query.close();
+        return configItems;
+    }
+
     public Cursor getCompartmentId(ConfigurationItem item) {
         SQLiteDatabase database = this.getReadableDatabase();
-
-        Cursor query = database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID}, COLUMN_DESCRIPTION + "=?", new String[]{item.getCompartmentName()}, null, null, null);
+        Cursor query = database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID}, COLUMN_DESCRIPTION + "=?", new String[]{item.getCompartment().getDescription()}, null, null, null);
         return  query;
+    }
+
+    public Cursor getCompartment(Integer compId) {
+        SQLiteDatabase database = this.getReadableDatabase();
+        Cursor query = database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID, COLUMN_DESCRIPTION}, COLUMN_COMPARTMENT_ID + "=?", new String[]{compId}, null, null, null);
+        return query;
+    }
+
+    public void filloutCompInConfigItem(Cursor query, ConfigurationItem configItem) {
+        if (query.moveToFirst()){
+            do {
+                int compId = query.getInt(0);
+                String compDescription = query.getString(1);
+                configItem.getCompartment().setCompartmentId(compId);
+                configItem.getCompartment().setDescription(compDescription);
+            } while (query.moveToNext());
+        }
+        query.close();
     }
 
     public Cursor getCompartments() {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor query = database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID, COLUMN_DESCRIPTION}, null, null, null, null, null);
-
         return query;
     }
 
@@ -154,7 +197,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getConfiguration() {
         SQLiteDatabase database = this.getReadableDatabase();
-        Cursor query = database.query(TABLE_CONFIG, new String[]{COLUMN_NAME, COLUMN_WEEKDAY}, null, null, null, null, null);
+        Cursor query = database.query(TABLE_CONFIG, new String[]{COLUMN_NAME, COLUMN_WEEKDAY, COLUMN_MAIN}, null, null, null, null, null);
         return query;
     }
 
@@ -164,7 +207,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             do {
                 String name = query.getString(0);
                 String weekday = query.getString(1);
-                Configuration configuration = new Configuration(name, weekday);
+                Integer tempMain = query.getInt(2);
+                boolean main = tempMain == 0 ? false : true;
+                Configuration configuration = new Configuration(name, weekday, main);
                 configurations.add(configuration);
             } while (query.moveToNext());
         }
