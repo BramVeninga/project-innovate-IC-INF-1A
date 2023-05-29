@@ -48,7 +48,6 @@ public class BagFragment extends Fragment {
         for (Configuration configuration: weekDays) {
             adapter.add(configuration.getWeekday());
         }
-        
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         weekDaySpinner.setAdapter(adapter);
 

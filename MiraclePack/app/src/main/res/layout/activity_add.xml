@@ -20,8 +20,8 @@
 
     <LinearLayout
         android:id="@+id/groupContainer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="372dp"
+        android:layout_height="188dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
@@ -42,15 +42,10 @@
             android:inputType="text"
             android:textAlignment="center" />
 
-        <EditText
-            android:id="@+id/compartmentNameInput"
+        <Spinner
+            android:id="@+id/compartmentNameSpinner"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:hint="Vak van de tas"
-            android:inputType="text"
-            android:textAlignment="center" />
+            android:layout_height="48dp" />
 
         <Button
             android:id="@+id/addButton"

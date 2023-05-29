@@ -12,10 +12,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AddActivity extends AppCompatActivity {
 
-    EditText itemNameInput, compartmentNameInput;
+    EditText itemNameInput;
+    Spinner compartmentNameSpinner;
     Button addButton;
+    List<Compartment> compartments;
+    MyDatabaseHelper myDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,49 +34,45 @@ public class AddActivity extends AppCompatActivity {
         String selectedConfig = intent.getStringExtra("selectedConfig");
 
         itemNameInput = (EditText) findViewById(R.id.itemName);
-        compartmentNameInput = (EditText) findViewById(R.id.compartmentNameInput);
+        compartmentNameSpinner = (Spinner) findViewById(R.id.compartmentNameSpinner);
         addButton = (Button) findViewById(R.id.addButton);
+        compartments = new ArrayList<>();
+        myDB = new MyDatabaseHelper(AddActivity.this);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        MyDatabaseHelper myDB = new MyDatabaseHelper(AddActivity.this);
         ConfigurationItem item = new ConfigurationItem();
         item.setConfigurationName(selectedConfig);
+
+        this.fillCompartmentNameSpinner();
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name = itemNameInput.getText().toString();
-                String compartmentName = compartmentNameInput.getText().toString();
+                String compartmentName = compartmentNameSpinner.getSelectedItem().toString();
                 item.setName(name);
                 item.setCompartmentName(compartmentName);
                 myDB.updateConfigItem(item);
             }
         });
-
-//        Spinner spinner = findViewById(R.id.weekdaySpinner);
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.weekdays, android.R.layout.simple_spinner_item);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner.setAdapter(adapter);
-//
-//        weekdaySpinnerInput = spinner;
-//        subjectNameInput = findViewById(R.id.subjectName);
-//        compartmentIdInput = findViewById(R.id.compartment);
-//        addButton = findViewById(R.id.addButton);
-//
-//        addButton.setOnClickListener(view -> {
-//            MyDatabaseHelper myDB = new MyDatabaseHelper(AddActivity.this);
-//            myDB.addBagContent(weekdaySpinnerInput.getSelectedItem().toString().trim(),
-//                    subjectNameInput.getText().toString().trim(),
-//                    Integer.valueOf(compartmentIdInput.getText().toString().trim()));
-//        });
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    public void fillCompartmentNameSpinner() {
+        compartments = myDB.fillCompartments(myDB.getCompartments());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddActivity.this, android.R.layout.simple_spinner_item);
+        for (Compartment compartment: compartments) {
+            adapter.add(compartment.getDescription());
+        }
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        compartmentNameSpinner.setAdapter(adapter);
     }
 }

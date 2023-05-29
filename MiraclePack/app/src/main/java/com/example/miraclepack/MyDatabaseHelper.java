@@ -133,7 +133,23 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getCompartments() {
         SQLiteDatabase database = this.getReadableDatabase();
-        database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID, COLUMN_DESCRIPTION}, null, null, null, null, null);
+        Cursor query = database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID, COLUMN_DESCRIPTION}, null, null, null, null, null);
+
+        return query;
+    }
+
+    public List<Compartment> fillCompartments(Cursor query) {
+        List<Compartment> compartments = new ArrayList<>();
+        if (query.moveToFirst()) {
+            do {
+                Integer id = query.getInt(0);
+                String description = query.getString(1);
+                Compartment compartment = new Compartment(id, description);
+                compartments.add(compartment);
+            } while (query.moveToNext());
+        }
+        query.close();
+        return compartments;
     }
 
     public Cursor getConfiguration() {
