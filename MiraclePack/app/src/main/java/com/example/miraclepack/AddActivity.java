@@ -56,6 +56,8 @@ public class AddActivity extends AppCompatActivity {
                 item.setName(name);
                 item.getCompartment().setDescription(compartmentName);
                 myDB.updateConfigItem(item);
+                Intent backIntent = new Intent(AddActivity.this, MainActivity.class);
+                startActivity(backIntent);
             }
         });
     }

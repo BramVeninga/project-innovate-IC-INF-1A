@@ -16,14 +16,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     private Context context;
     private ArrayList<ConfigurationItem> configItems;
-    MyDatabaseHelper myDB;
+    private MyDatabaseHelper myDB;
 
     CustomAdapter(Context context, ArrayList<ConfigurationItem> configItems) {
         this.context = context;
         this.configItems = configItems;
         this.myDB = new MyDatabaseHelper(context.getApplicationContext());
         for (ConfigurationItem configItem : configItems) {
-            this.myDB.filloutCompInConfigItem(this.myDB.getCompartment(configItem.getCompartment().getCompartmentId()), configItem);
+            this.myDB.filloutCompInConfigItem(this.myDB.getCompartment(configItem.getCompartment().getCompartmentId().toString()), configItem);
         }
     }
     @NonNull
@@ -42,7 +42,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     @Override
     public int getItemCount() {
-        return 0;
+        return configItems.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

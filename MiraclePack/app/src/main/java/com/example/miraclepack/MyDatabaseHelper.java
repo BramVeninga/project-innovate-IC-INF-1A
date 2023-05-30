@@ -25,12 +25,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_WEEKDAY = "weekDay";
     private static final String COLUMN_MAIN = "MAIN";
-    private static final String COLUMN_COMPARTMENT_NUMBER = "compartmentNumber";
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_ITEM_NAME = "itemID";
-    private static final String COLUMN_CONFIG_ID = "configID";
     private static final String COLUMN_COMPARTMENT_ID = "compartmentID";
-    public static final String GEOFENCE = "GEOFENCE";
+    public static final String TABLE_GEOFENCE = "GEOFENCE";
     public static final String COLUMN_GEOFENCE_LATITUDE = "LATITUDE";
     public static final String COLUMN_GEOFENCE_LONGITUDE = "LONGITUDE";
     public static final String COLUMN_GEOFENCE_RADIUS = "RADIUS";
@@ -43,49 +41,41 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createConfigTableQuery = "CREATE TABLE " + TABLE_CONFIG + " (" +
-                COLUMN_NAME + " TEXT, " +
-                COLUMN_WEEKDAY + " TEXT, " +
-                COLUMN_MAIN + " INTEGER, PRIMARY KEY (" + COLUMN_NAME + " ))";
-        db.execSQL(createConfigTableQuery);
+        addDataToDB(db, new String[]{
+                "CREATE TABLE " + TABLE_CONFIG + " (" +
+                        COLUMN_NAME + " TEXT, " +
+                        COLUMN_WEEKDAY + " TEXT, " +
+                        COLUMN_MAIN + " INTEGER, PRIMARY KEY (" + COLUMN_NAME + " ))",
+                "CREATE TABLE " + TABLE_COMPARTMENT + " (" +
+                        COLUMN_COMPARTMENT_ID + " INTEGER, " +
+                        COLUMN_DESCRIPTION + " TEXT, PRIMARY KEY (" + COLUMN_COMPARTMENT_ID + " ))",
+                "CREATE TABLE " + TABLE_CONFIG_ITEM + " (" +
+                        COLUMN_NAME + " TEXT, " +
+                        COLUMN_COMPARTMENT_ID + " INTEGER, " +
+                        COLUMN_ITEM_NAME + " TEXT, " +
+                        "PRIMARY KEY (" + COLUMN_NAME + ", " + COLUMN_COMPARTMENT_ID + "), " +
+                        "FOREIGN KEY (" + COLUMN_NAME + ") REFERENCES " + TABLE_CONFIG + "(" + COLUMN_NAME + "), " +
+                        "FOREIGN KEY (" + COLUMN_COMPARTMENT_ID + ") REFERENCES " + TABLE_COMPARTMENT + "(" + COLUMN_ID + "))",
+                "CREATE TABLE " + TABLE_GEOFENCE + " (" + COLUMN_GEOFENCE_NAME + " TEXT, " +
+                        COLUMN_GEOFENCE_LATITUDE + " REAL, " +
+                        COLUMN_GEOFENCE_LONGITUDE + " REAL, " +
+                        COLUMN_GEOFENCE_RADIUS + " INTEGER, PRIMARY KEY (" + COLUMN_GEOFENCE_NAME + "))"
+        });
 
-        String createCompartmentTableQuery = "CREATE TABLE " + TABLE_COMPARTMENT + " (" +
-                COLUMN_COMPARTMENT_ID + " INTEGER, " +
-                COLUMN_DESCRIPTION + " TEXT, PRIMARY KEY (" + COLUMN_COMPARTMENT_ID + " ))";
-        db.execSQL(createCompartmentTableQuery);
-
-        String createConfigItemTableQuery = "CREATE TABLE " + TABLE_CONFIG_ITEM + " (" +
-                COLUMN_NAME + " TEXT, " +
-                COLUMN_COMPARTMENT_ID + " INTEGER, " +
-                COLUMN_ITEM_NAME + " TEXT, " +
-                "PRIMARY KEY (" + COLUMN_NAME + ", " + COLUMN_COMPARTMENT_ID + "), " +
-                "FOREIGN KEY (" + COLUMN_NAME + ") REFERENCES " + TABLE_CONFIG + "(" + COLUMN_NAME + "), " +
-                "FOREIGN KEY (" + COLUMN_COMPARTMENT_ID + ") REFERENCES " + TABLE_COMPARTMENT + "(" + COLUMN_ID + "))";
-        db.execSQL(createConfigItemTableQuery);
-
-        String createGeofenceTableQuery = "CREATE TABLE " + GEOFENCE + " (" + COLUMN_GEOFENCE_NAME + " TEXT, " +
-                COLUMN_GEOFENCE_LATITUDE + " REAL, " +
-                COLUMN_GEOFENCE_LONGITUDE + " REAL, " +
-                COLUMN_GEOFENCE_RADIUS + " INTEGER, PRIMARY KEY (" + COLUMN_GEOFENCE_NAME + "))";
-        db.execSQL(createGeofenceTableQuery);
-
-        String testDataConfiguraitonTable = "INSERT INTO " + TABLE_CONFIG + "(" + COLUMN_NAME + ", " + COLUMN_WEEKDAY + ")\n" +
+        addDataToDB(db, new String[]{
+                "INSERT INTO " + TABLE_CONFIG + "(" + COLUMN_NAME + ", " + COLUMN_WEEKDAY + ")\n" +
                 "VALUES\n" +
                 "\t('testMaandag', 'Monday'),\n" +
                 "\t('testDinsdag', 'Tuesday'),\n" +
                 "\t('testDonderdag', 'Thursday'),\n" +
-                "\t('testVrijdag', 'Friday')";
-        db.execSQL(testDataConfiguraitonTable);
-
-        String testDataCompartmentTable = "INSERT INTO " + TABLE_COMPARTMENT + " (" + COLUMN_COMPARTMENT_ID + ", " + COLUMN_DESCRIPTION + ")\n" +
+                "\t('testVrijdag', 'Friday')",
+                "INSERT INTO " + TABLE_COMPARTMENT + " (" + COLUMN_COMPARTMENT_ID + ", " + COLUMN_DESCRIPTION + ")\n" +
                 "VALUES\n" +
                 "\t(0, 'Laptop compartment'),\n" +
                 "\t(1, 'First main compartment'),\n" +
                 "\t(2, 'Second main compartment'),\n" +
-                "\t(3, 'Small compartment')";
-        db.execSQL(testDataCompartmentTable);
-
-        String testDataConfigurationItemTable = "INSERT INTO " + TABLE_CONFIG_ITEM + " (" + COLUMN_NAME + ", " + COLUMN_COMPARTMENT_ID + ")\n" +
+                "\t(3, 'Small compartment')",
+                "INSERT INTO " + TABLE_CONFIG_ITEM + " (" + COLUMN_NAME + ", " + COLUMN_COMPARTMENT_ID + ")\n" +
                 "VALUES\n" +
                 "\t('testMaandag', 0),\n" +
                 "\t('testMaandag', 1),\n" +
@@ -102,8 +92,20 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 "\t('testVrijdag', 0),\n" +
                 "\t('testVrijdag', 1),\n" +
                 "\t('testVrijdag', 2),\n" +
-                "\t('testVrijdag', 3)";
-        db.execSQL(testDataConfigurationItemTable);
+                "\t('testVrijdag', 3)"
+        });
+    }
+
+    private static void addDataToDB(SQLiteDatabase db, String[] queries) {
+        for (String query: queries) {
+            addData(db, query);
+        }
+    }
+
+    private static void addData(SQLiteDatabase db, String Query) {
+        if (Query != null) {
+            db.execSQL(Query);
+        }
     }
 
     @Override
@@ -141,7 +143,11 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 int compId = query.getInt(1);
                 String itemName = query.getString(2);
                 ConfigurationItem configItem = new ConfigurationItem();
-                configItem.setName(itemName);
+                if (itemName != null && !itemName.isEmpty()) {
+                    configItem.setName(itemName);
+                } else {
+                    configItem.setName("Leeg");
+                }
                 configItem.getCompartment().setCompartmentId(compId);
                 configItem.setConfigurationName(configName);
                 configItems.add(configItem);
@@ -157,7 +163,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return  query;
     }
 
-    public Cursor getCompartment(Integer compId) {
+    public Cursor getCompartment(String compId) {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor query = database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID, COLUMN_DESCRIPTION}, COLUMN_COMPARTMENT_ID + "=?", new String[]{compId}, null, null, null);
         return query;
