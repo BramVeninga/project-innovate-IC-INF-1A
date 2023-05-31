@@ -1,4 +1,4 @@
-import android.bluetooth.BluetoothAdapter;
+/*import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.AsyncTask;
@@ -83,3 +83,4 @@ public class BluetoothConnection extends AppCompatActivity {
         }
     }
 }
+*/

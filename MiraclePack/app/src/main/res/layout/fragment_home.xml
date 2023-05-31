@@ -102,7 +102,6 @@
                     android:id="@+id/batteryPercentage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="80%"
                     android:textColor="@color/mainTextColor"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="bold" />
@@ -130,7 +129,6 @@
                     android:id="@+id/bluetoothState"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Verbonden"
                     android:textColor="@color/mainTextColor"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="bold" />
