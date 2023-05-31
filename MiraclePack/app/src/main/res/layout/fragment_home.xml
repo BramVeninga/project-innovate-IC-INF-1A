@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
+    android:background="@color/white"
     tools:context=".HomeFragment">
 
 
@@ -14,9 +14,9 @@
 
         <Button
             android:id="@+id/viewContentButton"
-            android:layout_width="@dimen/_269sdp"
-            android:layout_height="@dimen/_240sdp"
-            android:layout_marginTop="@dimen/_23sdp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_234sdp"
+            android:layout_margin="@dimen/_12sdp"
             android:background="@drawable/roundstyle"
             android:backgroundTint="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
@@ -25,46 +25,56 @@
 
         <LinearLayout
             android:id="@+id/backpackViewSection"
-            android:layout_width="@dimen/_270sdp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_23sdp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_235sdp"
+            android:layout_margin="@dimen/_12sdp"
             android:background="@drawable/roundstyle"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/houseStyleColor"
             android:orientation="vertical"
+            android:gravity="center_horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/viewContentButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints">
+            app:layout_constraintVertical_bias="0.0">
 
             <ImageView
                 android:id="@+id/backpackImage"
-                android:layout_width="@dimen/_200sdp"
-                android:layout_height="@dimen/_200sdp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_173sdp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/toproundstyle"
                 android:backgroundTint="@color/white"
-                android:padding="@dimen/_5sdp"
+                android:padding="@dimen/_10sdp"
                 android:src="@drawable/backpack" />
 
             <TextView
                 android:id="@+id/configName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_12sdp"
+                android:layout_height="@dimen/_42sdp"
+                android:background="@drawable/bottomroundstyle"
+                android:backgroundTint="@color/white"
                 android:gravity="center"
                 android:text="Place holder"
-                android:textColor="@color/mainTextColor"
-                android:textSize="@dimen/_23sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/_20sdp"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/backpackInfoSection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_23sdp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_160sdp"
+            android:layout_margin="@dimen/_12sdp"
             android:background="@drawable/roundstyle"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/houseStyleColor"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -73,13 +83,13 @@
 
             <LinearLayout
                 android:id="@+id/NotificationOnOff"
-                android:layout_width="@dimen/_245sdp"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/_39sdp"
-                android:layout_marginStart="@dimen/_11sdp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:background="@drawable/roundstyle"
-                android:backgroundTint="@color/grey"
+                android:backgroundTint="@color/white"
                 android:gravity="center_vertical">
 
                 <ImageView
@@ -101,13 +111,13 @@
 
             <LinearLayout
                 android:id="@+id/bluetoothStatus"
-                android:layout_width="@dimen/_245sdp"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/_39sdp"
-                android:layout_marginStart="@dimen/_11sdp"
-                android:layout_marginTop="@dimen/_11sdp"
-                android:layout_marginEnd="@dimen/_11sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:background="@drawable/roundstyle"
-                android:backgroundTint="@color/grey"
+                android:backgroundTint="@color/white"
                 android:gravity="center_vertical">
 
                 <ImageView
@@ -129,11 +139,13 @@
 
             <LinearLayout
                 android:id="@+id/gpsStatus"
-                android:layout_width="@dimen/_245sdp"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/_39sdp"
-                android:layout_margin="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:background="@drawable/roundstyle"
-                android:backgroundTint="@color/grey"
+                android:backgroundTint="@color/white"
                 android:gravity="center_vertical"
                 android:padding="@dimen/_4sdp">
 
