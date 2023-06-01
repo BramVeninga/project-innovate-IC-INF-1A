@@ -30,18 +30,22 @@ public class LoginActivity extends AppCompatActivity
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         database = dbHelper.getReadableDatabase();
 
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
+        buttonLogin.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 String enteredEmail = email.getText().toString();
                 String enteredWachtwoord = wachtwoord.getText().toString();
 
                 // Check credentials in the database
-                if (checkCredentials(enteredEmail, enteredWachtwoord)) {
+                if (checkCredentials(enteredEmail, enteredWachtwoord))
+                {
                     // Successful login
                     Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
                     // Proceed to the next activity or perform other actions
-                } else {
+                } else
+                {
                     // Login failed
                     Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
                 }

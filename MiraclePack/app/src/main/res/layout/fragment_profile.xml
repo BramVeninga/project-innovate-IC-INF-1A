@@ -18,9 +18,23 @@
             android:id="@+id/textView2"
             android:layout_width="29dp"
             android:layout_height="45dp"
-            android:layout_marginStart="162dp"
-            android:layout_marginTop="321dp"
+            android:layout_marginStart="164dp"
+            android:layout_marginTop="196dp"
             android:text="@string/test"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonSignOut"
+            android:layout_width="149dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="112dp"
+            android:layout_marginTop="488dp"
+            android:background="#D9D9D9"
+            android:text="@string/uitloggen"
+            android:textColor="#323232"
+            android:textSize="15sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
