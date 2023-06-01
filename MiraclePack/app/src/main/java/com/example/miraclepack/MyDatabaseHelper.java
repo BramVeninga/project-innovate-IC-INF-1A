@@ -2,7 +2,6 @@ package com.example.miraclepack;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
@@ -20,6 +19,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_CONFIG = "config";
     private static final String TABLE_COMPARTMENT = "compartment";
     private static final String TABLE_CONFIG_ITEM = "configItem";
+    private static final String TABLE_LOGIN = "login";
 
     // Columns
     private static final String COLUMN_ID = "id";
@@ -30,6 +30,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ITEM_ID = "itemID";
     private static final String COLUMN_CONFIG_ID = "configID";
     private static final String COLUMN_COMPARTMENT_ID = "compartmentID";
+    private static final String COLUMN_EMAIL = "email";
+    private static final String COLUMN_PASSWORD = "password";
 
     public MyDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -63,6 +65,12 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY (" + COLUMN_CONFIG_ID + ") REFERENCES " + TABLE_CONFIG + "(" + COLUMN_ID + "), " +
                 "FOREIGN KEY (" + COLUMN_COMPARTMENT_ID + ") REFERENCES " + TABLE_COMPARTMENT + "(" + COLUMN_ID + "))";
         db.execSQL(createConfigItemTableQuery);
+
+        String createLoginTableQuery = "CREATE TABLE " + TABLE_LOGIN + " (" +
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_EMAIL + " VARCHAR(255), " +
+                COLUMN_PASSWORD + " VARCHAR(255))";
+        db.execSQL(createLoginTableQuery);
     }
 
     @Override
@@ -91,14 +99,52 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    Cursor readAllData() {
-        String query = "SELECT * FROM "; // Query to select all data
-        SQLiteDatabase db = this.getReadableDatabase();
+//    Cursor readAllData() {
+//        String query = "SELECT * FROM"; // Query to select all data
+//        SQLiteDatabase db = this.getReadableDatabase();
+//
+//        Cursor cursor = null;
+//        if(db != null) {
+//            cursor = db.rawQuery(query, null);
+//        }
+//        return cursor;
+//    }
 
-        Cursor cursor = null;
-        if(db != null) {
-            cursor = db.rawQuery(query, null);
+    void insertLoginDetails(String email, String password)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(COLUMN_EMAIL, email);
+        cv.put(COLUMN_PASSWORD, password);
+
+        long result = db.insert(TABLE_LOGIN, null, cv);
+
+        if (result == -1)
+        {
+            Toast.makeText(context, "Het is niet gelukt om de login gegevens op te slaan!", Toast.LENGTH_SHORT).show();
+        } else
+        {
+            Toast.makeText(context, "Account is succesvol aangemaakt!", Toast.LENGTH_SHORT).show();
         }
-        return cursor;
     }
+
+    long addUser(String email, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(COLUMN_EMAIL, email);
+        cv.put(COLUMN_PASSWORD, password);
+
+        long result = db.insert(TABLE_LOGIN, null, cv);
+
+        if (result == -1) {
+            Toast.makeText(context, "Failed to add user", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "User added successfully!", Toast.LENGTH_SHORT).show();
+        }
+        return result;
+    }
+
+
 }

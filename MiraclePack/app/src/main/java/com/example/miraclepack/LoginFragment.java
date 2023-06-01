@@ -50,7 +50,7 @@ public class LoginFragment extends Fragment {
                 // Check credentials in the database
                 if (checkCredentials(enteredEmail, enteredWachtwoord)) {
                     // Successful login
-                    Toast.makeText(requireContext(), "Login successful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Login successvol", Toast.LENGTH_SHORT).show();
                     // Proceed to the next activity or perform other actions
                 } else {
                     // Login failed

@@ -31,7 +31,7 @@ public class BagFragment extends Fragment {
         // Required empty public constructor
     }
 
-    MyDatabaseHelper myDB;
+    DatabaseHelper myDB;
     ArrayList<String> bagContentName, bagContentCompartment;
     CustomAdapter customAdapter;
 
