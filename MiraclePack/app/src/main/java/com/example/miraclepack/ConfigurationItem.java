@@ -1,5 +1,6 @@
 package com.example.miraclepack;
 
+//This is a model of a ConfigurationItem from the Database
 public class ConfigurationItem {
     private String name;
     private Compartment compartment;

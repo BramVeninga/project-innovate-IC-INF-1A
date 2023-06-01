@@ -1,5 +1,6 @@
 package com.example.miraclepack;
 
+//This is a model of a compartment from the database
 public class Compartment {
     private Integer compartmentId;
     private String description;

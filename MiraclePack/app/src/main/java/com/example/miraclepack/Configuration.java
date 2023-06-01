@@ -1,14 +1,14 @@
 package com.example.miraclepack;
 
+//This is a model of a Configuration from the database.
 public class Configuration {
     private String name;
     private String weekday;
-    private boolean main;
 
-    public Configuration(String name, String weekday, boolean main) {
+
+    public Configuration(String name, String weekday) {
         this.name = name;
         this.weekday = weekday;
-        this.main = main;
     }
 
     public Configuration() {
@@ -28,13 +28,5 @@ public class Configuration {
 
     public void setWeekday(String weekday) {
         this.weekday = weekday;
-    }
-
-    public boolean isMain() {
-        return main;
-    }
-
-    public void setMain(boolean main) {
-        this.main = main;
     }
 }

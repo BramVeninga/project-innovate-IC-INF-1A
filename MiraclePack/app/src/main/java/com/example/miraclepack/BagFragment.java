@@ -24,6 +24,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+//This class forms a blueprint for the backend of a page of the application.
+//On this page an user can select a weekday and the user will then be show, a list of items belonging to that configuration.
 public class BagFragment extends Fragment {
 
     private FloatingActionButton addBagContent;
@@ -44,10 +46,12 @@ public class BagFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_bag, container, false);
 
+        //retrieves Views from layout
         weekDaySpinner = view.findViewById(R.id.weekdaySpinner);
         itemList = (RecyclerView) view.findViewById(R.id.itemList);
         addBagContent = view.findViewById(R.id.addBagContent);
 
+        //fills the adapter and attaches it to the Spinner
         weekDays = myDB.fillConfigurations(myDB.getConfiguration());
         ArrayAdapter<String> adapter = setWeekdaySpinnerAdapter(weekDays);
         weekDaySpinner.setAdapter(adapter);

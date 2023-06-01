@@ -15,13 +15,15 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 import java.util.List;
 
+//This is a blueprint for a page of the application.
+//On this page, the user can added new items to the selected configuration.
 public class AddActivity extends AppCompatActivity {
 
-    EditText itemNameInput;
-    Spinner compartmentNameSpinner;
-    Button addButton;
-    List<Compartment> compartments;
-    MyDatabaseHelper myDB;
+    private EditText itemNameInput;
+    private Spinner compartmentNameSpinner;
+    private Button addButton;
+    private List<Compartment> compartments;
+    private MyDatabaseHelper myDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,7 @@ public class AddActivity extends AppCompatActivity {
         return true;
     }
 
+    //This methode is responsible for filling the Spinner with compartments from the database.
     public void fillCompartmentNameSpinner(List<Compartment> compartmentsList) {
         compartmentsList = myDB.fillCompartments(myDB.getCompartments());
         ArrayAdapter<String> adapter = new ArrayAdapter<>(AddActivity.this, android.R.layout.simple_spinner_item);
