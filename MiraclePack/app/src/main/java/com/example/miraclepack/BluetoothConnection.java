@@ -82,5 +82,4 @@ public class BluetoothConnection extends AppCompatActivity {
             return null;
         }
     }
-}
-*/
+}*/

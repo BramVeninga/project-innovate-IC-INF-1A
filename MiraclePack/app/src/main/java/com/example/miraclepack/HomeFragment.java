@@ -23,12 +23,18 @@ public class HomeFragment extends Fragment {
     private boolean bluetoothConnected = true;
     private boolean bluetoothAllowed = true;
     private boolean batteryCharging = false;
+    private String configNameString = "Tas van maandag";
+    private boolean gpsConnected = true;
+    private boolean gpsAllowed = true;
+    TextView gpsText;
+    ImageView gpsImage;
     ImageView bluetoothImage;
     TextView bluetoothText;
     ImageView batteryImage;
     TextView batteryText;
     TextView name;
-    private int batteryPercentage = 10;
+    TextView configName;
+    private int batteryPercentage = 60;
     private String batteryState;
 
 
@@ -55,10 +61,15 @@ public class HomeFragment extends Fragment {
         bluetoothImage = view.findViewById(R.id.bluetoothStatusImage);
         batteryText = view.findViewById(R.id.batteryPercentage);
         batteryImage = view.findViewById(R.id.batteryStatusImage);
+        configName = view.findViewById(R.id.configName);
+        gpsImage = view.findViewById(R.id.gpsStateImage);
+        gpsText = view.findViewById(R.id.gpsState);
 
-        isBluetoothConnected();
-        updateBatteryState();
-        updateBatteryImageState();
+        setBluetoothState();
+        setBatteryState();
+        setBatteryImageState();
+        setConfigName();
+        isGpsConnected();
 
         viewContentButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +83,7 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    public boolean isBluetoothConnected() {
+    public boolean setBluetoothState() {
         if (!bluetoothAllowed) {
             bluetoothText.setText("Bluetooth inschakelen");
             bluetoothImage.setImageResource(R.drawable.baseline_bluetooth_disabled_24);
@@ -90,8 +101,8 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    public void updateBatteryImageState() {
-        if (!isBluetoothConnected()) {
+    public void setBatteryImageState() {
+        if (!setBluetoothState()) {
             batteryText.setText("Geen batterij gevonden");
             batteryImage.setImageResource(R.drawable.baseline_battery_unknown_24);
         }
@@ -124,8 +135,30 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    public void updateBatteryState() {
+    public void setBatteryState() {
         batteryState = String.valueOf(batteryPercentage);
         batteryText.setText(batteryState + "%");
+    }
+
+    public void setConfigName() {
+        configName.setText(configNameString);
+    }
+
+    public boolean isGpsConnected() {
+        if (!gpsAllowed) {
+            gpsText.setText("Gps inschakelen");
+            gpsImage.setImageResource(R.drawable.baseline_gps_off_24);
+            return false;
+        }
+        else if (!gpsConnected) {
+            gpsText.setText("Gps verbinden");
+            gpsImage.setImageResource(R.drawable.baseline_gps_not_fixed_24);
+            return false;
+        }
+        else {
+            gpsText.setText("Verbonden");
+            gpsImage.setImageResource(R.drawable.baseline_gps_fixed_24);
+            return true;
+        }
     }
 }
