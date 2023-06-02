@@ -16,12 +16,14 @@ import java.util.List;
 public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "MiraclePack.db";
     private static final int DATABASE_VERSION = 3;
+    private static MyDatabaseHelper instance;
 
     // Tables
     private static final String TABLE_ITEM = "item";
     private static final String TABLE_CONFIG = "config";
     private static final String TABLE_COMPARTMENT = "compartment";
     private static final String TABLE_CONFIG_ITEM = "configItem";
+    public static final String TABLE_GEOFENCE = "geofence";
 
     // Columns
     private static final String COLUMN_ID = "id";
@@ -30,7 +32,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_ITEM_NAME = "itemID";
     private static final String COLUMN_COMPARTMENT_ID = "compartmentID";
-    public static final String TABLE_GEOFENCE = "GEOFENCE";
     public static final String COLUMN_GEOFENCE_LATITUDE = "LATITUDE";
     public static final String COLUMN_GEOFENCE_LONGITUDE = "LONGITUDE";
     public static final String COLUMN_GEOFENCE_RADIUS = "RADIUS";
@@ -281,5 +282,47 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         }
 
+    public void deleteGeofence(String geofenceName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_GEOFENCE, COLUMN_GEOFENCE_NAME + " = ?", new String[]{geofenceName});
+        db.close();
+    }
 
+    public void addGeofence(Geofence geofence) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, geofence.getName());
+        values.put(COLUMN_GEOFENCE_LATITUDE, geofence.getLatitude());
+        values.put(COLUMN_GEOFENCE_LONGITUDE, geofence.getLongitude());
+        values.put(COLUMN_GEOFENCE_RADIUS, geofence.getRadius());
+        db.insert(TABLE_GEOFENCE, null, values);
+        db.close();
+    }
+
+    public List<Geofence> getAllGeofences() {
+        List<Geofence> geofenceList = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_GEOFENCE, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_NAME));
+                double latitude = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_LATITUDE));
+                double longitude = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_LONGITUDE));
+                float radius = cursor.getFloat(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_RADIUS));
+                Geofence geofence = new Geofence(name, latitude, longitude, radius);
+                geofenceList.add(geofence);
+            } while (cursor.moveToNext());
+        }
+        assert cursor != null;
+        cursor.close();
+        db.close();
+        return geofenceList;
+    }
+
+    public static synchronized MyDatabaseHelper getInstance(Context context) {
+        if (instance == null) {
+            instance = new MyDatabaseHelper(context.getApplicationContext());
+        }
+        return instance;
+    }
 }

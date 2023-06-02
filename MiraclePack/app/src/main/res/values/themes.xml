@@ -24,4 +24,9 @@
         <item name="android:homeAsUpIndicator">@drawable/baseline_arrow_back_24</item>
     </style>
 
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="actionMenuTextColor">@color/white</item>
+    </style>
+
 </resources>
