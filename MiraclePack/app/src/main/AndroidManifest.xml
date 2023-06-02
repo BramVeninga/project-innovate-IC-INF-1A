@@ -23,7 +23,10 @@
             android:exported="true"
             android:label="Sign Up" />
 
-        <!-- Rest of your activities -->
+        <activity
+            android:name=".AboutActivity"
+            android:exported="true"
+            android:label=" Open AboutUs" />
 
         <activity
             android:name=".AddActivity"
