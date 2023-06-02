@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.miraclepack.R;
 
 import java.io.IOException;
 import java.io.InputStream;
