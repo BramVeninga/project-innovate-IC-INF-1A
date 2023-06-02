@@ -22,11 +22,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_CONFIG = "config";
     private static final String TABLE_COMPARTMENT = "compartment";
     private static final String TABLE_CONFIG_ITEM = "configItem";
-    private static final String TABLE_LOGIN = "login";
-
-    private static final String TABLE_CONFIG = "CONFIGURATION";
-    private static final String TABLE_COMPARTMENT = "COMPARTMENT";
-    private static final String TABLE_CONFIG_ITEM = "CONFIGURATIONITEM";
 
     // Columns
     private static final String COLUMN_ID = "id";
@@ -35,8 +30,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_ITEM_NAME = "itemID";
     private static final String COLUMN_COMPARTMENT_ID = "compartmentID";
-    private static final String COLUMN_EMAIL = "email";
-    private static final String COLUMN_PASSWORD = "password";
     public static final String TABLE_GEOFENCE = "GEOFENCE";
     public static final String COLUMN_GEOFENCE_LATITUDE = "LATITUDE";
     public static final String COLUMN_GEOFENCE_LONGITUDE = "LONGITUDE";
@@ -123,20 +116,20 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         });
     }
 
-    String createConfigItemTableQuery = "CREATE TABLE " + TABLE_CONFIG_ITEM + " (" +
-            COLUMN_ITEM_ID + " INT, " +
-            COLUMN_CONFIG_ID + " INT, " +
-            COLUMN_COMPARTMENT_ID + " INT, " +
-            "FOREIGN KEY (" + COLUMN_ITEM_ID + ") REFERENCES " + TABLE_ITEM + "(" + COLUMN_ID + "), " +
-            "FOREIGN KEY (" + COLUMN_CONFIG_ID + ") REFERENCES " + TABLE_CONFIG + "(" + COLUMN_ID + "), " +
-            "FOREIGN KEY (" + COLUMN_COMPARTMENT_ID + ") REFERENCES " + TABLE_COMPARTMENT + "(" + COLUMN_ID + "))";
-        db.execSQL(createConfigItemTableQuery);
-
-    String createLoginTableQuery = "CREATE TABLE " + TABLE_LOGIN + " (" +
-            COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            COLUMN_EMAIL + " VARCHAR(255), " +
-            COLUMN_PASSWORD + " VARCHAR(255))";
-        db.execSQL(createLoginTableQuery);
+//    String createConfigItemTableQuery = "CREATE TABLE " + TABLE_CONFIG_ITEM + " (" +
+//            COLUMN_ITEM_ID + " INT, " +
+//            COLUMN_CONFIG_ID + " INT, " +
+//            COLUMN_COMPARTMENT_ID + " INT, " +
+//            "FOREIGN KEY (" + COLUMN_ITEM_ID + ") REFERENCES " + TABLE_ITEM + "(" + COLUMN_ID + "), " +
+//            "FOREIGN KEY (" + COLUMN_CONFIG_ID + ") REFERENCES " + TABLE_CONFIG + "(" + COLUMN_ID + "), " +
+//            "FOREIGN KEY (" + COLUMN_COMPARTMENT_ID + ") REFERENCES " + TABLE_COMPARTMENT + "(" + COLUMN_ID + "))";
+//        db.execSQL(createConfigItemTableQuery);
+//
+//    String createLoginTableQuery = "CREATE TABLE " + TABLE_LOGIN + " (" +
+//            COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//            COLUMN_EMAIL + " VARCHAR(255), " +
+//            COLUMN_PASSWORD + " VARCHAR(255))";
+//        db.execSQL(createLoginTableQuery);
 
     //Takes the queries from the String array and adds executes the queries.
     private static void addDataToDB(SQLiteDatabase db, String[] queries) {
@@ -185,20 +178,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 //        return cursor;
 //    }
 
-    long insertLoginDetails(String email, String password) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-
-        cv.put(COLUMN_EMAIL, email);
-        cv.put(COLUMN_PASSWORD, password);
-
-        long result = db.insert(TABLE_LOGIN, null, cv);
-
-        if (result == -1) {
-            Toast.makeText(context, "Het is niet gelukt om de login gegevens op te slaan!", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Account is succesvol aangemaakt!", Toast.LENGTH_SHORT).show();
-        }
 
         //Returns multiple rows of the ConfigurationItem table, according to the name of a Configuration object
         public Cursor getConfigItems (Configuration configuration){
@@ -302,22 +281,5 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         }
 
-        long addUser (String email, String password){
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues cv = new ContentValues();
 
-            cv.put(COLUMN_EMAIL, email);
-            cv.put(COLUMN_PASSWORD, password);
-
-            long result = db.insert(TABLE_LOGIN, null, cv);
-
-            if (result == -1) {
-                Toast.makeText(context, "Failed to add user", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(context, "User added successfully!", Toast.LENGTH_SHORT).show();
-            }
-            return result;
-        }
-
-    }
 }

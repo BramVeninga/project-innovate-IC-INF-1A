@@ -42,12 +42,12 @@ public class SignUpActivity extends AppCompatActivity
                 if (isSuccess)
                 {
                     // Signup successful
-                    MyDatabaseHelper dbHelper = new MyDatabaseHelper(SignUpActivity.this);
-                    long result = dbHelper.addUser(email, password);
+                    DatabaseHelper dbHelper = new DatabaseHelper(SignUpActivity.this);
+                    long result = dbHelper.addUser(email, password, SignUpActivity.this);
                     if (result != -1)
                     {
                         // Save the login details
-                        dbHelper.insertLoginDetails(email, password);
+                        dbHelper.insertLoginDetails(email, password, SignUpActivity.this);
 
                         Toast.makeText(SignUpActivity.this, "Account succesvol aangemaakt!", Toast.LENGTH_SHORT).show();
                         finish(); // Close the signup page and go back to the previous screen

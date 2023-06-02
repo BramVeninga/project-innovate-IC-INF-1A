@@ -5,10 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "mydatabase.db";
     private static final int DATABASE_VERSION = 1;
+
+    private static final String TABLE_LOGIN = "login";
+    private static final String COLUMN_EMAIL = "email";
+    private static final String COLUMN_PASSWORD = "password";
 
     private static final String CREATE_TABLE_USERS = "CREATE TABLE users ("
             + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -47,6 +52,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return hasCredentials;
+    }
+
+    long addUser (String email, String password, Context context){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(COLUMN_EMAIL, email);
+        cv.put(COLUMN_PASSWORD, password);
+
+        long result = db.insert(TABLE_LOGIN, null, cv);
+
+        if (result == -1) {
+            Toast.makeText(context, "Failed to add user", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "User added successfully!", Toast.LENGTH_SHORT).show();
+        }
+        return result;
+    }
+
+    long insertLoginDetails(String email, String password, Context context)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(COLUMN_EMAIL, email);
+        cv.put(COLUMN_PASSWORD, password);
+
+        long result = db.insert(TABLE_LOGIN, null, cv);
+
+        if (result == -1) {
+            Toast.makeText(context, "Het is niet gelukt om de login gegevens op te slaan!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Account is succesvol aangemaakt!", Toast.LENGTH_SHORT).show();
+        }
+        return result;
     }
 }
 
