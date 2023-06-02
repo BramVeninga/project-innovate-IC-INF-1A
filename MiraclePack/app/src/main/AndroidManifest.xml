@@ -27,6 +27,11 @@
             android:label="Profile Activity" />
 
         <activity
+            android:name=".LocationActivity"
+            android:exported="true"
+            android:label="Open location settings" />
+
+        <activity
             android:name=".SignUpActivity"
             android:exported="true"
             android:label="Sign Up" />

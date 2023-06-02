@@ -13,229 +13,37 @@
 
 
         <LinearLayout
-            android:id="@+id/NotificationOnOff"
-            android:layout_width="@dimen/_245sdp"
-            android:layout_height="@dimen/_39sdp"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@color/grey"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.07">
-
-            <TextView
-                android:id="@+id/textNotification"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:paddingStart="8dp"
-                android:text="Notificaties"
-                android:textSize="@dimen/_15sdp"
-                android:textStyle="bold" />
-
-            <Switch
-                android:id="@+id/switchNotificaties"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|end"
-                android:paddingStart="250dp"
-
-                android:text="" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/darkmodeOnOff"
-            android:layout_width="@dimen/_245sdp"
-            android:layout_height="@dimen/_39sdp"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@color/grey"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.494"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.172">
-
-            <TextView
-                android:id="@+id/textDarkmodeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:paddingStart="8dp"
-                android:text="Dark-mode"
-                android:textSize="@dimen/_15sdp"
-                android:textStyle="bold" />
-
-            <Switch
-                android:id="@+id/switchDarkmode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|end"
-                android:paddingStart="250dp"
-
-                android:text="" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/LocationOnOff"
-            android:layout_width="@dimen/_245sdp"
-            android:layout_height="@dimen/_39sdp"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@color/grey"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.494"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.27">
-
-            <TextView
-                android:id="@+id/textLocationOnOff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:paddingStart="8dp"
-                android:text="Locatie toestaan"
-                android:textSize="@dimen/_15sdp"
-                android:textStyle="bold" />
-
-            <Switch
-                android:id="@+id/switchLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|end"
-                android:paddingStart="250dp"
-
-                android:text="" />
-
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/BluetoothOnOff"
-            android:layout_width="@dimen/_245sdp"
-            android:layout_height="@dimen/_39sdp"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@color/grey"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.505"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.37">
-
-            <TextView
-                android:id="@+id/BluetoothonOff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:paddingStart="8dp"
-                android:text="Bluetooth"
-                android:textSize="@dimen/_15sdp"
-                android:textStyle="bold" />
-
-            <Switch
-                android:id="@+id/switchBluetooth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|end"
-                android:paddingStart="250dp"
-
-                android:text="" />
-
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/aboutUsButton"
-            android:layout_width="@dimen/_245sdp"
-            android:layout_height="39dp"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.51"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.469" />
-
-        <LinearLayout
-            android:id="@+id/AboutUs"
-            android:layout_width="@dimen/_245sdp"
-            android:layout_height="@dimen/_39sdp"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@color/grey"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.51"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.469">
-
-            <TextView
-                android:id="@+id/textAboutUs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:paddingStart="8dp"
-                android:text="Over ons"
-                android:textSize="@dimen/_15sdp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/arrowButtonAboutUs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|end"
-                android:elevation="2dp"
-                android:paddingStart="199dp"
-                android:text=">"
-                android:textSize="@dimen/_24sdp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/helpAndSupport"
-            android:layout_width="@dimen/_245sdp"
-            android:layout_height="@dimen/_39sdp"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@color/grey"
+            android:id="@+id/locationButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/roundstyle"
+            android:backgroundTint="@color/grey"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.505"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.566">
+            android:focusable="true">
 
             <TextView
-                android:id="@+id/textHelpAndSupport"
+                android:id="@+id/textLocation"
                 android:layout_width="wrap_content"
+                android:clickable="false"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|start"
-                android:padding="8dp"
-                android:text="Hulp en ondersteuning"
-                android:textSize="@dimen/_15sdp"
+                android:layout_weight="1"
+                android:paddingStart="10dp"
+                android:text="Locatie instellen"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/arrowButtonHelpAndSupport"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|end"
-                android:elevation="2dp"
-                android:paddingStart="70dp"
-                android:text=">"
-                android:textSize="@dimen/_24sdp"
-                android:textStyle="bold" />
-
+            <Button
+                android:id="@+id/openLocationSettings"
+                android:clickable="false"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/baseline_navigate_next_24" />
 
         </LinearLayout>
 
