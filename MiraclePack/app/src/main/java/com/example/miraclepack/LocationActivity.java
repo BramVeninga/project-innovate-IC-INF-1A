@@ -9,6 +9,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,10 +31,12 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
 
     private boolean notificationDisplayed = false;
 
+    private Location lastLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_location);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -46,7 +50,8 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
             startLocationUpdates();
         }
 
-        geofenceList = createGeofences();
+        Button addGeofence = findViewById(R.id.addLocation);
+        addGeofence.setOnClickListener(v -> createGeofences());
     }
 
     @Override
@@ -73,6 +78,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
     @Override
     public void onLocationChanged(Location location) {
         // Receive updates for location
+        lastLocation = location;
         checkGeofences(location);
     }
 
@@ -88,20 +94,20 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         }
 
         if (shouldShowNotification && !notificationDisplayed) {
-            showNotification("U verlaat uw locatie, zonder X!");
+            showNotification();
             notificationDisplayed = true;
         } else if (!shouldShowNotification && notificationDisplayed) {
             notificationDisplayed = false;
         }
     }
 
-    private void showNotification(String message) {
+    private void showNotification() {
         createNotificationChannel();
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channel_id")
                 .setSmallIcon(R.drawable.baseline_notifications_24)
                 .setContentTitle("LET OP!")
-                .setContentText(message)
+                .setContentText("U verlaat uw locatie, zonder X!")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -135,11 +141,17 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         locationManager.removeUpdates(this);
     }
 
-    private List<Geofence> createGeofences() {
+    private void createGeofences() {
         List<Geofence> geofences = new ArrayList<>();
 
-        geofences.add(new Geofence("NHLStenden", 52.77829799003402, 6.912028368902443, 75));
+        if (lastLocation != null) {
+            double latitude = lastLocation.getLatitude();
+            double longitude = lastLocation.getLongitude();
 
-        return geofences;
+            geofences.add(new Geofence("NHLStenden", latitude, longitude, 75));
+
+        } else {
+            Toast.makeText(this, "Kan de huidige locatie niet ophalen", Toast.LENGTH_SHORT).show();
+        }
     }
 }
