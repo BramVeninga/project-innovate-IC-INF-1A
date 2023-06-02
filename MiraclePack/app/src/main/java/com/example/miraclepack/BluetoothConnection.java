@@ -44,29 +44,13 @@ public class BluetoothConnection extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-//        connectToBluetooth();
-//        try {
-//            TimeUnit.SECONDS.sleep(5);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-//        sendData("send;");
-
-//        Button connectButton = findViewById(R.id.connect_button);
-//        connectButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                connectToBluetooth();
-//            }
-//        });
-
-//        //Button sendButton = findViewById(R.id.send_button);
-//        sendButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                sendData("Hello from Android!");
-//            }
-//        });
+        connectToBluetooth();
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        sendData("send;");
     }
 
     public void connectToBluetooth() {
