@@ -81,12 +81,11 @@ public class BluetoothConnection extends AppCompatActivity {
                     //                                          int[] grantResults)
                     // to handle the case where the user grants the permission. See the documentation
                     // for ActivityCompat#requestPermissions for more details.
-                    return null;
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
                             != PackageManager.PERMISSION_GRANTED) {
 
                         ActivityCompat.requestPermissions(this,
-                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                new String[]{Manifest.permission.BLUETOOTH_CONNECT},
                                 LOCATION_PERMISSION_REQUEST_CODE);
                     }
                 }
