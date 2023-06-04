@@ -1,13 +1,15 @@
 package com.example.miraclepack;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -46,7 +48,7 @@ public class GeofenceAdapter extends RecyclerView.Adapter<GeofenceAdapter.MyView
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView nameTextView;
-        Button deleteLocationButton;
+        ImageButton deleteLocationButton;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -59,9 +61,7 @@ public class GeofenceAdapter extends RecyclerView.Adapter<GeofenceAdapter.MyView
                     int position = getBindingAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         Geofence geofence = geofences.get(position);
-                        myDB.deleteGeofence(geofence.getName());
-                        geofences.remove(position);
-                        notifyItemRemoved(position);
+                        showDeleteConfirmationDialog(geofence);
                     }
                 }
             });
@@ -69,6 +69,34 @@ public class GeofenceAdapter extends RecyclerView.Adapter<GeofenceAdapter.MyView
 
         public void bind(Geofence geofence) {
             nameTextView.setText(geofence.getName());
+        }
+    }
+
+    private void showDeleteConfirmationDialog(final Geofence geofence) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Bevestig verwijdering")
+                .setMessage("Weet je zeker dat je deze locatie wilt verwijderen?")
+                .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteGeofence(geofence);
+                    }
+                })
+                .setNegativeButton("Nee", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    private void deleteGeofence(Geofence geofence) {
+        myDB.deleteGeofence(geofence.getName());
+        int position = geofences.indexOf(geofence);
+        if (position != -1) {
+            geofences.remove(position);
+            notifyItemRemoved(position);
         }
     }
 }

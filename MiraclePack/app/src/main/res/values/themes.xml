@@ -20,6 +20,16 @@
         <item name="android:background">@android:color/white</item>
     </style>
 
+    <style name="LocationRecyclerShape" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8%</item>
+        <item name="android:background">@color/houseStyleColor</item>
+    </style>
+
+    <style name="DrawableTheme" parent="">
+        <item name="android:colorAccent">@android:color/white</item>
+    </style>
+
     <style name="BackButtonTheme" parent="">
         <item name="android:homeAsUpIndicator">@drawable/baseline_arrow_back_24</item>
     </style>
