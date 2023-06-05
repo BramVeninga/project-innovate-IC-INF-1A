@@ -70,7 +70,6 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         });
 
 
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
@@ -91,12 +90,12 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
             createNotificationChannel();
         }
 
+        // Background location service
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(new Intent(this, LocationService.class));
         } else {
             startService(new Intent(this, LocationService.class));
         }
-
     }
 
     private void recyclerViewSetup() {
