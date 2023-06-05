@@ -39,10 +39,6 @@ public class BagFragment extends Fragment {
         // Required empty public constructor
     }
 
-    DatabaseHelper myDB;
-    ArrayList<String> bagContentName, bagContentCompartment;
-    CustomAdapter customAdapter;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myDB = new MyDatabaseHelper(getContext());
