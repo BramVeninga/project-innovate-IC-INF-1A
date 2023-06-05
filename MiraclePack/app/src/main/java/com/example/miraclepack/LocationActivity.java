@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -68,6 +69,8 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
             }
         });
 
+
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
@@ -87,6 +90,13 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         } else {
             createNotificationChannel();
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(new Intent(this, LocationService.class));
+        } else {
+            startService(new Intent(this, LocationService.class));
+        }
+
     }
 
     private void recyclerViewSetup() {
