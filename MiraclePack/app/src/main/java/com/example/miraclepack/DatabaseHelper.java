@@ -10,8 +10,8 @@ import android.widget.Toast;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "mydatabase.db";
     private static final int DATABASE_VERSION = 1;
-
-    private static final String TABLE_LOGIN = "login";
+    private static final String TABLE_USERS = "users";
+    private static final String COLUMN_ID = "id";
     private static final String COLUMN_EMAIL = "email";
     private static final String COLUMN_PASSWORD = "password";
 
@@ -26,7 +26,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE_USERS);
+        String createTableQuery = "CREATE TABLE " + TABLE_USERS + " (" +
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_EMAIL + " VARCHAR(255), " +
+                COLUMN_PASSWORD + " VARCHAR(255))";
+        db.execSQL(createTableQuery);
+    }
+
+    //Takes the queries from the String array and adds executes the queries.
+    private static void addDataToDB(SQLiteDatabase db, String[] queries) {
+        for (String query : queries) {
+            addData(db, query);
+        }
+    }
+    //Checks if the query is not null, and then executes the query
+    private static void addData(SQLiteDatabase db, String Query) {
+        if (Query != null) {
+            db.execSQL(Query);
+        }
     }
 
     @Override
@@ -34,19 +51,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Handle database schema upgrades if needed
     }
 
-    public void insertUserCredentials(String email, String wachtwoord) {
+    public void insertUserCredentials(String email, String password) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("email", email);
-        values.put("wachtwoord", wachtwoord);
-        db.insert("users", null, values);
+        values.put(COLUMN_EMAIL, email);
+        values.put(COLUMN_PASSWORD, password);
+        db.insert(TABLE_USERS, null, values);
         db.close();
     }
 
-    public boolean checkCredentials(String email, String wachtwoord) {
+    public boolean checkCredentials(String email, String password) {
         SQLiteDatabase db = getReadableDatabase();
-        String selection = "email = ? AND wachtwoord = ?";
-        String[] selectionArgs = {email, wachtwoord};
+        String selection = "email = ? AND password = ?";
+        String[] selectionArgs = {email, password};
         Cursor cursor = db.query("users", null, selection, selectionArgs, null, null, null);
         boolean hasCredentials = cursor.moveToFirst();
         cursor.close();
@@ -59,9 +76,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_EMAIL, email);
-        cv.put(COLUMN_PASSWORD, password);
+        cv.put("wachtwoord", password);
 
-        long result = db.insert(TABLE_LOGIN, null, cv);
+        long result = db.insert(TABLE_USERS, null, cv);
 
         if (result == -1) {
             Toast.makeText(context, "Failed to add user", Toast.LENGTH_SHORT).show();
@@ -77,9 +94,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_EMAIL, email);
-        cv.put(COLUMN_PASSWORD, password);
+        cv.put("wachtwoord", password);
 
-        long result = db.insert(TABLE_LOGIN, null, cv);
+        long result = db.insert(TABLE_USERS, null, cv);
 
         if (result == -1) {
             Toast.makeText(context, "Het is niet gelukt om de login gegevens op te slaan!", Toast.LENGTH_SHORT).show();
