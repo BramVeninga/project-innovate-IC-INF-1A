@@ -16,12 +16,16 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     private boolean isLoggedIn = false;
 
+    public BluetoothConnection ble;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        ble = new BluetoothConnection();
+        ble.connectToBluetooth();
         setSupportActionBar(binding.toolbar);
 
         // Check if the user is logged in
@@ -47,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else if (itemId == R.id.settings) {
                 replaceFragment(new SettingsFragment());
+            } else if (itemId == R.id.AboutUs) {
+                replaceFragment(new AboutFragment());
             }
             return true;
         });
@@ -67,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
             setTitle("Inhoud van de tas");
         } else if (fragment instanceof SettingsFragment) {
             setTitle("Instellingen");
+        } else if (fragment instanceof AboutFragment) {
+            setTitle("Over ons");
         }
     }
 
@@ -81,4 +89,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
     }
+
+
 }
