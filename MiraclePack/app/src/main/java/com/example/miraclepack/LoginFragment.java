@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 public class LoginFragment extends Fragment {
     private TextView email;
@@ -51,7 +53,13 @@ public class LoginFragment extends Fragment {
                 if (checkCredentials(enteredEmail, enteredWachtwoord)) {
                     // Successful login
                     Toast.makeText(requireContext(), "Login successvol", Toast.LENGTH_SHORT).show();
-                    // Proceed to the next activity or perform other actions
+
+                    // Navigate to the ProfileFragment after a successful login
+                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frame_layout, new ProfileFragment());
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
                 } else {
                     // Login failed
                     Toast.makeText(requireContext(), "Invalid email or password", Toast.LENGTH_SHORT).show();
