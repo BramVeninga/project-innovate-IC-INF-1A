@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
-    tools:context=".SettingsFragment">
+    tools:context=".SettingsActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -60,7 +60,7 @@
             app:layout_constraintVertical_bias="0.172">
 
             <TextView
-                android:id="@+id/textDarkmodeText"
+                android:id="@+id/textDarkModeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|start"
@@ -70,7 +70,7 @@
                 android:textStyle="bold" />
 
             <Switch
-                android:id="@+id/switchDarkmode"
+                android:id="@+id/switchDarkMode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"

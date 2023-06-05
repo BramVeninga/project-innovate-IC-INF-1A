@@ -45,11 +45,12 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     replaceFragment(new LoginFragment()); // Show the LoginFragment for the user to log in
                 }
-            } else if (itemId == R.id.settings) {
-                replaceFragment(new SettingsFragment());
             } else if (itemId == R.id.AboutUs) {
                 replaceFragment(new AboutFragment());
-            }
+            } else if (itemId == R.id.settings) {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
+        }
             return true;
         });
 
@@ -67,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
             setTitle("Tas");
         } else if (fragment instanceof LoginFragment) {
             setTitle("Inhoud van de tas");
-        } else if (fragment instanceof SettingsFragment) {
-            setTitle("Instellingen");
         } else if (fragment instanceof AboutFragment) {
             setTitle("Over ons");
         }
