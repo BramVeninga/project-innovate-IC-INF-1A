@@ -40,6 +40,7 @@ public class GeofenceAdapter extends RecyclerView.Adapter<GeofenceAdapter.MyView
         holder.bind(geofence);
     }
 
+    // Check item count for recycler view
     @Override
     public int getItemCount() {
         return geofences.size();
@@ -55,6 +56,7 @@ public class GeofenceAdapter extends RecyclerView.Adapter<GeofenceAdapter.MyView
             nameTextView = itemView.findViewById(R.id.nameTextView);
             deleteLocationButton = itemView.findViewById(R.id.deleteLocation);
 
+            // Button that deletes a geofence from the database
             deleteLocationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -67,11 +69,13 @@ public class GeofenceAdapter extends RecyclerView.Adapter<GeofenceAdapter.MyView
             });
         }
 
+        // Setting name for geofence to show in recycler view
         public void bind(Geofence geofence) {
             nameTextView.setText(geofence.getName());
         }
     }
 
+    // Confirmation dialog when deleting geofence
     private void showDeleteConfirmationDialog(final Geofence geofence) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Bevestig verwijdering")
@@ -91,6 +95,7 @@ public class GeofenceAdapter extends RecyclerView.Adapter<GeofenceAdapter.MyView
                 .show();
     }
 
+    // Method for deleting geofence from the database
     private void deleteGeofence(Geofence geofence) {
         myDB.deleteGeofence(geofence.getName());
         int position = geofences.indexOf(geofence);

@@ -282,47 +282,51 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         }
 
-    public void deleteGeofence(String geofenceName) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_GEOFENCE, COLUMN_GEOFENCE_NAME + " = ?", new String[]{geofenceName});
-        db.close();
-    }
-
-    public void addGeofence(Geofence geofence) {
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME, geofence.getName());
-        values.put(COLUMN_GEOFENCE_LATITUDE, geofence.getLatitude());
-        values.put(COLUMN_GEOFENCE_LONGITUDE, geofence.getLongitude());
-        values.put(COLUMN_GEOFENCE_RADIUS, geofence.getRadius());
-        db.insert(TABLE_GEOFENCE, null, values);
-        db.close();
-    }
-
-    public List<Geofence> getAllGeofences() {
-        List<Geofence> geofenceList = new ArrayList<>();
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_GEOFENCE, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_NAME));
-                double latitude = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_LATITUDE));
-                double longitude = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_LONGITUDE));
-                float radius = cursor.getFloat(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_RADIUS));
-                Geofence geofence = new Geofence(name, latitude, longitude, radius);
-                geofenceList.add(geofence);
-            } while (cursor.moveToNext());
+        // Deletes geofence based on the geofence name in de database
+        public void deleteGeofence(String geofenceName) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete(TABLE_GEOFENCE, COLUMN_GEOFENCE_NAME + " = ?", new String[]{geofenceName});
+            db.close();
         }
-        assert cursor != null;
-        cursor.close();
-        db.close();
-        return geofenceList;
-    }
 
-    public static synchronized MyDatabaseHelper getInstance(Context context) {
-        if (instance == null) {
-            instance = new MyDatabaseHelper(context.getApplicationContext());
+        // Adding geofence to the database based on current location
+        public void addGeofence(Geofence geofence) {
+            SQLiteDatabase db = getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_NAME, geofence.getName());
+            values.put(COLUMN_GEOFENCE_LATITUDE, geofence.getLatitude());
+            values.put(COLUMN_GEOFENCE_LONGITUDE, geofence.getLongitude());
+            values.put(COLUMN_GEOFENCE_RADIUS, geofence.getRadius());
+            db.insert(TABLE_GEOFENCE, null, values);
+            db.close();
         }
-        return instance;
-    }
+
+        // Retrieving all geofences stored in database and return all objects as a list
+        public List<Geofence> getAllGeofences() {
+            List<Geofence> geofenceList = new ArrayList<>();
+            SQLiteDatabase db = getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_GEOFENCE, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_NAME));
+                    double latitude = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_LATITUDE));
+                    double longitude = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_LONGITUDE));
+                    float radius = cursor.getFloat(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_RADIUS));
+                    Geofence geofence = new Geofence(name, latitude, longitude, radius);
+                    geofenceList.add(geofence);
+                } while (cursor.moveToNext());
+            }
+            assert cursor != null;
+            cursor.close();
+            db.close();
+            return geofenceList;
+        }
+
+        // Ensuring that only one instance of the class is created and providing a global access point to retrieve that instance
+        public static synchronized MyDatabaseHelper getInstance(Context context) {
+            if (instance == null) {
+                instance = new MyDatabaseHelper(context.getApplicationContext());
+            }
+            return instance;
+        }
 }

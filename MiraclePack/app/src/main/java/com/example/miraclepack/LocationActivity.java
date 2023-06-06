@@ -82,6 +82,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         }
     }
 
+    // Get recycler view and set it up
     private void recyclerViewSetup() {
         geofenceList = myDB.getAllGeofences();
         GeofenceAdapter recyclerAdapter = new GeofenceAdapter(LocationActivity.this, geofenceList);
@@ -89,6 +90,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         geofenceRecyclerView.setLayoutManager(new LinearLayoutManager(LocationActivity.this));
     }
 
+    // Dialog for adding a geofence
     private void showAddGeofenceDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -159,6 +161,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         return null;
     }
 
+    // Send toasts for permission requests
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -207,6 +210,8 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         }
     }
 
+
+    // Check if location is actually inside the geofence, in case of multiple geofences
     private boolean isLocationInsideGeofence(Location location, Geofence geofence) {
         float[] results = new float[1];
         Location.distanceBetween(
@@ -217,6 +222,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         return distanceInMeters <= geofence.getRadius();
     }
 
+    // Show notification if outside of geofence
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     private void showNotification() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
@@ -236,6 +242,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         }
     }
 
+    // Creating notification
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Geofence Channel";
@@ -250,12 +257,14 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         }
     }
 
+    // Back button to get back to the settings page
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
 
+    // Check if location permissions are granted and request if not
     private void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -268,6 +277,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         }
     }
 
+    // Check if location permissions are granted and request if not
     private void checkNotificationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
                 != PackageManager.PERMISSION_GRANTED) {

@@ -38,6 +38,7 @@ public class LocationService extends Service implements LocationListener {
         geofenceList = myDB.getAllGeofences();
     }
 
+    // Starting foreground service and background location
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         startForeground(NOTIFICATION_ID, createNotification());
@@ -45,12 +46,14 @@ public class LocationService extends Service implements LocationListener {
         return START_STICKY;
     }
 
+    // Ensuring service does not support binding so that other components can't bind to the service
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
+    // Check if current location has changed in order to check for geofence
     @Override
     public void onLocationChanged(Location location) {
         checkGeofences(location);
@@ -67,19 +70,17 @@ public class LocationService extends Service implements LocationListener {
         }
     }
 
+    // Check if currently inside or outside geofence
     private void checkGeofences(Location currentLocation) {
         for (Geofence geofence : geofenceList) {
             float distance = currentLocation.distanceTo(geofence.getLocation());
-            if (distance > GEOFENCE_RADIUS) {
-                if (!isLocationInsideGeofence(currentLocation, geofence)) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (distance > GEOFENCE_RADIUS && !isLocationInsideGeofence(currentLocation, geofence) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ) {
                         showNotification();
-                    }
-                }
             }
         }
     }
 
+    // Check if actually inside geofence in case there are multiple geofences
     private boolean isLocationInsideGeofence(Location location, Geofence geofence) {
         float[] results = new float[1];
         Location.distanceBetween(
@@ -105,11 +106,10 @@ public class LocationService extends Service implements LocationListener {
             } catch (SecurityException e) {
                 e.printStackTrace();
             }
-        } else {
-            // When notification permission is not granted
         }
     }
 
+    // Creating and building notification and channel
     private Notification createNotification() {
         createNotificationChannel();
 
@@ -136,6 +136,7 @@ public class LocationService extends Service implements LocationListener {
         }
     }
 
+    // Kill service if app is closed in task manager
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
