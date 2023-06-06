@@ -1,4 +1,4 @@
-package com.example.miraclepack;
+/* package com.example.miraclepack;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -102,4 +102,4 @@ public class BluetoothConnection extends AppCompatActivity {
             return null;
         }
     }
-}
+} */

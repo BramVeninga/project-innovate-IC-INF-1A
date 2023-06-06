@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -74,13 +75,19 @@ public class HomeFragment extends Fragment {
         viewContentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String getName = name.getText().toString();
-                Intent intent = new Intent(getActivity(), HomeBagContentActivity.class);
-                intent.putExtra("name", getName);
-                startActivity(intent);
+                replaceFragment(new BagFragment());
             }
         });
         return view;
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+        getActivity().setTitle("Tas");
     }
 
     public boolean setBluetoothState() {

@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     private boolean isLoggedIn = false;
 
-    public BluetoothConnection ble;
+    //public BluetoothConnection ble;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        ble = new BluetoothConnection();
-        ble.connectToBluetooth();
+       // ble = new BluetoothConnection();
+       // ble.connectToBluetooth();
         setSupportActionBar(binding.toolbar);
 
         // Check if the user is logged in
