@@ -58,9 +58,6 @@
 
 
         <!-- Rest of your activities -->
-        <activity
-            android:name=".HomeBagContentActivity"
-            android:exported="true" />
 
         <activity
             android:name=".AddActivity"
