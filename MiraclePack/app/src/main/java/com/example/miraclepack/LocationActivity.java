@@ -48,20 +48,21 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
 
+        // Add toolbar
         setSupportActionBar(findViewById(R.id.toolbar));
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        // Initialize variables and views
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
         myDB = MyDatabaseHelper.getInstance(this);
-
         geofenceRecyclerView = findViewById(R.id.geofenceRecyclerView);
         addLocation = findViewById(R.id.addLocation);
 
         recyclerViewSetup();
 
+        // Button to add current location
         addLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,26 +70,9 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
             }
         });
 
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    LOCATION_PERMISSION_REQUEST_CODE);
-        } else {
-            startLocationUpdates();
-        }
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
-                    NOTIFICATION_PERMISSION_REQUEST_CODE);
-        } else {
-            createNotificationChannel();
-        }
+        // Check for permissions
+        checkLocationPermission();
+        checkNotificationPermission();
 
         // Background location service
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -217,12 +201,8 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
     private void checkGeofences(Location currentLocation) {
         for (Geofence geofence : geofenceList) {
             float distance = currentLocation.distanceTo(geofence.getLocation());
-            if (distance > geofence.getRadius()) {
-                if (!isLocationInsideGeofence(currentLocation, geofence)) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (distance > geofence.getRadius() && !isLocationInsideGeofence(currentLocation, geofence) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         showNotification();
-                    }
-                }
             }
         }
     }
@@ -256,7 +236,6 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         }
     }
 
-
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Geofence Channel";
@@ -275,5 +254,29 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private void checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    LOCATION_PERMISSION_REQUEST_CODE);
+        } else {
+            startLocationUpdates();
+        }
+    }
+
+    private void checkNotificationPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                    NOTIFICATION_PERMISSION_REQUEST_CODE);
+        } else {
+            createNotificationChannel();
+        }
     }
 }

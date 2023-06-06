@@ -47,8 +47,8 @@ public class GeofenceAdapter extends RecyclerView.Adapter<GeofenceAdapter.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView nameTextView;
-        ImageButton deleteLocationButton;
+        private TextView nameTextView;
+        private ImageButton deleteLocationButton;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

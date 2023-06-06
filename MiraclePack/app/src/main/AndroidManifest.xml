@@ -36,6 +36,11 @@
             android:label="Open location settings" />
 
         <activity
+            android:name=".SupportActivity"
+            android:exported="true"
+            android:label="Open support" />
+
+        <activity
             android:name=".SignUpActivity"
             android:exported="true"
             android:label="Sign Up" />
