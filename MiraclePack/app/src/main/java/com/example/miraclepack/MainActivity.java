@@ -24,8 +24,10 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-       // ble = new BluetoothConnection();
-       // ble.connectToBluetooth();
+
+//        ble = new BluetoothConnection();
+//        ble.connectToBluetooth();
+
         setSupportActionBar(binding.toolbar);
 
         // Check if the user is logged in
@@ -49,15 +51,11 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     replaceFragment(new LoginFragment()); // Show the LoginFragment for the user to log in
                 }
-            } else if (itemId == R.id.AboutUs) {
-                replaceFragment(new AboutFragment());
             } else if (itemId == R.id.settings) {
-            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-            startActivity(intent);
-        }
+                replaceFragment(new SettingsFragment());
+            }
             return true;
         });
-
     }
 
     private void replaceFragment(Fragment fragment) {

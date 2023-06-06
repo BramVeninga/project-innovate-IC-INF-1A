@@ -23,19 +23,19 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.fragment_settings);
 
-        aboutUsButton = findViewById(R.id.aboutUsButton);
-        darkModeSwitch = findViewById(R.id.switchDarkMode);
-        helpAndSupport = findViewById(R.id.helpAndSupport);
+//        aboutUsButton = findViewById(R.id.aboutUsButton);
+//        darkModeSwitch = findViewById(R.id.switchDarkMode);
+//        helpAndSupport = findViewById(R.id.helpAndSupport);
 
-        aboutUsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SettingsActivity.this, AboutActivity.class);
-                startActivity(intent);
-            }
-        });
+//        aboutUsButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(SettingsActivity.this, AboutActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         helpAndSupport.setOnClickListener(new View.OnClickListener() {
             @Override

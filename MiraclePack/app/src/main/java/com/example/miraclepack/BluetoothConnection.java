@@ -1,21 +1,17 @@
 /* package com.example.miraclepack;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-
-import com.example.miraclepack.R;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +26,8 @@ public class BluetoothConnection extends AppCompatActivity {
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothDevice bluetoothDevice;
     private BluetoothSocket bluetoothSocket;
+
+    private int BLUETOOTH_PERMISSION_REQUEST_CODE = 100;
 
     private InputStream inputStream;
     private OutputStream outputStream;
@@ -75,21 +73,15 @@ public class BluetoothConnection extends AppCompatActivity {
         protected Void doInBackground(Void... params) {
             try {
                 if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return null;
-                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
+                    if (ContextCompat.checkSelfPermission(BluetoothConnection.this, Manifest.permission.BLUETOOTH_CONNECT)
                             != PackageManager.PERMISSION_GRANTED) {
 
-                        ActivityCompat.requestPermissions(this,
+                        ActivityCompat.requestPermissions(BluetoothConnection.this,
                                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                LOCATION_PERMISSION_REQUEST_CODE);
+                                BLUETOOTH_PERMISSION_REQUEST_CODE);
                     }
+                    return null;
+
                 }
                 bluetoothSocket = bluetoothDevice.createRfcommSocketToServiceRecord(MY_UUID);
                 bluetoothSocket.connect();

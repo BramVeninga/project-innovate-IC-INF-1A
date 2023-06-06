@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    tools:context=".SettingsFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/bluetoothSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/location_rounded_style"
+                android:backgroundTint="@color/houseStyleColor"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:id="@+id/bluetoothText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:paddingStart="10dp"
+                    android:text="Bluetooth"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/bluetoothSwitchCompat"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:theme="@style/SwitchTheme" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/notificationSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/location_rounded_style"
+                android:backgroundTint="@color/houseStyleColor"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:id="@+id/notificationText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:paddingStart="10dp"
+                    android:text="Notificaties"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/NotificationSwitchCompat"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:theme="@style/SwitchTheme" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/darkModeSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/location_rounded_style"
+                android:backgroundTint="@color/houseStyleColor"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:id="@+id/darkModeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:paddingStart="10dp"
+                    android:text="Dark-mode"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/darkModeSwitchCompat"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:theme="@style/SwitchTheme" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/locationButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/location_rounded_style"
+                android:backgroundTint="@color/houseStyleColor"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:id="@+id/textLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:paddingStart="10dp"
+                    android:text="Locatie instellen"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/openLocationSettings"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="Locatie instellen"
+                    android:background="@drawable/baseline_navigate_next_24"
+                    android:clickable="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/aboutUs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/location_rounded_style"
+                android:backgroundTint="@color/houseStyleColor"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:id="@+id/aboutUsText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:paddingStart="10dp"
+                    android:text="Over ons"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/aboutUsButton"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="Over Ons"
+                    android:background="@drawable/baseline_navigate_next_24"
+                    android:clickable="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/support"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/location_rounded_style"
+                android:backgroundTint="@color/houseStyleColor"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:id="@+id/supportText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:paddingStart="10dp"
+                    android:text="Hulp en ondersteuning"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/supportButton"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="Hulp en ondersteuning"
+                    android:background="@drawable/baseline_navigate_next_24"
+                    android:clickable="false" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
