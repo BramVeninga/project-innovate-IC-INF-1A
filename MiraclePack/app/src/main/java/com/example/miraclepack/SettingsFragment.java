@@ -17,6 +17,7 @@ public class SettingsFragment extends Fragment {
     private Button aboutUsButton;
     private View openLocationSettings;
     private View openSupportSettings;
+    private View openAboutUs;
 
     // ...
     @Override
@@ -34,6 +35,7 @@ public class SettingsFragment extends Fragment {
         // Retrieve button from settings layout
         openLocationSettings = view.findViewById(R.id.locationButton);
         openSupportSettings = view.findViewById(R.id.support);
+        openAboutUs = view.findViewById(R.id.aboutUs);
 
         // Action according to button
         openLocationSettings.setOnClickListener(new View.OnClickListener() {
@@ -54,8 +56,16 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        openAboutUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AboutActivity.class);
+
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
-    // ...
 }

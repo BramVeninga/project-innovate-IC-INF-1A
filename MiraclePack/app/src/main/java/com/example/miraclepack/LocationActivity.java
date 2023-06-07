@@ -3,6 +3,7 @@ package com.example.miraclepack;
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -36,6 +37,8 @@ import java.util.Objects;
 public class LocationActivity extends AppCompatActivity implements LocationListener {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 2;
+    private static final int PERMISSION_ALL = 6;
+
     private MyDatabaseHelper myDB;
     private LocationManager locationManager;
     private RecyclerView geofenceRecyclerView;
@@ -71,8 +74,9 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         });
 
         // Check for permissions
-        checkLocationPermission();
-        checkNotificationPermission();
+        if (!hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.POST_NOTIFICATIONS)) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_ALL);
+        }
 
         // Background location service
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -264,29 +268,15 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         return true;
     }
 
-    // Check if location permissions are granted and request if not
-    private void checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    LOCATION_PERMISSION_REQUEST_CODE);
-        } else {
-            startLocationUpdates();
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
         }
+        return true;
     }
 
-    // Check if location permissions are granted and request if not
-    private void checkNotificationPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
-                    NOTIFICATION_PERMISSION_REQUEST_CODE);
-        } else {
-            createNotificationChannel();
-        }
-    }
 }

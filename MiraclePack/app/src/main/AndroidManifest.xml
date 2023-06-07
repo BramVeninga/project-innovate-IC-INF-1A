@@ -50,12 +50,11 @@
         <activity
             android:name=".AboutActivity"
             android:exported="true"
-            android:label=" Open AboutUs" />
+            android:label="Open About Us" />
 
         <activity
             android:name=".PasswordResetActivity"
             android:label="Password Reset" />
-
 
         <!-- Rest of your activities -->
 
