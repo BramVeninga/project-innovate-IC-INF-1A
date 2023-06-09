@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.Manifest;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         IntentFilter intentFilter = IntentFilter(BluetoothDevice.ACTION_FOUND);
-        registerReceiver((BroadcastReceiver) )
+        registerReceiver((BroadcastReceiver) );
     }
 
     private void replaceFragment(Fragment fragment) {
