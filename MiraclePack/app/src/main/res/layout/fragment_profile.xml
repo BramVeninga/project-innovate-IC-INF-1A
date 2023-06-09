@@ -21,7 +21,8 @@
             android:backgroundTint="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <LinearLayout
             android:id="@+id/backpackViewSection"
@@ -160,12 +161,12 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:gravity="center"
-                android:id="@+id/Wachtwoordvergetenbalk"
+                android:id="@+id/buttonPasswordReset"
                 android:layout_width="@dimen/_230sdp"
                 android:layout_height="@dimen/_39sdp"
                 android:backgroundTint="@color/white"
                 android:orientation="vertical"
-                android:onClick="openPasswordResetFragment"
+                android:onClick="openPasswordResetActivity"
                 android:text="Wachtwoord veranderen"
                 android:textColor="@color/mainTextColor"
                 android:textSize="@dimen/_15sdp"
@@ -173,11 +174,11 @@
             </Button>
 
             <Button
+                android:id="@+id/buttonSignOut"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:gravity="center"
-                android:id="@+id/buttonSignOut"
                 android:layout_width="@dimen/_150sdp"
                 android:layout_height="@dimen/_39sdp"
                 android:backgroundTint="@color/white"

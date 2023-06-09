@@ -28,11 +28,6 @@
         <service android:name=".LocationService" />
 
         <activity
-            android:name=".ProfileActivity"
-            android:exported="true"
-            android:label="Profile Activity" />
-
-        <activity
             android:name=".LocationActivity"
             android:exported="true"
             android:label="Open location settings" />
@@ -55,8 +50,6 @@
         <activity
             android:name=".PasswordResetActivity"
             android:label="Password Reset" />
-
-        <!-- Rest of your activities -->
 
         <activity
             android:name=".AddActivity"

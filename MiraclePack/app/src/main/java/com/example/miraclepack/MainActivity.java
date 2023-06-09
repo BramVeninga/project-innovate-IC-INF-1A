@@ -15,7 +15,7 @@ import com.example.miraclepack.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     private boolean isLoggedIn = false;
-    
+
 //    public BluetoothConnection ble;
     //public BluetoothConnection ble;
 

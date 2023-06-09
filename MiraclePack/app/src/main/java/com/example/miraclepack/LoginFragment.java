@@ -57,7 +57,7 @@ public class LoginFragment extends Fragment {
                     // Navigate to the ProfileFragment after a successful login
                     FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.frame_layout, new ProfileFragment());
+                    fragmentTransaction.replace(R.id.fragment_container, new ProfileFragment());
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                 } else {
@@ -66,6 +66,7 @@ public class LoginFragment extends Fragment {
                 }
             }
         });
+
 
         buttonPasswordReset.setOnClickListener(new View.OnClickListener()
         {

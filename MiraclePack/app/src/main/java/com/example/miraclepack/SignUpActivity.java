@@ -47,7 +47,7 @@ public class SignUpActivity extends AppCompatActivity
                     if (result != -1)
                     {
                         // Save the login details
-                        dbHelper.insertLoginDetails(email, password, null, SignUpActivity.this);
+                        dbHelper.insertLoginDetails(email, password, SignUpActivity.this);
 
                         Toast.makeText(SignUpActivity.this, "Account succesvol aangemaakt!", Toast.LENGTH_SHORT).show();
                         finish(); // Close the signup page and go back to the previous screen
