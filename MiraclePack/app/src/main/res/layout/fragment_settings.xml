@@ -13,228 +13,212 @@
 
 
         <LinearLayout
-            android:id="@+id/NotificationOnOff"
-            android:layout_width="@dimen/_245sdp"
-            android:layout_height="@dimen/_39sdp"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@color/grey"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.07">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/textNotification"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/bluetoothSwitch"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:paddingStart="8dp"
-                android:text="Notificaties"
-                android:textSize="@dimen/_15sdp"
-                android:textStyle="bold" />
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_6sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/location_rounded_style"
+                android:backgroundTint="@color/houseStyleColor"
+                android:clickable="true"
+                android:focusable="true">
 
-            <Switch
-                android:id="@+id/switchNotificaties"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/bluetoothText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:text="Bluetooth"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/bluetoothSwitchCompat"
+                    android:layout_width="@dimen/_37sdp"
+                    android:layout_height="@dimen/_37sdp"
+                    android:theme="@style/SwitchTheme" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/notificationSwitch"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|end"
-                android:paddingStart="250dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_6sdp"
+                android:background="@drawable/location_rounded_style"
+                android:backgroundTint="@color/houseStyleColor"
+                android:clickable="true"
+                android:focusable="true">
 
-                android:text="" />
+                <TextView
+                    android:id="@+id/notificationText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:text="Notificaties"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
 
-        </LinearLayout>
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/NotificationSwitchCompat"
+                    android:layout_width="@dimen/_37sdp"
+                    android:layout_height="@dimen/_37sdp"
+                    android:theme="@style/SwitchTheme" />
 
+            </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/darkmodeOnOff"
-            android:layout_width="@dimen/_245sdp"
-            android:layout_height="@dimen/_39sdp"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@color/grey"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.494"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.172">
-
-            <TextView
-                android:id="@+id/textDarkmodeText"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/darkModeSwitch"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:paddingStart="8dp"
-                android:text="Dark-mode"
-                android:textSize="@dimen/_15sdp"
-                android:textStyle="bold" />
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_6sdp"
+                android:background="@drawable/location_rounded_style"
+                android:backgroundTint="@color/houseStyleColor"
+                android:clickable="true"
+                android:focusable="true">
 
-            <Switch
-                android:id="@+id/switchDarkmode"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/darkModeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:text="Dark-mode"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/darkModeSwitchCompat"
+                    android:layout_width="@dimen/_37sdp"
+                    android:layout_height="@dimen/_37sdp"
+                    android:theme="@style/SwitchTheme" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/locationButton"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|end"
-                android:paddingStart="250dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_6sdp"
+                android:background="@drawable/location_rounded_style"
+                android:backgroundTint="@color/houseStyleColor"
+                android:clickable="true"
+                android:focusable="true">
 
-                android:text="" />
+                <TextView
+                    android:id="@+id/textLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:text="Locatie instellen"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
 
+                <ImageButton
+                    android:id="@+id/openLocationSettings"
+                    android:layout_width="@dimen/_37sdp"
+                    android:layout_height="@dimen/_37sdp"
+                    android:contentDescription="Locatie instellen"
+                    android:background="@drawable/baseline_navigate_next_24"
+                    android:clickable="false" />
 
-        </LinearLayout>
+            </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/LocationOnOff"
-            android:layout_width="@dimen/_245sdp"
-            android:layout_height="@dimen/_39sdp"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@color/grey"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.494"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.27">
-
-            <TextView
-                android:id="@+id/textLocationOnOff"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/aboutUs"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:paddingStart="8dp"
-                android:text="Locatie toestaan"
-                android:textSize="@dimen/_15sdp"
-                android:textStyle="bold" />
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_6sdp"
+                android:background="@drawable/location_rounded_style"
+                android:backgroundTint="@color/houseStyleColor"
+                android:clickable="true"
+                android:focusable="true">
 
-            <Switch
-                android:id="@+id/switchLocation"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/aboutUsText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:text="Over ons"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/aboutUsButton"
+                    android:layout_width="@dimen/_37sdp"
+                    android:layout_height="@dimen/_37sdp"
+                    android:contentDescription="Over Ons"
+                    android:background="@drawable/baseline_navigate_next_24"
+                    android:clickable="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/support"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|end"
-                android:paddingStart="250dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_6sdp"
+                android:background="@drawable/location_rounded_style"
+                android:backgroundTint="@color/houseStyleColor"
+                android:clickable="true"
+                android:focusable="true">
 
-                android:text="" />
+                <TextView
+                    android:id="@+id/supportText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:text="Hulp en ondersteuning"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
 
+                <ImageButton
+                    android:id="@+id/supportButton"
+                    android:layout_width="@dimen/_37sdp"
+                    android:layout_height="@dimen/_37sdp"
+                    android:contentDescription="Hulp en ondersteuning"
+                    android:background="@drawable/baseline_navigate_next_24"
+                    android:clickable="false" />
 
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/BluetoothOnOff"
-            android:layout_width="@dimen/_245sdp"
-            android:layout_height="@dimen/_39sdp"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@color/grey"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.505"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.37">
-
-            <TextView
-                android:id="@+id/BluetoothonOff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:paddingStart="8dp"
-                android:text="Bluetooth"
-                android:textSize="@dimen/_15sdp"
-                android:textStyle="bold" />
-
-            <Switch
-                android:id="@+id/switchBluetooth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|end"
-                android:paddingStart="250dp"
-
-                android:text="" />
-
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/aboutUsButton"
-            android:layout_width="@dimen/_245sdp"
-            android:layout_height="39dp"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.51"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.469" />
-
-        <LinearLayout
-            android:id="@+id/AboutUs"
-            android:layout_width="@dimen/_245sdp"
-            android:layout_height="@dimen/_39sdp"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@color/grey"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.51"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.469">
-
-            <TextView
-                android:id="@+id/textAboutUs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:paddingStart="8dp"
-                android:text="Over ons"
-                android:textSize="@dimen/_15sdp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/arrowButtonAboutUs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|end"
-                android:elevation="2dp"
-                android:paddingStart="199dp"
-                android:text=">"
-                android:textSize="@dimen/_24sdp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/helpAndSupport"
-            android:layout_width="@dimen/_245sdp"
-            android:layout_height="@dimen/_39sdp"
-            android:background="@drawable/roundstyle"
-            android:backgroundTint="@color/grey"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.505"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.566">
-
-            <TextView
-                android:id="@+id/textHelpAndSupport"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:padding="8dp"
-                android:text="Hulp en ondersteuning"
-                android:textSize="@dimen/_15sdp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/arrowButtonHelpAndSupport"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|end"
-                android:elevation="2dp"
-                android:paddingStart="70dp"
-                android:text=">"
-                android:textSize="@dimen/_24sdp"
-                android:textStyle="bold" />
+            </LinearLayout>
 
 
         </LinearLayout>
@@ -242,6 +226,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
 </FrameLayout>
-

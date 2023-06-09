@@ -15,6 +15,7 @@ public class Geofence {
         this.radius = radius;
     }
 
+    // Base variables for geofence
     public String getName() {
         return name;
     }
@@ -31,6 +32,7 @@ public class Geofence {
         return radius;
     }
 
+    // Getting location based on lat and long
     public Location getLocation() {
         Location location = new Location("");
         location.setLatitude(latitude);

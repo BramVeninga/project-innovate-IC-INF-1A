@@ -52,6 +52,7 @@
                 android:src="@drawable/backpack" />
 
             <TextView
+                android:text="configName"
                 android:id="@+id/configName"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_42sdp"
@@ -98,6 +99,7 @@
                     android:src="@drawable/baseline_battery_5_bar_24" />
 
                 <TextView
+                    android:text="batteryPercentage"
                     android:id="@+id/batteryPercentage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -125,6 +127,7 @@
                     android:src="@drawable/baseline_bluetooth_24" />
 
                 <TextView
+                    android:text="bluetoothConnection"
                     android:id="@+id/bluetoothState"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -153,6 +156,7 @@
                     android:src="@drawable/baseline_gps_fixed_24" />
 
                 <TextView
+                    android:text="gpsConnection"
                     android:id="@+id/gpsState"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

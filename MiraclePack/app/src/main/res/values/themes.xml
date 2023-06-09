@@ -20,8 +20,33 @@
         <item name="android:background">@android:color/white</item>
     </style>
 
+    <style name="LocationRecyclerShape" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8%</item>
+        <item name="android:background">@color/houseStyleColor</item>
+    </style>
+
+    <style name="DrawableTheme" parent="">
+        <item name="android:colorAccent">@android:color/white</item>
+    </style>
+
     <style name="BackButtonTheme" parent="">
         <item name="android:homeAsUpIndicator">@drawable/baseline_arrow_back_24</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="actionMenuTextColor">@color/white</item>
+    </style>
+
+    <style name="SwitchTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Active thumb color & Active track color(30% transparency) -->
+        <item name="colorControlActivated">@color/white</item>
+        <!-- Inactive thumb color -->
+        <item name="colorSwitchThumbNormal">@color/white</item>
+        <!-- Inactive track color(30% transparency) -->
+        <item name="android:colorForeground">@color/white</item>
+        ...
     </style>
 
 </resources>

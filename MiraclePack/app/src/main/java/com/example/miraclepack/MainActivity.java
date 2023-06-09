@@ -15,8 +15,10 @@ import com.example.miraclepack.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     private boolean isLoggedIn = false;
-
+    
 //    public BluetoothConnection ble;
+    //public BluetoothConnection ble;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
 
 //        ble = new BluetoothConnection();
 //        ble.connectToBluetooth();
+
+//        ble = new BluetoothConnection();
+//        ble.connectToBluetooth();
+
         setSupportActionBar(binding.toolbar);
 
         // Check if the user is logged in
@@ -51,12 +57,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else if (itemId == R.id.settings) {
                 replaceFragment(new SettingsFragment());
-            } else if (itemId == R.id.AboutUs) {
-                replaceFragment(new AboutFragment());
             }
             return true;
         });
-
     }
 
     private void replaceFragment(Fragment fragment) {
@@ -71,8 +74,6 @@ public class MainActivity extends AppCompatActivity {
             setTitle("Tas");
         } else if (fragment instanceof LoginFragment) {
             setTitle("Inhoud van de tas");
-        } else if (fragment instanceof SettingsFragment) {
-            setTitle("Instellingen");
         } else if (fragment instanceof AboutFragment) {
             setTitle("Over ons");
         }
