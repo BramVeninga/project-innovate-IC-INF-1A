@@ -3,6 +3,9 @@ package com.example.miraclepack;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -15,10 +18,13 @@ public class PasswordResetActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText passwordEditText;
     private EditText repeatPasswordEditText;
+    private DatabaseHelper dbHelper;
+    private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dbHelper = new DatabaseHelper(this);
         setContentView(R.layout.fragment_passwordreset);
 
         emailEditText = findViewById(R.id.editTextEmail);
@@ -58,7 +64,13 @@ public class PasswordResetActivity extends AppCompatActivity {
     }
 
     private void resetPassword(String email, String password) {
-        // TODO: Implement password reset logic here
+        database = dbHelper.getWritableDatabase();
+
+        // Update password
+        ContentValues values = new ContentValues();
+        values.put("password", password);
+        database.update("users", values, "email=?", new String[]{email});
+
         Toast.makeText(this, "Password reset successful", Toast.LENGTH_SHORT).show();
     }
 }

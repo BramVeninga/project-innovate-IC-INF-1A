@@ -1,42 +1,193 @@
-<!--Profiel pagina-->
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="18dp">
+    android:background="@color/white"
+    tools:context=".ProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFFFFF"
-        tools:layout_editor_absoluteX="18dp"
-        tools:layout_editor_absoluteY="18dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="29dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="164dp"
-            android:layout_marginTop="196dp"
-            android:text="@string/test"
+
+        <Button
+            android:id="@+id/profileButton"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_180sdp"
+            android:layout_margin="@dimen/_12sdp"
+            android:background="@drawable/roundstyle"
+            android:backgroundTint="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonSignOut"
-            android:layout_width="149dp"
-            android:layout_height="51dp"
-            android:layout_marginStart="112dp"
-            android:layout_marginTop="488dp"
-            android:background="#D9D9D9"
-            android:text="@string/uitloggen"
-            android:textColor="#323232"
-            android:textSize="15sp"
-            android:textStyle="bold"
+        <LinearLayout
+            android:id="@+id/backpackViewSection"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_180sdp"
+            android:layout_margin="@dimen/_12sdp"
+            android:background="@drawable/roundstyle"
+            android:backgroundTint="@color/white"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageViewProfilePicture"
+                android:layout_width="235dp"
+                android:layout_height="188dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/baseline_person_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="155dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="123dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:text="Username"
+                    android:gravity="center" />
+
+                <ImageView
+                    android:id="@+id/imageViewEditProfilePicture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/edit_image_foreground" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/backpackInfoSection"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_255sdp"
+            android:layout_margin="@dimen/_12sdp"
+            android:background="@drawable/roundstyle"
+            android:backgroundTint="@color/houseStyleColor"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/backpackViewSection"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:id="@+id/Emailbalk"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_39sdp"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="@color/white"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/EmailTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Email"
+                    android:textColor="@color/mainTextColor"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:id="@+id/Telefoonnummerbalk"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_39sdp"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="@color/white"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/TelefoonnummerTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/telefoonnummer"
+                    android:textColor="@color/mainTextColor"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:id="@+id/Geboortedatumbalk"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_39sdp"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="@color/white"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/GeboortedatumTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:gravity="center"
+                    android:text="Geboorte datum"
+                    android:textColor="@color/mainTextColor"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <Button
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:gravity="center"
+                android:id="@+id/Wachtwoordvergetenbalk"
+                android:layout_width="@dimen/_230sdp"
+                android:layout_height="@dimen/_39sdp"
+                android:backgroundTint="@color/white"
+                android:orientation="vertical"
+                android:onClick="openPasswordResetFragment"
+                android:text="Wachtwoord veranderen"
+                android:textColor="@color/mainTextColor"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold">
+            </Button>
+
+            <Button
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:gravity="center"
+                android:id="@+id/buttonSignOut"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_39sdp"
+                android:backgroundTint="@color/white"
+                android:orientation="vertical"
+                android:onClick="openLoginFragment"
+                android:text="Uitloggen"
+                android:textColor="@color/mainTextColor"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold">
+            </Button>
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</RelativeLayout>
+</FrameLayout>

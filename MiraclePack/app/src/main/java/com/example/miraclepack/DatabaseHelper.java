@@ -14,11 +14,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_EMAIL = "email";
     private static final String COLUMN_PASSWORD = "password";
+    private static final String COLUMN_PROFILE_PICTURE = "profile_picture";
 
-    private static final String CREATE_TABLE_USERS = "CREATE TABLE users ("
-            + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + "email TEXT,"
-            + "wachtwoord TEXT)";
+
+    private static final String CREATE_TABLE_USERS = "CREATE TABLE " + TABLE_USERS + " ("
+            + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_EMAIL + " TEXT, "
+            + COLUMN_PASSWORD + " TEXT, "
+            + COLUMN_PROFILE_PICTURE + " TEXT)";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -26,11 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableQuery = "CREATE TABLE " + TABLE_USERS + " (" +
-                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_EMAIL + " VARCHAR(255), " +
-                COLUMN_PASSWORD + " VARCHAR(255))";
-        db.execSQL(createTableQuery);
+        db.execSQL(CREATE_TABLE_USERS);
     }
 
     //Takes the queries from the String array and adds executes the queries.
@@ -51,11 +50,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Handle database schema upgrades if needed
     }
 
-    public void insertUserCredentials(String email, String password) {
+    public void insertUserCredentials(String email, String password, String profilePicture) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_EMAIL, email);
         values.put(COLUMN_PASSWORD, password);
+        values.put(COLUMN_PROFILE_PICTURE, profilePicture);
         db.insert(TABLE_USERS, null, values);
         db.close();
     }
@@ -88,13 +88,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    long insertLoginDetails(String email, String password, Context context)
+    long insertLoginDetails(String email, String password, String profilePicture, Context context)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_EMAIL, email);
         cv.put("wachtwoord", password);
+        cv.put(COLUMN_PROFILE_PICTURE, profilePicture);
 
         long result = db.insert(TABLE_USERS, null, cv);
 
