@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 //This class deals with creating and exchange data with the database that holds all the information about the configurations, compartments and items.
@@ -183,8 +184,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         //Returns multiple rows of the ConfigurationItem table, according to the name of a Configuration object
         public Cursor getConfigItems (Configuration configuration){
             SQLiteDatabase database = this.getReadableDatabase();
-            Cursor query = database.query(TABLE_CONFIG_ITEM, new String[]{COLUMN_NAME, COLUMN_COMPARTMENT_ID, COLUMN_ITEM_NAME}, COLUMN_NAME + "=?", new String[]{configuration.getName()}, null, null, null);
-            return query;
+            return database.query(TABLE_CONFIG_ITEM, new String[]{COLUMN_NAME, COLUMN_COMPARTMENT_ID, COLUMN_ITEM_NAME}, COLUMN_NAME + "=?", new String[]{configuration.getName()}, null, null, null);
         }
 
         //Takes multiple rows from the ConfigurationItem Table, and fills a Arraylist with new ConfigurationItems
@@ -213,15 +213,13 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         //Returns a row with the compartmentID of a compartment with a given description.
         public Cursor getCompartmentId (ConfigurationItem item){
             SQLiteDatabase database = this.getReadableDatabase();
-            Cursor query = database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID}, COLUMN_DESCRIPTION + "=?", new String[]{item.getCompartment().getDescription()}, null, null, null);
-            return query;
+            return database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID}, COLUMN_DESCRIPTION + "=?", new String[]{item.getCompartment().getDescription()}, null, null, null);
         }
 
         //Returns a row with a compartment, with a given compartmentID
         public Cursor getCompartment (String compId){
             SQLiteDatabase database = this.getReadableDatabase();
-            Cursor query = database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID, COLUMN_DESCRIPTION}, COLUMN_COMPARTMENT_ID + "=?", new String[]{compId}, null, null, null);
-            return query;
+            return database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID, COLUMN_DESCRIPTION}, COLUMN_COMPARTMENT_ID + "=?", new String[]{compId}, null, null, null);
         }
 
         //Takes a row with a compartment and sets it in a ConfigurationItem
@@ -240,8 +238,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         //Returns multiple rows with all the compartments form the Compartment Table
         public Cursor getCompartments () {
             SQLiteDatabase database = this.getReadableDatabase();
-            Cursor query = database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID, COLUMN_DESCRIPTION}, null, null, null, null, null);
-            return query;
+            return database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID, COLUMN_DESCRIPTION}, null, null, null, null, null);
         }
 
         //Takes multiple rows form the compartment table filled with CompartmentID's and descriptions, and adds them to an arraylist.
@@ -262,8 +259,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         //Returns multiple rows, with all the configurations from the Configuration table
         public Cursor getConfiguration () {
             SQLiteDatabase database = this.getReadableDatabase();
-            Cursor query = database.query(TABLE_CONFIG, new String[]{COLUMN_NAME, COLUMN_WEEKDAY}, null, null, null, null, null);
-            return query;
+            return database.query(TABLE_CONFIG, new String[]{COLUMN_NAME, COLUMN_WEEKDAY}, null, null, null, null, null);
         }
 
         //Takes multiple rows with configurations from the Configuration table, and puts them in an arraylist
@@ -282,12 +278,56 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         }
 
-        // Deletes geofence based on the geofence name in de database
-        public void deleteGeofence(String geofenceName) {
-            SQLiteDatabase db = this.getWritableDatabase();
-            db.delete(TABLE_GEOFENCE, COLUMN_GEOFENCE_NAME + " = ?", new String[]{geofenceName});
-            db.close();
+    public List<Compartment> getUsedCompartmentsOfCurrentDay() {
+        // Get current day of the week
+        Calendar calendar = Calendar.getInstance();
+        int currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+        // Get configurations based on current day of the week
+        SQLiteDatabase database = this.getReadableDatabase();
+        Cursor configurationCursor = database.query(TABLE_CONFIG, new String[]{COLUMN_NAME, COLUMN_WEEKDAY},
+                COLUMN_WEEKDAY + "=?", new String[]{getWeekdayString(currentDayOfWeek)},
+                null, null, null);
+
+        List<Configuration> configurations = fillConfigurations(configurationCursor);
+        configurationCursor.close();
+
+        List<Compartment> usedCompartments = new ArrayList<>();
+
+        // For every configuration based on current day
+        for (Configuration configuration : configurations) {
+
+            Cursor configItemCursor = getConfigItems(configuration);
+            ArrayList<ConfigurationItem> configItems = fillConfigItems(configItemCursor);
+            configItemCursor.close();
+
+            // Add used compartments and return to a list
+            for (ConfigurationItem configItem : configItems) {
+                Compartment compartment = configItem.getCompartment();
+                if (!usedCompartments.contains(compartment)) {
+                    usedCompartments.add(compartment);
+                }
+            }
         }
+
+        return usedCompartments;
+    }
+
+    // Method to get current day of the week
+    private String getWeekdayString(int dayOfWeek) {
+        String[] weekdays = {"", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+        if (dayOfWeek >= 1 && dayOfWeek <= 7) {
+            return weekdays[dayOfWeek];
+        }
+        return "";
+    }
+
+    // Deletes geofence based on the geofence name in de database
+            public void deleteGeofence(String geofenceName) {
+                SQLiteDatabase db = this.getWritableDatabase();
+                db.delete(TABLE_GEOFENCE, COLUMN_GEOFENCE_NAME + " = ?", new String[]{geofenceName});
+                db.close();
+            }
 
         // Adding geofence to the database based on current location
         public void addGeofence(Geofence geofence) {

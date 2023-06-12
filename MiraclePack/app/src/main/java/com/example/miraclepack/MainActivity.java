@@ -1,14 +1,14 @@
 package com.example.miraclepack;
 
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Bundle;
-import android.view.View;
 
 import com.example.miraclepack.databinding.ActivityMainBinding;
 
@@ -60,6 +60,13 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
+
+        // Background location service
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(new Intent(this, AppService.class));
+        } else {
+            startService(new Intent(this, AppService.class));
+        }
     }
 
     private void replaceFragment(Fragment fragment) {

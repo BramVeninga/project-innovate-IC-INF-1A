@@ -5,7 +5,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -22,8 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,7 +33,6 @@ import java.util.Objects;
 public class LocationActivity extends AppCompatActivity implements LocationListener {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 2;
-    private static final int PERMISSION_ALL = 6;
 
     private MyDatabaseHelper myDB;
     private LocationManager locationManager;
@@ -73,14 +69,9 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
 
         // Check for permissions
         if (!hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_NOTIFICATION_POLICY)) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_NOTIFICATION_POLICY}, PERMISSION_ALL);
-        }
-
-        // Background location service
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(new Intent(this, LocationService.class));
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_NOTIFICATION_POLICY}, LOCATION_PERMISSION_REQUEST_CODE);
         } else {
-            startService(new Intent(this, LocationService.class));
+            startLocationUpdates();
         }
     }
 
@@ -193,8 +184,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
 
     @Override
     public void onLocationChanged(Location location) {
-        // Location updates
-        checkGeofences(location);
+
     }
 
     @Override
@@ -203,46 +193,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         locationManager.removeUpdates(this);
     }
 
-    private void checkGeofences(Location currentLocation) {
-        for (Geofence geofence : geofenceList) {
-            float distance = currentLocation.distanceTo(geofence.getLocation());
-            if (distance > geofence.getRadius() && !isLocationInsideGeofence(currentLocation, geofence)) {
-                showNotification();
-            }
-        }
-    }
-
-    // Check if location is actually inside the geofence, in case of multiple geofences
-    private boolean isLocationInsideGeofence(Location location, Geofence geofence) {
-        float[] results = new float[1];
-        Location.distanceBetween(
-                location.getLatitude(), location.getLongitude(),
-                geofence.getLatitude(), geofence.getLongitude(),
-                results);
-        float distanceInMeters = results[0];
-        return distanceInMeters <= geofence.getRadius();
-    }
-
-    // Show notification if outside of geofence
-    private void showNotification() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NOTIFICATION_POLICY)
-                == PackageManager.PERMISSION_GRANTED) {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channel_id")
-                    .setSmallIcon(R.drawable.baseline_notifications_24)
-                    .setContentTitle("Waarschuwing!")
-                    .setContentText("Je bent mogelijk iets vergeten. Tik om het overzicht van de tas te bekijken!")
-                    .setPriority(NotificationCompat.PRIORITY_HIGH);
-
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-            notificationManager.notify(1, builder.build());
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_NOTIFICATION_POLICY},
-                    NOTIFICATION_PERMISSION_REQUEST_CODE);
-        }
-    }
-
-    // Creating notification
+    // Creating notification channel
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Geofence Channel";
