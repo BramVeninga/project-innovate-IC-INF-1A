@@ -31,12 +31,6 @@ class AppConnection:
                     return True
         return False
     
-    # gathers all the data that has to be send
-    def dataToSend(self):
-        # INSERT LOGIC HERE
-        
-        return self.data
-    
     # sends the data to the app
     def sendData(self):
         if self.listen() == b'send;':
@@ -53,6 +47,7 @@ class AppConnection:
                 tempMessage = bufferMessage
                 bufferMessage = self.uart.read(0)
                 self.uart.write('received;')
+                print(tempMessage)
                 return tempMessage
         return None
 
@@ -68,3 +63,5 @@ class AppConnection:
             print(buffer)
         else:
             print('error')
+            
+        

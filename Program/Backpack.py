@@ -44,14 +44,3 @@ class Backpack:
             data = {}
             data[str(compartment.id)] = compartment.filled
             self.appConnection.data.update(**data)
-
-
-    # a function that is used to test inputs and outputs
-    # NEEDS TO BE DELETED BEFORE DELIVERY
-    def test(self):
-        self.checkContents()
-        print(self.appConnection.data)
-        self.appConnection.sendData()
-#         print(self.appConnection.isConnected())
-#         if self.appConnection.isConnected():
-#             self.led.on()
