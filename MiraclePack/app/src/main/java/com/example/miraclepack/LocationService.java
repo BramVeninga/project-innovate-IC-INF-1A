@@ -74,7 +74,7 @@ public class LocationService extends Service implements LocationListener {
     private void checkGeofences(Location currentLocation) {
         for (Geofence geofence : geofenceList) {
             float distance = currentLocation.distanceTo(geofence.getLocation());
-            if (distance > GEOFENCE_RADIUS && !isLocationInsideGeofence(currentLocation, geofence) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ) {
+            if (distance > GEOFENCE_RADIUS && !isLocationInsideGeofence(currentLocation, geofence)) {
                         showNotification();
             }
         }
@@ -92,7 +92,7 @@ public class LocationService extends Service implements LocationListener {
     }
 
     private void showNotification() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NOTIFICATION_POLICY)
                 == PackageManager.PERMISSION_GRANTED) {
             try {
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)

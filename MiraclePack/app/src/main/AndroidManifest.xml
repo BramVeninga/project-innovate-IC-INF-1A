@@ -25,12 +25,9 @@
         android:theme="@style/Base.Theme.MiraclePack"
         tools:targetApi="31">
 
-        <service android:name=".LocationService" />
-
-        <activity
-            android:name=".ProfileActivity"
-            android:exported="true"
-            android:label="Profile Activity" />
+        <service
+            android:name=".LocationService"
+            android:enabled="true"/>
 
         <activity
             android:name=".LocationActivity"
