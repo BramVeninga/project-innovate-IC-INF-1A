@@ -21,7 +21,7 @@ import org.w3c.dom.Text;
 public class HomeFragment extends Fragment {
     // Variables
     private Button viewContentButton;
-    private boolean bluetoothConnected = true;
+    private boolean bluetoothConnected = false;
     private boolean bluetoothAllowed = true;
     private boolean batteryCharging = false;
     private String configNameString = "Inhoud van de tas";
@@ -97,12 +97,12 @@ public class HomeFragment extends Fragment {
     // Set the bluetooth image and text
     public boolean setBluetoothState() {
         if (!bluetoothAllowed) {
-            bluetoothText.setText("Bluetooth inschakelen");
+            bluetoothText.setText("Bluetooth uitgeschakeld");
             bluetoothImage.setImageResource(R.drawable.baseline_bluetooth_disabled_24);
             return false;
         }
         else if (!bluetoothConnected) {
-            bluetoothText.setText("Tas verbinden");
+            bluetoothText.setText("Niet verbonden");
             bluetoothImage.setImageResource(R.drawable.baseline_bluetooth_24);
             return false;
         }
