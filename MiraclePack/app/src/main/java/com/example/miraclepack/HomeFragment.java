@@ -19,12 +19,12 @@ import org.w3c.dom.Text;
 
 
 public class HomeFragment extends Fragment {
-
+    // Variables
     private Button viewContentButton;
     private boolean bluetoothConnected = true;
     private boolean bluetoothAllowed = true;
     private boolean batteryCharging = false;
-    private String configNameString = "Tas van maandag";
+    private String configNameString = "Inhoud van de tas";
     private boolean gpsConnected = true;
     private boolean gpsAllowed = true;
     TextView gpsText;
@@ -54,6 +54,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        // Define variables
         viewContentButton = view.findViewById(R.id.viewContentButton);
 
         name = view.findViewById(R.id.configName);
@@ -66,12 +67,14 @@ public class HomeFragment extends Fragment {
         gpsImage = view.findViewById(R.id.gpsStateImage);
         gpsText = view.findViewById(R.id.gpsState);
 
+        // Functions
         setBluetoothState();
         setBatteryState();
         setBatteryImageState();
         setConfigName();
         isGpsConnected();
 
+        // Button that opens the bagfragment
         viewContentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,6 +84,7 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    // Replace the fragment
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -90,6 +94,7 @@ public class HomeFragment extends Fragment {
         getActivity().setTitle("Tas");
     }
 
+    // Set the bluetooth image and text
     public boolean setBluetoothState() {
         if (!bluetoothAllowed) {
             bluetoothText.setText("Bluetooth inschakelen");
@@ -108,6 +113,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    // Set the battery image
     public void setBatteryImageState() {
         if (!setBluetoothState()) {
             batteryText.setText("Geen batterij gevonden");
@@ -142,15 +148,18 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    // Set the battery text
     public void setBatteryState() {
         batteryState = String.valueOf(batteryPercentage);
         batteryText.setText(batteryState + "%");
     }
 
+    // Set the config name
     public void setConfigName() {
         configName.setText(configNameString);
     }
 
+    // Check if gps is connected and set the right image and text
     public boolean isGpsConnected() {
         if (!gpsAllowed) {
             gpsText.setText("Gps inschakelen");

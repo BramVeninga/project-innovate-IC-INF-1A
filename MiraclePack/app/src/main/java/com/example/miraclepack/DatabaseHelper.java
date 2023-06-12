@@ -15,10 +15,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_EMAIL = "email";
     private static final String COLUMN_PASSWORD = "password";
 
-    private static final String CREATE_TABLE_USERS = "CREATE TABLE users ("
-            + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + "email TEXT,"
-            + "wachtwoord TEXT)";
+
+    private static final String CREATE_TABLE_USERS = "CREATE TABLE " + TABLE_USERS + " ("
+            + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_EMAIL + " TEXT, "
+            + COLUMN_PASSWORD + " TEXT);";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -26,11 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableQuery = "CREATE TABLE " + TABLE_USERS + " (" +
-                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_EMAIL + " VARCHAR(255), " +
-                COLUMN_PASSWORD + " VARCHAR(255))";
-        db.execSQL(createTableQuery);
+        db.execSQL(CREATE_TABLE_USERS);
     }
 
     //Takes the queries from the String array and adds executes the queries.

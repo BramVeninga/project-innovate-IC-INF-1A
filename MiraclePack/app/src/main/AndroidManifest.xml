@@ -53,8 +53,6 @@
             android:name=".PasswordResetActivity"
             android:label="Password Reset" />
 
-        <!-- Rest of your activities -->
-
         <activity
             android:name=".AddActivity"
             android:exported="true"
