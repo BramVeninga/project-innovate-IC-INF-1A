@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -45,7 +44,6 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
     private List<Geofence> geofenceList;
     private FloatingActionButton addLocation;
 
-    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,8 +72,8 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         });
 
         // Check for permissions
-        if (!hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.POST_NOTIFICATIONS)) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_ALL);
+        if (!hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_NOTIFICATION_POLICY)) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_NOTIFICATION_POLICY}, PERMISSION_ALL);
         }
 
         // Background location service
@@ -208,12 +206,11 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
     private void checkGeofences(Location currentLocation) {
         for (Geofence geofence : geofenceList) {
             float distance = currentLocation.distanceTo(geofence.getLocation());
-            if (distance > geofence.getRadius() && !isLocationInsideGeofence(currentLocation, geofence) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        showNotification();
+            if (distance > geofence.getRadius() && !isLocationInsideGeofence(currentLocation, geofence)) {
+                showNotification();
             }
         }
     }
-
 
     // Check if location is actually inside the geofence, in case of multiple geofences
     private boolean isLocationInsideGeofence(Location location, Geofence geofence) {
@@ -227,9 +224,8 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
     }
 
     // Show notification if outside of geofence
-    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     private void showNotification() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NOTIFICATION_POLICY)
                 == PackageManager.PERMISSION_GRANTED) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channel_id")
                     .setSmallIcon(R.drawable.baseline_notifications_24)
@@ -241,7 +237,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
             notificationManager.notify(1, builder.build());
         } else {
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                    new String[]{Manifest.permission.ACCESS_NOTIFICATION_POLICY},
                     NOTIFICATION_PERMISSION_REQUEST_CODE);
         }
     }
@@ -278,5 +274,4 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         }
         return true;
     }
-
 }
