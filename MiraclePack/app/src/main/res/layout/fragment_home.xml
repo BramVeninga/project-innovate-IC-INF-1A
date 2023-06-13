@@ -135,6 +135,17 @@
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="bold" />
 
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:text="Apparaat toevoegen"
+                    android:textSize="@dimen/_10sdp"
+                    android:backgroundTint="@color/houseStyleColor"
+                    android:padding="@dimen/_2sdp"
+                    android:gravity="center"
+                    android:visibility="visible" />
+
             </LinearLayout>
 
             <LinearLayout
