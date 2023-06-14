@@ -31,6 +31,7 @@ public class BagFragment extends Fragment {
     private FloatingActionButton addBagContent;
     private MyDatabaseHelper myDB;
     private List<Configuration> weekDays;
+    private Configuration selectedWeekday;
     private RecyclerView itemList;
     private Spinner weekDaySpinner;
     private ArrayList<ConfigurationItem> configItems;
@@ -58,6 +59,7 @@ public class BagFragment extends Fragment {
 
         Integer weekDaySpinnerIndex = getWeekdaySpinnerIndex(weekDays);
         weekDaySpinner.setSelection(weekDaySpinnerIndex);
+        if (selectedWeekday == null)  setSelectedWeekday(weekDaySpinner.getSelectedItem().toString());
         recyclerViewSetup(weekDaySpinnerIndex, configItems, itemList);
 
         addBagContent.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +82,7 @@ public class BagFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 recyclerViewSetup(position, BagFragment.this.configItems, BagFragment.this.itemList);
+                setSelectedWeekday(weekDaySpinner.getAdapter().getItem(position).toString());
             }
 
             @Override
@@ -134,6 +137,15 @@ public class BagFragment extends Fragment {
             }
         }
         return -1;
+    }
+
+    private void setSelectedWeekday(String weekday) {
+        for (Configuration configuration: weekDays) {
+            if (weekday == configuration.getWeekday()) {
+                this.selectedWeekday = configuration;
+                return;
+            }
+        }
     }
 
     private void changeImageViewColor() {
