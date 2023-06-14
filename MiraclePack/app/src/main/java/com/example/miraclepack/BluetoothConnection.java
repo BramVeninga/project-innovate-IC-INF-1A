@@ -14,15 +14,21 @@ import android.util.Log;
 
 
 public class BluetoothConnection extends AppCompatActivity {
+
     private BluetoothAdapter BA;
-    public void checkBluetoothEnabled(BluetoothAdapter BA, int BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE) {
-        if (ContextCompat.checkSelfPermission(getBaseContext(), Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED) {
-            if (BA != null && !BA.isEnabled()) {
-                Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(enableBluetooth, BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE);
-            }
-        }
+
+    public BluetoothConnection() {
+        this.BA = BluetoothAdapter.getDefaultAdapter();
     }
+
+//    public void checkBluetoothEnabled(BluetoothAdapter BA, int BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE) {
+//        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED) {
+//            if (BA != null && !BA.isEnabled()) {
+//                Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//                startActivityForResult(enableBluetooth, BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE);
+//            }
+//        }
+//    }
     public void getBluetoothPermissions() {
         BA = BluetoothAdapter.getDefaultAdapter();
         Log.d("BluetoothTest", String.valueOf(BA));

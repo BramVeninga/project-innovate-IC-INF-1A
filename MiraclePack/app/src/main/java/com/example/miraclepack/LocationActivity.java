@@ -36,7 +36,7 @@ import java.util.Objects;
 public class LocationActivity extends AppCompatActivity implements LocationListener {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 2;
-    private static final int PERMISSION_ALL = 6;
+    public static final int PERMISSION_ALL = 6;
 
     private MyDatabaseHelper myDB;
     private LocationManager locationManager;
