@@ -82,11 +82,12 @@ public class LoginFragment extends Fragment {
 
     private boolean checkCredentials(String email, String wachtwoord) {
         // Query the database to check if the email and password exist
-        String selection = "email = ? AND wachtwoord = ?";
+        String selection = "email = ? AND password = ?";
         String[] selectionArgs = {email, wachtwoord};
         Cursor cursor = database.query("users", null, selection, selectionArgs, null, null, null);
         boolean hasCredentials = cursor.moveToFirst();
         cursor.close();
         return hasCredentials;
     }
+
 }
