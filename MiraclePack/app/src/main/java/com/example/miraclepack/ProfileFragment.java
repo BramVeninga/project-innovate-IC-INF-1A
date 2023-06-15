@@ -30,9 +30,15 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(requireContext(), "Sign out clicked", Toast.LENGTH_SHORT).show();
-                replaceFragment(new LoginFragment()); // Navigate to the LoginFragment
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                        .replace(R.id.frame_layout, new LoginFragment())
+                        .commit();
             }
         });
+
 
         passwordResetButton = view.findViewById(R.id.buttonPasswordReset);
         passwordResetButton.setOnClickListener(new View.OnClickListener() {
@@ -50,7 +56,7 @@ public class ProfileFragment extends Fragment {
         fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE); // Clear the back stack
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
 
