@@ -12,8 +12,10 @@ import android.graphics.PorterDuff;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
@@ -28,6 +30,7 @@ public class AppService extends Service implements LocationListener {
     private static final int NOTIFICATION_ID = 1;
     private static final String NOTIFICATION_CHANNEL_ID = "channel_id";
     private static final float GEOFENCE_RADIUS = 75;
+    private final MyBinder myBinder = new MyBinder();
     private LocationManager locationManager;
     private List<Geofence> geofenceList;
     private MyDatabaseHelper myDB;
@@ -40,6 +43,43 @@ public class AppService extends Service implements LocationListener {
         myDB = MyDatabaseHelper.getInstance(this);
         geofenceList = myDB.getAllGeofences();
         usedCompartments = myDB.getUsedCompartmentsOfCurrentDay();
+        Log.d("AppServiceMessage", "Service is gestart");
+    }
+
+    public MyBinder getMyBinder() {
+        return myBinder;
+    }
+
+    public LocationManager getLocationManager() {
+        return locationManager;
+    }
+
+    public void setLocationManager(LocationManager locationManager) {
+        this.locationManager = locationManager;
+    }
+
+    public List<Geofence> getGeofenceList() {
+        return geofenceList;
+    }
+
+    public void setGeofenceList(List<Geofence> geofenceList) {
+        this.geofenceList = geofenceList;
+    }
+
+    public MyDatabaseHelper getMyDB() {
+        return myDB;
+    }
+
+    public void setMyDB(MyDatabaseHelper myDB) {
+        this.myDB = myDB;
+    }
+
+    public List<Compartment> getUsedCompartments() {
+        return usedCompartments;
+    }
+
+    public void setUsedCompartments(List<Compartment> usedCompartments) {
+        this.usedCompartments = usedCompartments;
     }
 
     // Starting foreground service and background location
@@ -50,11 +90,16 @@ public class AppService extends Service implements LocationListener {
         return START_STICKY;
     }
 
+    public class MyBinder extends Binder {
+        AppService getService(){
+            return AppService.this;
+        }
+    }
     // Ensuring service does not support binding so that other components can't bind to the service
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return myBinder;
     }
 
     // Check if current location has changed in order to check for geofence

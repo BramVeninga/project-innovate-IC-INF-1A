@@ -62,11 +62,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Background location service
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(new Intent(this, AppService.class));
-        } else {
-            startService(new Intent(this, AppService.class));
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            startForegroundService(new Intent(this, AppService.class));
+//        } else {
+//            startService(new Intent(this, AppService.class));
+//        }
+        Intent serviceIntent = new Intent(this, AppService.class);
+        startService(serviceIntent);
     }
 
     private void replaceFragment(Fragment fragment) {

@@ -1,7 +1,11 @@
 package com.example.miraclepack;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +38,8 @@ public class BagFragment extends Fragment {
     private RecyclerView itemList;
     private Spinner weekDaySpinner;
     private ArrayList<ConfigurationItem> configItems;
+    private AppService appService;
+    private boolean serviceBound = false;
 
     public BagFragment() {
         // Required empty public constructor
@@ -88,6 +94,17 @@ public class BagFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bindService();
+    }
+
+    private void bindService() {
+        Intent serviceIntent = new Intent(getContext(), AppService.class);
+        getActivity().bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
     }
 
     //Returns an index fo the Spinner, so the Spinner can be opened with the current day as default.
@@ -147,4 +164,18 @@ public class BagFragment extends Fragment {
             imageView.clearColorFilter();
         }
     }
+
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            AppService.MyBinder binder = (AppService.MyBinder) service;
+            appService = binder.getService();
+            serviceBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            serviceBound = false;
+        }
+    };
 }
