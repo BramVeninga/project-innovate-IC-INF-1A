@@ -17,6 +17,7 @@ public class ProfileFragment extends Fragment {
 
     private Button signOutButton;
     private Button passwordResetButton;
+    private SessionManager sessionManager;
 
     public ProfileFragment() {
         // Empty constructor
@@ -25,10 +26,15 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        sessionManager = new SessionManager(requireContext());
+
         signOutButton = view.findViewById(R.id.buttonSignOut);
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Set the user as logged out
+                sessionManager.setLoggedIn(false);
+
                 Toast.makeText(requireContext(), "Sign out clicked", Toast.LENGTH_SHORT).show();
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);

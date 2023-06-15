@@ -19,6 +19,7 @@ public class LoginFragment extends Fragment {
     private TextView email;
     private TextView wachtwoord;
     private SQLiteDatabase database;
+    private SessionManager sessionManager;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -33,6 +34,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        sessionManager = new SessionManager(requireContext());
 
         email = view.findViewById(R.id.email);
         wachtwoord = view.findViewById(R.id.password);
@@ -53,6 +55,9 @@ public class LoginFragment extends Fragment {
                 if (checkCredentials(enteredEmail, enteredWachtwoord)) {
                     // Successful login
                     Toast.makeText(requireContext(), "Login successvol", Toast.LENGTH_SHORT).show();
+
+                    // Set the user as logged in
+                    sessionManager.setLoggedIn(true);
 
                     // Navigate to the ProfileFragment after a successful login
                     FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
