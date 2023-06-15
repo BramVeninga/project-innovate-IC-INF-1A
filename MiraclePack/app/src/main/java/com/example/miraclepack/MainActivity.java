@@ -30,7 +30,6 @@ import com.example.miraclepack.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
-//    private boolean isLoggedIn = false;
     private SessionManager sessionManager;
 //    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 //    private static final int BLUETOOTH_PERMISSION_CODE = 1;
