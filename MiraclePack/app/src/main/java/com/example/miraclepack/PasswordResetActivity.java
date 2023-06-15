@@ -54,10 +54,10 @@ public class PasswordResetActivity extends AppCompatActivity {
 
     private boolean validateInputs(String email, String password, String repeatPassword) {
         if (email.isEmpty() || password.isEmpty() || repeatPassword.isEmpty()) {
-            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Vul alle velden in", Toast.LENGTH_SHORT).show();
             return false;
         } else if (!password.equals(repeatPassword)) {
-            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "De wachtwoorden komen niet overeen", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -71,6 +71,6 @@ public class PasswordResetActivity extends AppCompatActivity {
         values.put("password", password);
         database.update("users", values, "email=?", new String[]{email});
 
-        Toast.makeText(this, "Password reset successful", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Wachtwoord reset voltooid", Toast.LENGTH_SHORT).show();
     }
 }

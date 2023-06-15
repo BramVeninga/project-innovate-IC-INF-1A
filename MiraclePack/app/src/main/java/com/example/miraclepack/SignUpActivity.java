@@ -49,11 +49,11 @@ public class SignUpActivity extends AppCompatActivity
                         // Save the login details
                         dbHelper.insertLoginDetails(email, password, SignUpActivity.this);
 
-                        Toast.makeText(SignUpActivity.this, "Account succesvol aangemaakt!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignUpActivity.this, "Account succesvol aangemaakt", Toast.LENGTH_SHORT).show();
                         finish(); // Close the signup page and go back to the previous screen
                     } else
                     {
-                        Toast.makeText(SignUpActivity.this, "Het is niet gelukt om een account aan te maken. Probeer het opnieuw!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignUpActivity.this, "Het is niet gelukt om een account aan te maken. Probeer het opnieuw", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -62,12 +62,6 @@ public class SignUpActivity extends AppCompatActivity
 
     private boolean performSignUp(String email, String password)
     {
-        // Implement your signup logic here
-        // This could involve validating input, checking if the username is available,
-        // and saving the user's information to a database or remote server
-
-        // Return true if signup is successful, false otherwise
-        // For this example, we'll assume signup is successful if both username and password are non-empty
         return !email.isEmpty() && !password.isEmpty();
     }
 }

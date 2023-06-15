@@ -35,7 +35,7 @@ public class ProfileFragment extends Fragment {
                 // Set the user as logged out
                 sessionManager.setLoggedIn(false);
 
-                Toast.makeText(requireContext(), "Sign out clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Succesvol uitgelogd", Toast.LENGTH_SHORT).show();
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragmentManager.beginTransaction()

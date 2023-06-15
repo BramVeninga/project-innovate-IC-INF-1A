@@ -67,7 +67,7 @@ public class LoginFragment extends Fragment {
                     fragmentTransaction.commit();
                 } else {
                     // Login failed
-                    Toast.makeText(requireContext(), "Invalid email or password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Ongeldig emailadres of wachtwoord", Toast.LENGTH_SHORT).show();
                 }
             }
         });
