@@ -35,6 +35,8 @@ public class AppService extends Service implements LocationListener {
     private List<Geofence> geofenceList;
     private MyDatabaseHelper myDB;
     private List<Compartment> usedCompartments;
+    private ArrayList<Compartment> matchingCompartments;
+    private ArrayList<Compartment> nonMatchingCompartments;
 
     @Override
     public void onCreate() {
@@ -157,6 +159,25 @@ public class AppService extends Service implements LocationListener {
 
         return true;
     }
+
+    public void changeBagStatus() {
+        List<Integer> getAllCompartments = new ArrayList<>();
+        getAllCompartments.add(0);
+        getAllCompartments.add(1);
+        getAllCompartments.add(2);
+        getAllCompartments.add(3);
+
+        matchingCompartments = new ArrayList<>();
+        nonMatchingCompartments = new ArrayList<>();
+
+        for (Compartment compartment : usedCompartments) {
+            if (getAllCompartments.contains(compartment.getCompartmentId())) {
+                matchingCompartments.add(compartment);
+            }
+        }
+    }
+
+
 
     private void showNotification() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NOTIFICATION_POLICY)
