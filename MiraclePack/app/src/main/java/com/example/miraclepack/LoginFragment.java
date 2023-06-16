@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,8 +17,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 public class LoginFragment extends Fragment {
-    private TextView email;
-    private TextView wachtwoord;
+    private EditText email;
+    private EditText wachtwoord;
     private SQLiteDatabase database;
     private SessionManager sessionManager;
 
@@ -48,8 +49,11 @@ public class LoginFragment extends Fragment {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String enteredEmail = email.getText().toString();
-                String enteredWachtwoord = wachtwoord.getText().toString();
+                EditText editTextEmail = requireView().findViewById(R.id.email);
+                EditText editTextPassword = requireView().findViewById(R.id.password);
+
+                String enteredEmail = editTextEmail.getText().toString();
+                String enteredWachtwoord = editTextPassword.getText().toString();
 
                 // Check credentials in the database
                 if (checkCredentials(enteredEmail, enteredWachtwoord)) {
@@ -58,6 +62,9 @@ public class LoginFragment extends Fragment {
 
                     // Set the user as logged in
                     sessionManager.setLoggedIn(true);
+                    String email = editTextEmail.getText().toString();
+                    sessionManager.setEmail(email); // Store the email
+
 
                     // Navigate to the ProfileFragment after a successful login
                     FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();

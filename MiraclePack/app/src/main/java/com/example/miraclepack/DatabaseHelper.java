@@ -29,6 +29,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_USERS);
     }
 
+    public static String getColumnEmail() {
+        return COLUMN_EMAIL;
+    }
+
     private static void addDataToDB(SQLiteDatabase db, String[] queries) {
         for (String query : queries) {
             addData(db, query);

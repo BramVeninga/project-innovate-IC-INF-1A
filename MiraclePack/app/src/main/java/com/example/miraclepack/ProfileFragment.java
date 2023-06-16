@@ -1,11 +1,14 @@
 package com.example.miraclepack;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -18,6 +21,9 @@ public class ProfileFragment extends Fragment {
     private Button signOutButton;
     private Button passwordResetButton;
     private SessionManager sessionManager;
+    private TextView emailTextView;
+    private SQLiteDatabase database;
+
 
     public ProfileFragment() {
         // Empty constructor
@@ -27,8 +33,15 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         sessionManager = new SessionManager(requireContext());
+        DatabaseHelper dbHelper = new DatabaseHelper(requireContext());
+        database = dbHelper.getReadableDatabase();
+
 
         signOutButton = view.findViewById(R.id.buttonSignOut);
+        emailTextView = view.findViewById(R.id.EmailTextView);
+        String loggedInEmail = getLoggedInEmail();
+        emailTextView.setText(loggedInEmail);
+
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,7 +57,6 @@ public class ProfileFragment extends Fragment {
                         .commit();
             }
         });
-
 
         passwordResetButton = view.findViewById(R.id.buttonPasswordReset);
         passwordResetButton.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +77,35 @@ public class ProfileFragment extends Fragment {
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
+
+    private String getLoggedInEmail() {
+        return sessionManager.getEmail();
+    }
+
+//    private String getLoggedInEmail() {
+//        String loggedInEmail = "";
+//        String loggedInPassword = sessionManager.getPassword();
+//        String emailColumn = DatabaseHelper.getColumnEmail();
+//
+//        DatabaseHelper databaseHelper = new DatabaseHelper(requireContext());
+//        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+//
+//        String selection = "password = ?";
+//        String[] selectionArgs = {loggedInPassword};
+//
+//        Cursor cursor = db.query("users", new String[]{emailColumn}, selection, selectionArgs, null, null, null);
+//        if (cursor.moveToFirst()) {
+//            int columnIndex = cursor.getColumnIndex(emailColumn);
+//            if (columnIndex >= 0) {
+//                loggedInEmail = cursor.getString(columnIndex);
+//            }
+//        }
+//
+//        cursor.close();
+//        db.close();
+//
+//        return loggedInEmail;
+//    }
 
     public void openLoginFragment(View view) {
         replaceFragment(new LoginFragment());
