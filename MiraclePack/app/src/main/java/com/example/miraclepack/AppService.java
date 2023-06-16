@@ -36,7 +36,6 @@ public class AppService extends Service implements LocationListener {
     private MyDatabaseHelper myDB;
     private List<Compartment> usedCompartments;
     private ArrayList<Compartment> matchingCompartments;
-    private ArrayList<Compartment> nonMatchingCompartments;
 
     @Override
     public void onCreate() {
@@ -168,7 +167,6 @@ public class AppService extends Service implements LocationListener {
         getAllCompartments.add(3);
 
         matchingCompartments = new ArrayList<>();
-        nonMatchingCompartments = new ArrayList<>();
 
         for (Compartment compartment : usedCompartments) {
             if (getAllCompartments.contains(compartment.getCompartmentId())) {
@@ -177,7 +175,9 @@ public class AppService extends Service implements LocationListener {
         }
     }
 
-
+    public ArrayList<Compartment> getMatchingCompartments() {
+        return matchingCompartments;
+    }
 
     private void showNotification() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NOTIFICATION_POLICY)

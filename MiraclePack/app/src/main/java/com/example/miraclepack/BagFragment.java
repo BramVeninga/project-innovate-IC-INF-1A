@@ -132,8 +132,15 @@ public class BagFragment extends Fragment {
     }
 
     //Fills the recyclerView with data from all the compartments relevant to the selected day.
-    private void recyclerViewSetup(Integer count, ArrayList<ConfigurationItem> configItemList, RecyclerView recyclerView) {
+    private void recyclerViewSetup(Integer count, ArrayList<ConfigurationItem> configItemList, RecyclerView recyclerView, ArrayList<>) {
         configItemList = myDB.fillConfigItems(myDB.getConfigItems(weekDays.get(count)));
+
+        if(appService != null) {
+            for (ConfigurationItem configurationItem : configItemList) {
+            }
+
+        }
+
         CustomAdapter recyclerAdapter = new CustomAdapter(getContext(), configItemList);
         recyclerView.setAdapter(recyclerAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
