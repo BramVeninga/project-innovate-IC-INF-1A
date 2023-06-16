@@ -45,6 +45,7 @@ public class AppService extends Service implements LocationListener {
         geofenceList = myDB.getAllGeofences();
         usedCompartments = myDB.getUsedCompartmentsOfCurrentDay();
         Log.d("AppServiceMessage", "Service is gestart");
+        changeBagStatus();
     }
 
     public MyBinder getMyBinder() {
@@ -164,7 +165,6 @@ public class AppService extends Service implements LocationListener {
         getAllCompartments.add(0);
         getAllCompartments.add(1);
         getAllCompartments.add(2);
-        getAllCompartments.add(3);
 
         matchingCompartments = new ArrayList<>();
 
@@ -173,6 +173,22 @@ public class AppService extends Service implements LocationListener {
                 matchingCompartments.add(compartment);
             }
         }
+    }
+
+    public ArrayList<ConfigurationItem> compareCompartmentsAndConfigurations(Configuration configuration) {
+        ArrayList<ConfigurationItem> configItemList = new ArrayList<>();
+
+        configItemList = myDB.fillConfigItems(myDB.getConfigItems(configuration));
+
+        for (ConfigurationItem configurationItem : configItemList) {
+            for (Compartment compartment : matchingCompartments) {
+                if (configurationItem.getCompartment().getCompartmentId() == compartment.getCompartmentId() && configurationItem.getName() != "Leeg") {
+                    configurationItem.setStatus(true);
+                    break;
+                }
+            }
+        }
+        return configItemList;
     }
 
     public ArrayList<Compartment> getMatchingCompartments() {

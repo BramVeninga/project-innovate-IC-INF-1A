@@ -5,11 +5,13 @@ public class ConfigurationItem {
     private String name;
     private Compartment compartment;
     private String configurationName;
+    private boolean status;
 
     public ConfigurationItem(String name, Compartment compartment, String configurationName) {
         this.name = name;
         this.compartment = compartment;
         this.configurationName = configurationName;
+        this.status = false;
     }
 
     public ConfigurationItem() {
@@ -38,5 +40,13 @@ public class ConfigurationItem {
 
     public void setConfigurationName(String configurationName) {
         this.configurationName = configurationName;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }
