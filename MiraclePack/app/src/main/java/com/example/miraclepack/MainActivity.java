@@ -1,5 +1,10 @@
 package com.example.miraclepack;
 
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -28,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     private boolean isLoggedIn = false;
     private SessionManager sessionManager;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,8 +66,10 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-    }
-
+    app-services
+        // Background location service
+        Intent serviceIntent = new Intent(this, AppService.class);
+        startService(serviceIntent);
 
 
     private void replaceFragment(Fragment fragment) {
@@ -83,12 +88,6 @@ public class MainActivity extends AppCompatActivity {
             setTitle("Over ons");
         }
     }
-
-    private boolean checkIfLoggedIn() {
-        SharedPreferences sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
-        return sharedPreferences.getBoolean("is_logged_in", false);
-    }
-
 
     public void openSignUpActivity(View view) {
         Intent intent = new Intent(this, SignUpActivity.class);

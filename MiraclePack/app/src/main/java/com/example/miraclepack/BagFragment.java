@@ -1,18 +1,21 @@
 package com.example.miraclepack;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +38,8 @@ public class BagFragment extends Fragment {
     private RecyclerView itemList;
     private Spinner weekDaySpinner;
     private ArrayList<ConfigurationItem> configItems;
+    private AppService appService;
+    private boolean serviceBound = false;
 
     public BagFragment() {
         // Required empty public constructor
@@ -57,11 +62,6 @@ public class BagFragment extends Fragment {
         ArrayAdapter<String> adapter = setWeekdaySpinnerAdapter(weekDays);
         weekDaySpinner.setAdapter(adapter);
 
-        Integer weekDaySpinnerIndex = getWeekdaySpinnerIndex(weekDays);
-        weekDaySpinner.setSelection(weekDaySpinnerIndex);
-        if (selectedWeekday == null)  setSelectedWeekday(weekDaySpinner.getSelectedItem().toString());
-        recyclerViewSetup(weekDaySpinnerIndex, configItems, itemList);
-
         addBagContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,8 +81,10 @@ public class BagFragment extends Fragment {
         weekDaySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                recyclerViewSetup(position, BagFragment.this.configItems, BagFragment.this.itemList);
-                setSelectedWeekday(weekDaySpinner.getAdapter().getItem(position).toString());
+                if (appService != null) {
+                    recyclerViewSetup(position, BagFragment.this.itemList, appService.getMatchingCompartments());
+                    setSelectedWeekday(weekDaySpinner.getAdapter().getItem(position).toString());
+                }
             }
 
             @Override
@@ -93,17 +95,46 @@ public class BagFragment extends Fragment {
         return view;
     }
 
+    private void setSelectedWeekday(String weekday) {
+        for (Configuration configuration: weekDays) {
+            if (configuration.getWeekday().equals(weekday)) {
+                this.selectedWeekday = configuration;
+                if (appService != null) {
+                    appService.setSelectedWeekday(this.selectedWeekday);
+                }
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bindService();
+    }
+
+    private void bindService() {
+        Intent serviceIntent = new Intent(getContext(), AppService.class);
+        getActivity().bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
+    }
+
     //Returns an index fo the Spinner, so the Spinner can be opened with the current day as default.
     @NonNull
     private Integer getWeekdaySpinnerIndex(List<Configuration> configList) {
-        Calendar today = Calendar.getInstance();
-        String day = today.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+        String day = getToday();
         Integer weekDaySpinnerIndex = determineSpinnerStartIndex(configList, day);
         if (weekDaySpinnerIndex == -1) {
             weekDaySpinnerIndex = 0;
             Log.d("Error", "getWeekdaySpinnerIndex: Error, day not found.");
         }
         return weekDaySpinnerIndex;
+    }
+
+    @Nullable
+    private static String getToday() {
+        Calendar today = Calendar.getInstance();
+        String day = today.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+        return day;
     }
 
     //Returns an adapter with all the configurations from the SQLite database.
@@ -118,11 +149,13 @@ public class BagFragment extends Fragment {
     }
 
     //Fills the recyclerView with data from all the compartments relevant to the selected day.
-    private void recyclerViewSetup(Integer count, ArrayList<ConfigurationItem> configItemList, RecyclerView recyclerView) {
-        configItemList = myDB.fillConfigItems(myDB.getConfigItems(weekDays.get(count)));
-        CustomAdapter recyclerAdapter = new CustomAdapter(getContext(), configItemList);
-        recyclerView.setAdapter(recyclerAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    private void recyclerViewSetup(Integer count, RecyclerView recyclerView, ArrayList<Compartment> matchingCompartments) {
+        if (appService != null) {
+            ArrayList<ConfigurationItem> configItemList = appService.compareCompartmentsAndConfigurations(weekDays.get(count));
+            CustomAdapter recyclerAdapter = new CustomAdapter(getContext(), configItemList);
+            recyclerView.setAdapter(recyclerAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        }
     }
 
     //Gets the position of the entered day from the list. Defaults to -1 if there is no configuration for said day.
@@ -139,24 +172,24 @@ public class BagFragment extends Fragment {
         return -1;
     }
 
-    private void setSelectedWeekday(String weekday) {
-        for (Configuration configuration: weekDays) {
-            if (weekday == configuration.getWeekday()) {
-                this.selectedWeekday = configuration;
-                return;
-            }
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            AppService.MyBinder binder = (AppService.MyBinder) service;
+            appService = binder.getService();
+            serviceBound = true;
+
+            selectedWeekday = appService.getSelectedWeekday();
+
+            Integer weekDaySpinnerIndex = getWeekdaySpinnerIndex(weekDays);
+            weekDaySpinner.setSelection(determineSpinnerStartIndex(weekDays, selectedWeekday.getWeekday()));
+
+            recyclerViewSetup(weekDaySpinnerIndex, itemList, appService.getMatchingCompartments());
         }
-    }
 
-    private void changeImageViewColor() {
-        ImageView imageView = getView().findViewById(R.id.bagStatus);
-
-        boolean isConditionTrue = true; // Condition
-
-        if (isConditionTrue) {
-            imageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green), android.graphics.PorterDuff.Mode.SRC_IN);
-        } else {
-            imageView.clearColorFilter();
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            serviceBound = false;
         }
-    }
+    };
 }

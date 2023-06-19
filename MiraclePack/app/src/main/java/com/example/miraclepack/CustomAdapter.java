@@ -1,10 +1,12 @@
 package com.example.miraclepack;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,6 +41,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.item_name_txt.setText(configItems.get(position).getName());
         holder.compartment_id_txt.setText(configItems.get(position).getCompartment().getDescription());
+
+        if (configItems.get(position).isStatus()) {
+            holder.bagStatus.setImageResource(R.drawable.matching_circle);
+        }
+        else if (!configItems.get(position).isStatus()){
+            holder.bagStatus.setImageResource(R.drawable.non_matching_circle);
+        }
+        else if (configItems.get(position).getName() == "Leeg") {
+            holder.bagStatus.setImageResource(R.drawable.default_circle);
+        }
     }
 
     @Override
@@ -49,10 +61,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView item_name_txt, compartment_id_txt;
+        ImageView bagStatus;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             item_name_txt = itemView.findViewById(R.id.item_name_txt);
             compartment_id_txt = itemView.findViewById(R.id.compartment_number_txt);
+            bagStatus = itemView.findViewById(R.id.bagStatus);
         }
     }
 }
