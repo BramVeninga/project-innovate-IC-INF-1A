@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,9 +17,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 public class LoginFragment extends Fragment {
-    private TextView email;
-    private TextView wachtwoord;
+    private EditText email;
+    private EditText wachtwoord;
     private SQLiteDatabase database;
+    private SessionManager sessionManager;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -33,6 +35,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        sessionManager = new SessionManager(requireContext());
 
         email = view.findViewById(R.id.email);
         wachtwoord = view.findViewById(R.id.password);
@@ -46,13 +49,22 @@ public class LoginFragment extends Fragment {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String enteredEmail = email.getText().toString();
-                String enteredWachtwoord = wachtwoord.getText().toString();
+                EditText editTextEmail = requireView().findViewById(R.id.email);
+                EditText editTextPassword = requireView().findViewById(R.id.password);
+
+                String enteredEmail = editTextEmail.getText().toString();
+                String enteredWachtwoord = editTextPassword.getText().toString();
 
                 // Check credentials in the database
                 if (checkCredentials(enteredEmail, enteredWachtwoord)) {
                     // Successful login
                     Toast.makeText(requireContext(), "Login successvol", Toast.LENGTH_SHORT).show();
+
+                    // Set the user as logged in
+                    sessionManager.setLoggedIn(true);
+                    String email = editTextEmail.getText().toString();
+                    sessionManager.setEmail(email); // Store the email
+
 
                     // Navigate to the ProfileFragment after a successful login
                     FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
@@ -62,7 +74,7 @@ public class LoginFragment extends Fragment {
                     fragmentTransaction.commit();
                 } else {
                     // Login failed
-                    Toast.makeText(requireContext(), "Invalid email or password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Ongeldig emailadres of wachtwoord", Toast.LENGTH_SHORT).show();
                 }
             }
         });

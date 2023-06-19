@@ -87,13 +87,13 @@
             tools:ignore="MissingConstraints">
 
             <LinearLayout
+                android:id="@+id/textViewLoggedInEmail"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_39sdp"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:gravity="center_vertical"
-                android:id="@+id/Emailbalk"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_39sdp"
                 android:background="@drawable/roundstyle"
                 android:backgroundTint="@color/white"
                 android:orientation="vertical">

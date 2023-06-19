@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.Manifest;
@@ -26,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     private boolean isLoggedIn = false;
+    private SessionManager sessionManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
         // Check if the user is logged in
         isLoggedIn = checkIfLoggedIn();
-
-        if (isLoggedIn) {
+        sessionManager = new SessionManager(this);
+        if (sessionManager.isLoggedIn()) {
             replaceFragment(new HomeFragment());
         } else {
             replaceFragment(new LoginFragment());
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (itemId == R.id.bag) {
                 replaceFragment(new BagFragment());
             } else if (itemId == R.id.profile) {
-                if (isLoggedIn) {
+                if (sessionManager.isLoggedIn()) {
                     replaceFragment(new ProfileFragment());
                 } else {
                     replaceFragment(new LoginFragment()); // Show the LoginFragment for the user to log in
@@ -82,11 +85,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean checkIfLoggedIn() {
-        // Implement your authentication mechanism here
-        // Return true if user is logged in, false otherwise
-        // You can use a shared preference, database, or any other method to check the login status
-        return false; // Replace with your logic
+        SharedPreferences sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean("is_logged_in", false);
     }
+
 
     public void openSignUpActivity(View view) {
         Intent intent = new Intent(this, SignUpActivity.class);

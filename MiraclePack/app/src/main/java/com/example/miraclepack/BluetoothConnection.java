@@ -27,6 +27,7 @@ public class BluetoothConnection extends AppCompatActivity {
     public void setBA(BluetoothAdapter BA) {
         this.BA = BA;
     }
+    
 
 
 

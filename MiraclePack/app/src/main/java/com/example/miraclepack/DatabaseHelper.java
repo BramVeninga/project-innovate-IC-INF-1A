@@ -29,6 +29,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_USERS);
     }
 
+    public static String getColumnEmail() {
+        return COLUMN_EMAIL;
+    }
+
     private static void addDataToDB(SQLiteDatabase db, String[] queries) {
         for (String query : queries) {
             addData(db, query);
@@ -75,11 +79,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         long result = db.insert(TABLE_USERS, null, cv);
 
-        if (result == -1) {
-            Toast.makeText(context, "Failed to add user", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "User added successfully!", Toast.LENGTH_SHORT).show();
-        }
         return result;
     }
 
@@ -92,11 +91,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         long result = db.insert(TABLE_USERS, null, cv);
 
-        if (result == -1) {
-            Toast.makeText(context, "Het is niet gelukt om de login gegevens op te slaan!", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Account is succesvol aangemaakt!", Toast.LENGTH_SHORT).show();
-        }
         return result;
     }
+
 }
