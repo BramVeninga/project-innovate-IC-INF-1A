@@ -1,6 +1,9 @@
 package com.example.miraclepack;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,6 +13,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -22,6 +26,7 @@ public class AddActivity extends AppCompatActivity {
     private EditText itemNameInput;
     private Spinner compartmentNameSpinner;
     private Button addButton;
+    private ImageButton backButton;
     private List<Compartment> compartments;
     private MyDatabaseHelper myDB;
 
@@ -38,6 +43,7 @@ public class AddActivity extends AppCompatActivity {
         itemNameInput = (EditText) findViewById(R.id.itemName);
         compartmentNameSpinner = (Spinner) findViewById(R.id.compartmentNameSpinner);
         addButton = (Button) findViewById(R.id.addButton);
+        backButton = (ImageButton) findViewById(R.id.backButton);
         compartments = new ArrayList<>();
         myDB = new MyDatabaseHelper(AddActivity.this);
 
@@ -58,17 +64,27 @@ public class AddActivity extends AppCompatActivity {
                 item.setName(name);
                 item.getCompartment().setDescription(compartmentName);
                 myDB.updateConfigItem(item);
-                Intent backIntent = new Intent(AddActivity.this, MainActivity.class);
+                Intent backIntent = new Intent(AddActivity.this, AddActivity.class);
                 startActivity(backIntent);
+                finish();
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                replaceFragment(new BagFragment());
             }
         });
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
     }
+
 
     //This methode is responsible for filling the Spinner with compartments from the database.
     public void fillCompartmentNameSpinner(List<Compartment> compartmentsList) {
