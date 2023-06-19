@@ -22,7 +22,9 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class AppService extends Service implements LocationListener {
     private static final int NOTIFICATION_ID = 1;
@@ -45,6 +47,7 @@ public class AppService extends Service implements LocationListener {
         geofenceList = myDB.getAllGeofences();
         usedCompartments = myDB.getUsedCompartmentsOfCurrentDay();
         Log.d("AppServiceMessage", "Service is gestart");
+        setToday();
         changeBagStatus();
     }
 
@@ -125,7 +128,7 @@ public class AppService extends Service implements LocationListener {
     private void checkGeofences(Location currentLocation) {
         for (Geofence geofence : geofenceList) {
             float distance = currentLocation.distanceTo(geofence.getLocation());
-            if (distance > GEOFENCE_RADIUS && !isLocationInsideGeofence(currentLocation, geofence) && !isContentInsideBag()) {
+            if (distance > GEOFENCE_RADIUS && !isLocationInsideGeofence(currentLocation, geofence) && isContentInsideBag()) {
                 showNotification();
             }
 
@@ -151,13 +154,35 @@ public class AppService extends Service implements LocationListener {
         getAllCompartments.add(1);
         getAllCompartments.add(2);
 
-        for (Compartment compartment : usedCompartments) {
-            if (!getAllCompartments.contains(compartment.getCompartmentId())) {
-                return false;
+        ArrayList<ConfigurationItem> configurationItems = this.compareCompartmentsAndConfigurations(selectedWeekday);
+        boolean contentMissing = false;
+        for (ConfigurationItem configurationItem : configurationItems) {
+            if (!configurationItem.isStatus()) {
+                contentMissing = true;
+
             }
         }
 
-        return true;
+        if (contentMissing) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void setToday() {
+        List<Configuration> weekDays = myDB.fillConfigurations(myDB.getConfiguration());
+
+        Calendar today = Calendar.getInstance();
+        String day = today.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+
+        for (Configuration configuration: weekDays) {
+            if (configuration.getWeekday().equals(day)) {
+                this.selectedWeekday = configuration;
+                setSelectedWeekday(this.selectedWeekday);
+
+            }
+        }
     }
 
     public boolean isCompartmentCorrectlyFilled(int compartmentID, int configurationCompartmentID, String configurationItemName, int counter, int listLength) {

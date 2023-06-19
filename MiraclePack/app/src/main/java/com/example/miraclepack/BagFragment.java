@@ -181,10 +181,6 @@ public class BagFragment extends Fragment {
 
             selectedWeekday = appService.getSelectedWeekday();
 
-            String today = getToday();
-
-            if (selectedWeekday == null) setSelectedWeekday(today);
-
             Integer weekDaySpinnerIndex = getWeekdaySpinnerIndex(weekDays);
             weekDaySpinner.setSelection(determineSpinnerStartIndex(weekDays, selectedWeekday.getWeekday()));
 
