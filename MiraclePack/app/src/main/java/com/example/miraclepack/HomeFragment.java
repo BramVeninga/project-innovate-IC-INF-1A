@@ -1,14 +1,25 @@
 package com.example.miraclepack;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -17,26 +28,39 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
+import java.util.UUID;
+
 
 public class HomeFragment extends Fragment {
     // Variables
     private Button viewContentButton;
-    private boolean bluetoothConnected = true;
+    private boolean bluetoothConnected = false;
     private boolean bluetoothAllowed = true;
     private boolean batteryCharging = false;
     private String configNameString = "Inhoud van de tas";
     private boolean gpsConnected = true;
     private boolean gpsAllowed = true;
-    TextView gpsText;
-    ImageView gpsImage;
-    ImageView bluetoothImage;
-    TextView bluetoothText;
-    ImageView batteryImage;
-    TextView batteryText;
-    TextView name;
-    TextView configName;
+    private TextView gpsText;
+    private ImageView gpsImage;
+    private ImageView bluetoothImage;
+    private TextView bluetoothText;
+    private ImageView batteryImage;
+    private TextView batteryText;
+    private TextView name;
+    private TextView configName;
     private int batteryPercentage = 60;
     private String batteryState;
+    private Button bluetoothButton;
+    private BluetoothAdapter BA;
+    private BluetoothSocket BS;
+    private BluetoothDevice bluetoothDevice;
+    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    private BluetoothConnection bluetooth;
+    private static final int BLUETOOTH_PERMISSION_CODE = 1;
+    private static final int BLUETOOTH_ADMIN_PERMISSION_CODE = 2;
+    private static final int BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE = 3;
+    private static final int PERMISSION_ALL = 4;
 
 
     public HomeFragment() {
@@ -54,11 +78,14 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+
         // Define variables
+        this.bluetooth = new BluetoothConnection();
         viewContentButton = view.findViewById(R.id.viewContentButton);
 
         name = view.findViewById(R.id.configName);
 
+        bluetoothButton = view.findViewById(R.id.bluetoothAddDevice);
         bluetoothText = view.findViewById(R.id.bluetoothState);
         bluetoothImage = view.findViewById(R.id.bluetoothStatusImage);
         batteryText = view.findViewById(R.id.batteryPercentage);
@@ -67,12 +94,17 @@ public class HomeFragment extends Fragment {
         gpsImage = view.findViewById(R.id.gpsStateImage);
         gpsText = view.findViewById(R.id.gpsState);
 
+        if (!hasPermissions(getContext(), Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN)) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN}, PERMISSION_ALL);
+        }
+
         // Functions
         setBluetoothState();
         setBatteryState();
         setBatteryImageState();
         setConfigName();
         isGpsConnected();
+        checkBluetoothEnabled(bluetooth.getBA(), BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE);
 
         // Button that opens the bagfragment
         viewContentButton.setOnClickListener(new View.OnClickListener() {
@@ -81,9 +113,56 @@ public class HomeFragment extends Fragment {
                 replaceFragment(new BagFragment());
             }
         });
+        bluetoothButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("MissingPermission")
+            @Override
+            public void onClick(View v) {
+//            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED) {
+//                pairedDevices = BA.getBondedDevices();
+//                    Log.d("BluetoothTest", pairedDevices.toString());
+//            }
+                if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED){
+                    try {
+                        bluetoothDevice = bluetooth.getBA().getRemoteDevice(new byte[] {0x00,0x21,0x13,0x00,0x6C,0x7A});
+                        int counter = 0;
+                        do {
+                            BS = bluetoothDevice.createRfcommSocketToServiceRecord(MY_UUID);
+                            BS.connect();
+                            counter++;
+                        } while(!BS.isConnected() && counter < 3);
+
+                    }catch (Exception e){
+                        Toast.makeText(getContext(),"Kan apparaat niet vinden", Toast.LENGTH_SHORT).show();
+                    }
+
+                    Log.d("BluetoothTest", "Bonded: " + BS.isConnected());
+                }
+            }
+
+        });
+
+
         return view;
     }
+        public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
+    public void checkBluetoothEnabled(BluetoothAdapter BA, int BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE) {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED) {
+            if (BA != null && !BA.isEnabled()) {
+                Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableBluetooth, BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE);
+            }
+        }
+    }
     // Replace the fragment
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
@@ -97,12 +176,12 @@ public class HomeFragment extends Fragment {
     // Set the bluetooth image and text
     public boolean setBluetoothState() {
         if (!bluetoothAllowed) {
-            bluetoothText.setText("Bluetooth inschakelen");
+            bluetoothText.setText("Bluetooth uitgeschakeld");
             bluetoothImage.setImageResource(R.drawable.baseline_bluetooth_disabled_24);
             return false;
         }
         else if (!bluetoothConnected) {
-            bluetoothText.setText("Tas verbinden");
+            bluetoothText.setText("Niet verbonden");
             bluetoothImage.setImageResource(R.drawable.baseline_bluetooth_24);
             return false;
         }

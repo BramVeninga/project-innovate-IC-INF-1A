@@ -181,102 +181,102 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 //    }
 
 
-        //Returns multiple rows of the ConfigurationItem table, according to the name of a Configuration object
-        public Cursor getConfigItems (Configuration configuration){
-            SQLiteDatabase database = this.getReadableDatabase();
-            return database.query(TABLE_CONFIG_ITEM, new String[]{COLUMN_NAME, COLUMN_COMPARTMENT_ID, COLUMN_ITEM_NAME}, COLUMN_NAME + "=?", new String[]{configuration.getName()}, null, null, null);
-        }
+    //Returns multiple rows of the ConfigurationItem table, according to the name of a Configuration object
+    public Cursor getConfigItems (Configuration configuration){
+        SQLiteDatabase database = this.getReadableDatabase();
+        return database.query(TABLE_CONFIG_ITEM, new String[]{COLUMN_NAME, COLUMN_COMPARTMENT_ID, COLUMN_ITEM_NAME}, COLUMN_NAME + "=?", new String[]{configuration.getName()}, null, null, null);
+    }
 
-        //Takes multiple rows from the ConfigurationItem Table, and fills a Arraylist with new ConfigurationItems
-        public ArrayList<ConfigurationItem> fillConfigItems (Cursor query){
-            ArrayList<ConfigurationItem> configItems = new ArrayList<>();
-            if (query.moveToFirst()) {
-                do {
-                    String configName = query.getString(0);
-                    int compId = query.getInt(1);
-                    String itemName = query.getString(2);
-                    ConfigurationItem configItem = new ConfigurationItem();
-                    if (itemName != null && !itemName.isEmpty()) {
-                        configItem.setName(itemName);
-                    } else {
-                        configItem.setName("Leeg");
-                    }
-                    configItem.getCompartment().setCompartmentId(compId);
-                    configItem.setConfigurationName(configName);
-                    configItems.add(configItem);
-                } while (query.moveToNext());
-            }
-            query.close();
-            return configItems;
+    //Takes multiple rows from the ConfigurationItem Table, and fills a Arraylist with new ConfigurationItems
+    public ArrayList<ConfigurationItem> fillConfigItems (Cursor query){
+        ArrayList<ConfigurationItem> configItems = new ArrayList<>();
+        if (query.moveToFirst()) {
+            do {
+                String configName = query.getString(0);
+                int compId = query.getInt(1);
+                String itemName = query.getString(2);
+                ConfigurationItem configItem = new ConfigurationItem();
+                if (itemName != null && !itemName.isEmpty()) {
+                    configItem.setName(itemName);
+                } else {
+                    configItem.setName("Leeg");
+                }
+                configItem.getCompartment().setCompartmentId(compId);
+                configItem.setConfigurationName(configName);
+                configItems.add(configItem);
+            } while (query.moveToNext());
         }
+        query.close();
+        return configItems;
+    }
 
-        //Returns a row with the compartmentID of a compartment with a given description.
-        public Cursor getCompartmentId (ConfigurationItem item){
-            SQLiteDatabase database = this.getReadableDatabase();
-            return database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID}, COLUMN_DESCRIPTION + "=?", new String[]{item.getCompartment().getDescription()}, null, null, null);
+    //Returns a row with the compartmentID of a compartment with a given description.
+    public Cursor getCompartmentId (ConfigurationItem item){
+        SQLiteDatabase database = this.getReadableDatabase();
+        return database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID}, COLUMN_DESCRIPTION + "=?", new String[]{item.getCompartment().getDescription()}, null, null, null);
+    }
+
+    //Returns a row with a compartment, with a given compartmentID
+    public Cursor getCompartment (String compId){
+        SQLiteDatabase database = this.getReadableDatabase();
+        return database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID, COLUMN_DESCRIPTION}, COLUMN_COMPARTMENT_ID + "=?", new String[]{compId}, null, null, null);
+    }
+
+    //Takes a row with a compartment and sets it in a ConfigurationItem
+    public void filloutCompInConfigItem (Cursor query, ConfigurationItem configItem){
+        if (query.moveToFirst()) {
+            do {
+                int compId = query.getInt(0);
+                String compDescription = query.getString(1);
+                configItem.getCompartment().setCompartmentId(compId);
+                configItem.getCompartment().setDescription(compDescription);
+            } while (query.moveToNext());
         }
+        query.close();
+    }
 
-        //Returns a row with a compartment, with a given compartmentID
-        public Cursor getCompartment (String compId){
-            SQLiteDatabase database = this.getReadableDatabase();
-            return database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID, COLUMN_DESCRIPTION}, COLUMN_COMPARTMENT_ID + "=?", new String[]{compId}, null, null, null);
+    //Returns multiple rows with all the compartments form the Compartment Table
+    public Cursor getCompartments () {
+        SQLiteDatabase database = this.getReadableDatabase();
+        return database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID, COLUMN_DESCRIPTION}, null, null, null, null, null);
+    }
+
+    //Takes multiple rows form the compartment table filled with CompartmentID's and descriptions, and adds them to an arraylist.
+    public List<Compartment> fillCompartments (Cursor query){
+        List<Compartment> compartments = new ArrayList<>();
+        if (query.moveToFirst()) {
+            do {
+                Integer id = query.getInt(0);
+                String description = query.getString(1);
+                Compartment compartment = new Compartment(id, description);
+                compartments.add(compartment);
+            } while (query.moveToNext());
         }
+        query.close();
+        return compartments;
+    }
 
-        //Takes a row with a compartment and sets it in a ConfigurationItem
-        public void filloutCompInConfigItem (Cursor query, ConfigurationItem configItem){
-            if (query.moveToFirst()) {
-                do {
-                    int compId = query.getInt(0);
-                    String compDescription = query.getString(1);
-                    configItem.getCompartment().setCompartmentId(compId);
-                    configItem.getCompartment().setDescription(compDescription);
-                } while (query.moveToNext());
-            }
-            query.close();
+    //Returns multiple rows, with all the configurations from the Configuration table
+    public Cursor getConfiguration () {
+        SQLiteDatabase database = this.getReadableDatabase();
+        return database.query(TABLE_CONFIG, new String[]{COLUMN_NAME, COLUMN_WEEKDAY}, null, null, null, null, null);
+    }
+
+    //Takes multiple rows with configurations from the Configuration table, and puts them in an arraylist
+    public List<Configuration> fillConfigurations (Cursor query){
+        List<Configuration> configurations = new ArrayList<>();
+        if (query.moveToFirst()) {
+            do {
+                String name = query.getString(0);
+                String weekday = query.getString(1);
+                Configuration configuration = new Configuration(name, weekday);
+                configurations.add(configuration);
+            } while (query.moveToNext());
         }
+        query.close();
+        return configurations;
 
-        //Returns multiple rows with all the compartments form the Compartment Table
-        public Cursor getCompartments () {
-            SQLiteDatabase database = this.getReadableDatabase();
-            return database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID, COLUMN_DESCRIPTION}, null, null, null, null, null);
-        }
-
-        //Takes multiple rows form the compartment table filled with CompartmentID's and descriptions, and adds them to an arraylist.
-        public List<Compartment> fillCompartments (Cursor query){
-            List<Compartment> compartments = new ArrayList<>();
-            if (query.moveToFirst()) {
-                do {
-                    Integer id = query.getInt(0);
-                    String description = query.getString(1);
-                    Compartment compartment = new Compartment(id, description);
-                    compartments.add(compartment);
-                } while (query.moveToNext());
-            }
-            query.close();
-            return compartments;
-        }
-
-        //Returns multiple rows, with all the configurations from the Configuration table
-        public Cursor getConfiguration () {
-            SQLiteDatabase database = this.getReadableDatabase();
-            return database.query(TABLE_CONFIG, new String[]{COLUMN_NAME, COLUMN_WEEKDAY}, null, null, null, null, null);
-        }
-
-        //Takes multiple rows with configurations from the Configuration table, and puts them in an arraylist
-        public List<Configuration> fillConfigurations (Cursor query){
-            List<Configuration> configurations = new ArrayList<>();
-            if (query.moveToFirst()) {
-                do {
-                    String name = query.getString(0);
-                    String weekday = query.getString(1);
-                    Configuration configuration = new Configuration(name, weekday);
-                    configurations.add(configuration);
-                } while (query.moveToNext());
-            }
-            query.close();
-            return configurations;
-
-        }
+    }
 
     public List<Compartment> getUsedCompartmentsOfCurrentDay() {
         // Get current day of the week
@@ -323,50 +323,50 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Deletes geofence based on the geofence name in de database
-            public void deleteGeofence(String geofenceName) {
-                SQLiteDatabase db = this.getWritableDatabase();
-                db.delete(TABLE_GEOFENCE, COLUMN_GEOFENCE_NAME + " = ?", new String[]{geofenceName});
-                db.close();
-            }
+    public void deleteGeofence(String geofenceName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_GEOFENCE, COLUMN_GEOFENCE_NAME + " = ?", new String[]{geofenceName});
+        db.close();
+    }
 
-        // Adding geofence to the database based on current location
-        public void addGeofence(Geofence geofence) {
-            SQLiteDatabase db = getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_NAME, geofence.getName());
-            values.put(COLUMN_GEOFENCE_LATITUDE, geofence.getLatitude());
-            values.put(COLUMN_GEOFENCE_LONGITUDE, geofence.getLongitude());
-            values.put(COLUMN_GEOFENCE_RADIUS, geofence.getRadius());
-            db.insert(TABLE_GEOFENCE, null, values);
-            db.close();
-        }
+    // Adding geofence to the database based on current location
+    public void addGeofence(Geofence geofence) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, geofence.getName());
+        values.put(COLUMN_GEOFENCE_LATITUDE, geofence.getLatitude());
+        values.put(COLUMN_GEOFENCE_LONGITUDE, geofence.getLongitude());
+        values.put(COLUMN_GEOFENCE_RADIUS, geofence.getRadius());
+        db.insert(TABLE_GEOFENCE, null, values);
+        db.close();
+    }
 
-        // Retrieving all geofences stored in database and return all objects as a list
-        public List<Geofence> getAllGeofences() {
-            List<Geofence> geofenceList = new ArrayList<>();
-            SQLiteDatabase db = getReadableDatabase();
-            Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_GEOFENCE, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_NAME));
-                    double latitude = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_LATITUDE));
-                    double longitude = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_LONGITUDE));
-                    float radius = cursor.getFloat(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_RADIUS));
-                    Geofence geofence = new Geofence(name, latitude, longitude, radius);
-                    geofenceList.add(geofence);
-                } while (cursor.moveToNext());
-            }
-            assert cursor != null;
-            cursor.close();
-            db.close();
-            return geofenceList;
+    // Retrieving all geofences stored in database and return all objects as a list
+    public List<Geofence> getAllGeofences() {
+        List<Geofence> geofenceList = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_GEOFENCE, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_NAME));
+                double latitude = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_LATITUDE));
+                double longitude = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_LONGITUDE));
+                float radius = cursor.getFloat(cursor.getColumnIndexOrThrow(COLUMN_GEOFENCE_RADIUS));
+                Geofence geofence = new Geofence(name, latitude, longitude, radius);
+                geofenceList.add(geofence);
+            } while (cursor.moveToNext());
         }
+        assert cursor != null;
+        cursor.close();
+        db.close();
+        return geofenceList;
+    }
 
-        // Ensuring that only one instance of the class is created and providing a global access point to retrieve that instance
-        public static synchronized MyDatabaseHelper getInstance(Context context) {
-            if (instance == null) {
-                instance = new MyDatabaseHelper(context.getApplicationContext());
-            }
-            return instance;
+    // Ensuring that only one instance of the class is created and providing a global access point to retrieve that instance
+    public static synchronized MyDatabaseHelper getInstance(Context context) {
+        if (instance == null) {
+            instance = new MyDatabaseHelper(context.getApplicationContext());
         }
+        return instance;
+    }
 }

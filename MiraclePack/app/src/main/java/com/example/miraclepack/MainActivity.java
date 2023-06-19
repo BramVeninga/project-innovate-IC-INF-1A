@@ -6,38 +6,59 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.View;
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
+import android.content.pm.PackageManager;
+import android.util.Log;
+import android.widget.Button;
+
+import java.io.IOException;
+import java.util.Set;
+import java.util.UUID;
+
 import com.example.miraclepack.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
+
     ActivityMainBinding binding;
-    private boolean isLoggedIn = false;
-
-//    public BluetoothConnection ble;
-    //public BluetoothConnection ble;
-
+    private SessionManager sessionManager;
+//    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+//    private static final int BLUETOOTH_PERMISSION_CODE = 1;
+//    private static final int BLUETOOTH_ADMIN_PERMISSION_CODE = 2;
+//    private static final int BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE = 3;
+//    private static final int PERMISSION_ALL = 4;
+//    private BluetoothSocket BS;
+//    private BluetoothAdapter BA;
+//    private Set<BluetoothDevice> pairedDevices;
+//    private Button bluetoothButton;
+//    private BluetoothDevice bluetoothDevice;
+//    private BluetoothConnection bluetooth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-//        ble = new BluetoothConnection();
-//        ble.connectToBluetooth();
-
-//        ble = new BluetoothConnection();
-//        ble.connectToBluetooth();
-
         setSupportActionBar(binding.toolbar);
-
         // Check if the user is logged in
-        isLoggedIn = checkIfLoggedIn();
+        sessionManager = new SessionManager(this);
+//        this.bluetooth = new BluetoothConnection();
 
-        if (isLoggedIn) {
+        if (sessionManager.isLoggedIn()) {
             replaceFragment(new HomeFragment());
         } else {
             replaceFragment(new LoginFragment());
@@ -50,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (itemId == R.id.bag) {
                 replaceFragment(new BagFragment());
             } else if (itemId == R.id.profile) {
-                if (isLoggedIn) {
+                if (sessionManager.isLoggedIn()) {
                     replaceFragment(new ProfileFragment());
                 } else {
                     replaceFragment(new LoginFragment()); // Show the LoginFragment for the user to log in
@@ -69,7 +90,53 @@ public class MainActivity extends AppCompatActivity {
 //        }
         Intent serviceIntent = new Intent(this, AppService.class);
         startService(serviceIntent);
+//        //acquiring the necessary permissions for the bluetooth connection
+//        if (!hasPermissions(this, Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN)) {
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN}, PERMISSION_ALL);
+//        }
+
+//        bluetooth.checkBluetoothEnabled(bluetooth.getBA(), BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE);
+//        checkBluetoothEnabled(bluetooth.getBA(), BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE);
+
+//        bluetoothButton = findViewById(R.id.bluetoothAddDevice);
+//
+//        bluetoothButton.setOnClickListener(new View.OnClickListener() {
+//        @SuppressLint("MissingPermission")
+//        @Override
+//        public void onClick(View v) {
+////            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED) {
+////                pairedDevices = BA.getBondedDevices();
+////                    Log.d("BluetoothTest", pairedDevices.toString());
+////            }
+//            if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED){
+//                bluetoothDevice = BA.getRemoteDevice(new byte[] {0x00,0x21,0x13,0x00,0x6C,0x7A});
+//                int counter = 0;
+//                do {
+//                    try {
+//                        BS = bluetoothDevice.createRfcommSocketToServiceRecord(MY_UUID);
+//                        BS.connect();
+//                    } catch (IOException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                    counter++;
+//                } while(!BS.isConnected() && counter < 3);
+//
+//                Log.d("BluetoothTest", "Bonded: " + BS.isConnected());
+//            }
+//        }
+//
+//    });
+
     }
+//    public void checkBluetoothEnabled(BluetoothAdapter BA, int BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE) {
+//        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED) {
+//            if (BA != null && !BA.isEnabled()) {
+//                Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//                startActivityForResult(enableBluetooth, BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE);
+//            }
+//        }
+//    }
+
 
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -89,16 +156,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean checkIfLoggedIn() {
-        // Implement your authentication mechanism here
-        // Return true if user is logged in, false otherwise
-        // You can use a shared preference, database, or any other method to check the login status
-        return false; // Replace with your logic
+        SharedPreferences sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean("is_logged_in", false);
     }
+
 
     public void openSignUpActivity(View view) {
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
     }
+//    public static boolean hasPermissions(Context context, String... permissions) {
+//        if (context != null && permissions != null) {
+//            for (String permission : permissions) {
+//                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+//                    return false;
+//                }
+//            }
+//        }
+//        return true;
+//    }
 
 
 }

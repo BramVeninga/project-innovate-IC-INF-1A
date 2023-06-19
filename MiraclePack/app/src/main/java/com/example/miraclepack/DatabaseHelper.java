@@ -9,12 +9,11 @@ import android.widget.Toast;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "mydatabase.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String TABLE_USERS = "users";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_EMAIL = "email";
     private static final String COLUMN_PASSWORD = "password";
-
 
     private static final String CREATE_TABLE_USERS = "CREATE TABLE " + TABLE_USERS + " ("
             + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -30,13 +29,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_USERS);
     }
 
-    //Takes the queries from the String array and adds executes the queries.
+    public static String getColumnEmail() {
+        return COLUMN_EMAIL;
+    }
+
     private static void addDataToDB(SQLiteDatabase db, String[] queries) {
         for (String query : queries) {
             addData(db, query);
         }
     }
-    //Checks if the query is not null, and then executes the query
+
     private static void addData(SQLiteDatabase db, String Query) {
         if (Query != null) {
             db.execSQL(Query);
@@ -68,39 +70,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return hasCredentials;
     }
 
-    long addUser (String email, String password, Context context){
+    long addUser(String email, String password, Context context) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_EMAIL, email);
-        cv.put("wachtwoord", password);
+        cv.put(COLUMN_PASSWORD, password);
 
         long result = db.insert(TABLE_USERS, null, cv);
 
-        if (result == -1) {
-            Toast.makeText(context, "Failed to add user", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "User added successfully!", Toast.LENGTH_SHORT).show();
-        }
         return result;
     }
 
-    long insertLoginDetails(String email, String password, Context context)
-    {
+    long insertLoginDetails(String email, String password, Context context) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_EMAIL, email);
-        cv.put("wachtwoord", password);
+        cv.put(COLUMN_PASSWORD, password);
 
         long result = db.insert(TABLE_USERS, null, cv);
 
-        if (result == -1) {
-            Toast.makeText(context, "Het is niet gelukt om de login gegevens op te slaan!", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Account is succesvol aangemaakt!", Toast.LENGTH_SHORT).show();
-        }
         return result;
     }
+
 }
-
