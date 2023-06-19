@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,8 +57,6 @@ public class BagFragment extends Fragment {
         itemList = (RecyclerView) view.findViewById(R.id.itemList);
         addBagContent = view.findViewById(R.id.addBagContent);
 
-        if (selectedWeekday == null) setSelectedWeekday(weekDaySpinner.getSelectedItem().toString());
-
         //fills the adapter and attaches it to the Spinner
         weekDays = myDB.fillConfigurations(myDB.getConfiguration());
         ArrayAdapter<String> adapter = setWeekdaySpinnerAdapter(weekDays);
@@ -98,8 +97,11 @@ public class BagFragment extends Fragment {
 
     private void setSelectedWeekday(String weekday) {
         for (Configuration configuration: weekDays) {
-            if (weekday == configuration.getWeekday()) {
+            if (configuration.getWeekday().equals(weekday)) {
                 this.selectedWeekday = configuration;
+                if (appService != null) {
+                    appService.setSelectedWeekday(this.selectedWeekday);
+                }
                 return;
             }
         }
@@ -119,14 +121,20 @@ public class BagFragment extends Fragment {
     //Returns an index fo the Spinner, so the Spinner can be opened with the current day as default.
     @NonNull
     private Integer getWeekdaySpinnerIndex(List<Configuration> configList) {
-        Calendar today = Calendar.getInstance();
-        String day = today.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+        String day = getToday();
         Integer weekDaySpinnerIndex = determineSpinnerStartIndex(configList, day);
         if (weekDaySpinnerIndex == -1) {
             weekDaySpinnerIndex = 0;
             Log.d("Error", "getWeekdaySpinnerIndex: Error, day not found.");
         }
         return weekDaySpinnerIndex;
+    }
+
+    @Nullable
+    private static String getToday() {
+        Calendar today = Calendar.getInstance();
+        String day = today.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+        return day;
     }
 
     //Returns an adapter with all the configurations from the SQLite database.
@@ -171,8 +179,14 @@ public class BagFragment extends Fragment {
             appService = binder.getService();
             serviceBound = true;
 
+            selectedWeekday = appService.getSelectedWeekday();
+
+            String today = getToday();
+
+            if (selectedWeekday == null) setSelectedWeekday(today);
+
             Integer weekDaySpinnerIndex = getWeekdaySpinnerIndex(weekDays);
-            weekDaySpinner.setSelection(weekDaySpinnerIndex);
+            weekDaySpinner.setSelection(determineSpinnerStartIndex(weekDays, selectedWeekday.getWeekday()));
 
             recyclerViewSetup(weekDaySpinnerIndex, itemList, appService.getMatchingCompartments());
         }

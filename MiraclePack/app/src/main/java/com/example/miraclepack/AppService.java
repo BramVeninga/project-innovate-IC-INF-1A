@@ -8,7 +8,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.PorterDuff;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -16,7 +15,6 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -36,6 +34,8 @@ public class AppService extends Service implements LocationListener {
     private MyDatabaseHelper myDB;
     private List<Compartment> usedCompartments;
     private ArrayList<Compartment> matchingCompartments;
+    private Configuration selectedWeekday;
+    private boolean isInList = false;
 
     @Override
     public void onCreate() {
@@ -160,6 +160,21 @@ public class AppService extends Service implements LocationListener {
         return true;
     }
 
+    public boolean isCompartmentCorrectlyFilled(int compartmentID, int configurationCompartmentID, String configurationItemName, int counter, int listLength) {
+        if (compartmentID == configurationCompartmentID) {
+            this.isInList = true;
+            if (!configurationItemName.equals("Leeg")) {
+                return true;
+            }
+        }
+
+        if (!isInList && counter >= listLength && configurationItemName.equals("Leeg")) {
+            return true;
+        }
+
+        return false;
+    }
+
     public void changeBagStatus() {
         List<Integer> getAllCompartments = new ArrayList<>();
         getAllCompartments.add(0);
@@ -181,11 +196,14 @@ public class AppService extends Service implements LocationListener {
         configItemList = myDB.fillConfigItems(myDB.getConfigItems(configuration));
 
         for (ConfigurationItem configurationItem : configItemList) {
+            this.isInList = false;
+            int counter = 1;
             for (Compartment compartment : matchingCompartments) {
-                if (configurationItem.getCompartment().getCompartmentId() == compartment.getCompartmentId() && configurationItem.getName() != "Leeg") {
+                if (isCompartmentCorrectlyFilled(compartment.getCompartmentId(), configurationItem.getCompartment().getCompartmentId(), configurationItem.getName(), counter, matchingCompartments.size())) {
                     configurationItem.setStatus(true);
                     break;
                 }
+                counter++;
             }
         }
         return configItemList;
@@ -252,5 +270,13 @@ public class AppService extends Service implements LocationListener {
     public void onDestroy() {
         super.onDestroy();
         locationManager.removeUpdates(this);
+    }
+
+    public Configuration getSelectedWeekday() {
+        return selectedWeekday;
+    }
+
+    public void setSelectedWeekday(Configuration selectedWeekday) {
+        this.selectedWeekday = selectedWeekday;
     }
 }

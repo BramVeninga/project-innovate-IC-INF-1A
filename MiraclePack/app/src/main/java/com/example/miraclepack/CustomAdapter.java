@@ -45,6 +45,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         if (configItems.get(position).isStatus()) {
             holder.bagStatus.setImageResource(R.drawable.matching_circle);
         }
+        else if (configItems.get(position).getName() == "Leeg") {
+            holder.bagStatus.setImageResource(R.drawable.default_circle);
+        }
+        else {
+            holder.bagStatus.setImageResource(R.drawable.non_matching_circle);
+        }
     }
 
     @Override
