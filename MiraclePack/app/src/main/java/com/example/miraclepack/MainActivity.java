@@ -1,30 +1,13 @@
 package com.example.miraclepack;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.view.View;
-import android.Manifest;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
-import android.content.pm.PackageManager;
-import android.util.Log;
-import android.widget.Button;
 
 import com.example.miraclepack.databinding.ActivityMainBinding;
 
@@ -33,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     private boolean isLoggedIn = false;
     private SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,11 +50,10 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-    app-services
         // Background location service
         Intent serviceIntent = new Intent(this, AppService.class);
         startService(serviceIntent);
-
+    }
 
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -94,4 +77,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private boolean checkIfLoggedIn() {
+        // Add your logic here to check if the user is logged in
+        return false;
+    }
 }
