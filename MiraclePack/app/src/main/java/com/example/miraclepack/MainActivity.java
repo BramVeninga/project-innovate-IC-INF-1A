@@ -14,7 +14,6 @@ import com.example.miraclepack.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
-    private boolean isLoggedIn = false;
     private SessionManager sessionManager;
 
     @Override
@@ -24,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
         // Check if the user is logged in
-        isLoggedIn = checkIfLoggedIn();
         sessionManager = new SessionManager(this);
         if (sessionManager.isLoggedIn()) {
             replaceFragment(new HomeFragment());
@@ -75,10 +73,5 @@ public class MainActivity extends AppCompatActivity {
     public void openSignUpActivity(View view) {
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
-    }
-
-    private boolean checkIfLoggedIn() {
-        // Add your logic here to check if the user is logged in
-        return false;
     }
 }
