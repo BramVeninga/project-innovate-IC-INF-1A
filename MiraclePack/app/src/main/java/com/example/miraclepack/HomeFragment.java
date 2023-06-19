@@ -82,9 +82,7 @@ public class HomeFragment extends Fragment {
         // Define variables
         this.bluetooth = new BluetoothConnection();
         viewContentButton = view.findViewById(R.id.viewContentButton);
-
         name = view.findViewById(R.id.configName);
-
         bluetoothButton = view.findViewById(R.id.bluetoothAddDevice);
         bluetoothText = view.findViewById(R.id.bluetoothState);
         bluetoothImage = view.findViewById(R.id.bluetoothStatusImage);
@@ -117,28 +115,22 @@ public class HomeFragment extends Fragment {
             @SuppressLint("MissingPermission")
             @Override
             public void onClick(View v) {
-//            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED) {
-//                pairedDevices = BA.getBondedDevices();
-//                    Log.d("BluetoothTest", pairedDevices.toString());
-//            }
                 if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED){
-                    try {
-                        bluetoothDevice = bluetooth.getBA().getRemoteDevice(new byte[] {0x00,0x21,0x13,0x00,0x6C,0x7A});
+                    try {   //try catch method to catch any exceptions for when the connection cannot be established
+                        bluetoothDevice = bluetooth.getBA().getRemoteDevice(new byte[] {0x00,0x21,0x13,0x00,0x6C,0x7A}); //HC-05 module mac address for a direct connection
                         int counter = 0;
                         do {
-                            BS = bluetoothDevice.createRfcommSocketToServiceRecord(MY_UUID);
+                            BS = bluetoothDevice.createRfcommSocketToServiceRecord(MY_UUID);    // to make an connection possible an UUID is required, the stated MY_UUID is the most universal UUID available
                             BS.connect();
                             counter++;
-                        } while(!BS.isConnected() && counter < 3);
+                        } while(!BS.isConnected() && counter < 3);  //If the bluetooth socket is not connected we try to make a connection multiple times
 
                     }catch (Exception e){
-                        Toast.makeText(getContext(),"Kan apparaat niet vinden", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),"Kan apparaat niet vinden", Toast.LENGTH_SHORT).show(); //User feedback if an connection cannot be established
                     }
-
-                    Log.d("BluetoothTest", "Bonded: " + BS.isConnected());
+//                    Log.d("BluetoothTest", "Bonded: " + BS.isConnected());    //only necessary for debugging and error validation with logcat
                 }
             }
-
         });
 
 
@@ -155,10 +147,10 @@ public class HomeFragment extends Fragment {
         return true;
     }
 
-    public void checkBluetoothEnabled(BluetoothAdapter BA, int BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE) {
+    public void checkBluetoothEnabled(BluetoothAdapter BA, int BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE) { //method to check if the Bluetooth Adapter is enabled
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED) {
             if (BA != null && !BA.isEnabled()) {
-                Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE); // If the bluetooth adapter isn't null and isn't enabled, make an request to user to enable bluetooth
                 startActivityForResult(enableBluetooth, BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE);
             }
         }

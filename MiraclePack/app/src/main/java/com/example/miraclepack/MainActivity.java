@@ -26,17 +26,13 @@ import android.content.pm.PackageManager;
 import android.util.Log;
 import android.widget.Button;
 
-import java.io.IOException;
-import java.util.Set;
-import java.util.UUID;
-
 import com.example.miraclepack.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
+    private boolean isLoggedIn = false;
     private SessionManager sessionManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +40,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
         // Check if the user is logged in
+        isLoggedIn = checkIfLoggedIn();
         sessionManager = new SessionManager(this);
-//        this.bluetooth = new BluetoothConnection();
-
         if (sessionManager.isLoggedIn()) {
             replaceFragment(new HomeFragment());
         } else {
@@ -71,10 +66,11 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
+    app-services
         // Background location service
         Intent serviceIntent = new Intent(this, AppService.class);
         startService(serviceIntent);
-    }
+
 
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -97,4 +93,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
     }
+
 }

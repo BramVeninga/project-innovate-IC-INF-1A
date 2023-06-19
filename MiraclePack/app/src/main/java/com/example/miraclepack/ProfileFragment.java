@@ -1,5 +1,6 @@
 package com.example.miraclepack;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,12 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import java.util.Calendar;
+import java.util.Locale;
 
 
 public class ProfileFragment extends Fragment {
@@ -22,6 +27,7 @@ public class ProfileFragment extends Fragment {
     private Button passwordResetButton;
     private SessionManager sessionManager;
     private TextView emailTextView;
+    private TextView geboortedatumTextView;
     private SQLiteDatabase database;
 
 
@@ -36,7 +42,7 @@ public class ProfileFragment extends Fragment {
         DatabaseHelper dbHelper = new DatabaseHelper(requireContext());
         database = dbHelper.getReadableDatabase();
 
-
+        geboortedatumTextView = view.findViewById(R.id.GeboortedatumTextView);
         signOutButton = view.findViewById(R.id.buttonSignOut);
         emailTextView = view.findViewById(R.id.EmailTextView);
         String loggedInEmail = getLoggedInEmail();
@@ -65,7 +71,20 @@ public class ProfileFragment extends Fragment {
                 openPasswordResetActivity();
             }
         });
+        geboortedatumTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get the current date
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
 
+                // Create and show the date picker dialog
+                DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), datePickerListener, year, month, day);
+                datePickerDialog.show();
+            }
+        });
         return view;
     }
 
@@ -82,31 +101,6 @@ public class ProfileFragment extends Fragment {
         return sessionManager.getEmail();
     }
 
-//    private String getLoggedInEmail() {
-//        String loggedInEmail = "";
-//        String loggedInPassword = sessionManager.getPassword();
-//        String emailColumn = DatabaseHelper.getColumnEmail();
-//
-//        DatabaseHelper databaseHelper = new DatabaseHelper(requireContext());
-//        SQLiteDatabase db = databaseHelper.getReadableDatabase();
-//
-//        String selection = "password = ?";
-//        String[] selectionArgs = {loggedInPassword};
-//
-//        Cursor cursor = db.query("users", new String[]{emailColumn}, selection, selectionArgs, null, null, null);
-//        if (cursor.moveToFirst()) {
-//            int columnIndex = cursor.getColumnIndex(emailColumn);
-//            if (columnIndex >= 0) {
-//                loggedInEmail = cursor.getString(columnIndex);
-//            }
-//        }
-//
-//        cursor.close();
-//        db.close();
-//
-//        return loggedInEmail;
-//    }
-
     public void openLoginFragment(View view) {
         replaceFragment(new LoginFragment());
     }
@@ -115,5 +109,15 @@ public class ProfileFragment extends Fragment {
         Intent intent = new Intent(getActivity(), PasswordResetActivity.class);
         startActivity(intent);
     }
+
+    private DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            // Update the date of birth TextView with the selected date
+            String selectedDate = String.format(Locale.getDefault(), "%02d-%02d-%04d", dayOfMonth, monthOfYear + 1, year);
+            geboortedatumTextView.setText(selectedDate);
+        }
+    };
+
 }
 
