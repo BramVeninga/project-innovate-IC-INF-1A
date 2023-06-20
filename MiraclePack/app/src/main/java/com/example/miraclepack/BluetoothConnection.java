@@ -6,27 +6,31 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.UUID;
 
 
 public class BluetoothConnection extends AppCompatActivity {
 
+    public static final byte[] targetBluetoothAddress = {0x30, 0x24, 0x32, (byte) 0x82, 0x4D, 0x66};
     private BluetoothAdapter BA;
     private BluetoothSocket BS;
     private BluetoothDevice bluetoothDevice;
@@ -55,7 +59,7 @@ public class BluetoothConnection extends AppCompatActivity {
     public void makeConnection(Context context) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED) {
             try {   //try catch method to catch any exceptions for when the connection cannot be established
-                bluetoothDevice = bluetooth.getBA().getRemoteDevice(new byte[]{0x00, 0x21, 0x13, 0x00, 0x6C, 0x7A}); //HC-05 module mac address for a direct connection
+                bluetoothDevice = bluetooth.getBA().getRemoteDevice(targetBluetoothAddress); //HC-05 module mac address for a direct connection
                 int counter = 0;
                 do {
                     BS = bluetoothDevice.createRfcommSocketToServiceRecord(MY_UUID);    // to make an connection possible an UUID is required, the stated MY_UUID is the most universal UUID available
@@ -87,7 +91,7 @@ public class BluetoothConnection extends AppCompatActivity {
     public void setupInputOutputStream(Context context) {
         try {
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED) {
-                bluetoothDevice = bluetooth.getBA().getRemoteDevice(new byte[]{0x00, 0x21, 0x13, 0x00, 0x6C, 0x7A}); //HC-05 module mac address for a direct connection
+                bluetoothDevice = bluetooth.getBA().getRemoteDevice(targetBluetoothAddress); //HC-05 module mac address for a direct connection
                 BS = bluetoothDevice.createRfcommSocketToServiceRecord(MY_UUID);
             }
         }catch(Exception e){
@@ -113,6 +117,7 @@ public class BluetoothConnection extends AppCompatActivity {
         mmInStream = tmpIn;
         mmOutStream = tmpOut;
     }
+
     public byte[] inputStreamDataCollection() {
         byte[] message = new byte[1024];
         mmBuffer = new byte[1024];
@@ -132,6 +137,62 @@ public class BluetoothConnection extends AppCompatActivity {
                 message[counter++] = Byte;
                 if(currentByte == 59) return message; // 59 is the ascii value for an ;
         }
+            return message;
     }
 
+    //This method takes an byte Array from the inputStream and turns it into an ArrayList which only
+    //holds the compartments which are filled according to the bluetooth device.
+    public ArrayList<Compartment> inputStreamDataProcessing(byte[] input){
+        String inputString = getMicroPythonDictContent(input);
+        ArrayList<String[]> compartmentDataPostSplit = dictContentToMatrix(inputString);
+        return dictMatrixToCompartmentList(compartmentDataPostSplit);
+    }
+
+    //Takes a microPython dictionary, represented through ASCII in a byte Array,
+    //and turns it into an string.
+    @NonNull
+    private static String getMicroPythonDictContent(byte[] input) {
+        int openingAccoladeIndex = 0;
+        int closingAccoladeIndex = 0;
+        //Turn the byte array into a String
+        String inputString = new String(input, StandardCharsets.UTF_8);
+        //Strip the accolades from the String
+        openingAccoladeIndex = inputString.lastIndexOf("{");
+        closingAccoladeIndex = inputString.lastIndexOf("}");
+        inputString = inputString.substring(++openingAccoladeIndex, closingAccoladeIndex);
+        return inputString;
+    }
+
+    //Takes a string, which has a microPython dictionary as content, and turns it into a matrix with String Arrays.
+    @NonNull
+    private static ArrayList<String[]> dictContentToMatrix(String inputString) {
+        ArrayList<String[]> compartmentDataPostSplit = new ArrayList<>();
+        //First split the string into an array
+        String[] inputArray = inputString.split(",");
+        for (String compartmentData : inputArray) {
+            //Then split the Keys from the values
+            int compartmentArrayCounter = 0;
+            String[] compartmentArray = compartmentData.split(":");
+            for (String compartmentField : compartmentArray) {
+                compartmentArray[compartmentArrayCounter++] = compartmentField.trim();
+            }
+            compartmentDataPostSplit.add(compartmentArray);
+        }
+        return compartmentDataPostSplit;
+    }
+
+    //Takes a Matrix with String Arrays and turns it into an ArrayList with compartment Objects,
+    //which the bluetooth device says are filled.
+    @NonNull
+    private static ArrayList<Compartment> dictMatrixToCompartmentList(ArrayList<String[]> compartmentDataPostSplit) {
+        ArrayList<Compartment> filledCompartments = new ArrayList<>();
+        for (String[] compartmentArray : compartmentDataPostSplit) {
+            //Check if the compartment is filled, if so add it to the list
+            if (compartmentArray[1].equals("True")) {
+                int compartmentId = Integer.parseInt(compartmentArray[0].substring(1, compartmentArray[0].length() - 1)) ;
+                filledCompartments.add(new Compartment(compartmentId, ""));
+            }
+        }
+        return filledCompartments;
+    }
 }
