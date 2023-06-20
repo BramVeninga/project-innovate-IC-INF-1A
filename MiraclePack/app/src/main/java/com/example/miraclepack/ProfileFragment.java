@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,9 +27,11 @@ public class ProfileFragment extends Fragment {
 
     private Button signOutButton;
     private Button passwordResetButton;
+//    private Button saveButton;
     private SessionManager sessionManager;
     private TextView emailTextView;
     private TextView geboortedatumTextView;
+    private EditText telefoonnummerEditText;
     private SQLiteDatabase database;
 
 
@@ -47,6 +51,23 @@ public class ProfileFragment extends Fragment {
         emailTextView = view.findViewById(R.id.EmailTextView);
         String loggedInEmail = getLoggedInEmail();
         emailTextView.setText(loggedInEmail);
+        telefoonnummerEditText = view.findViewById(R.id.TelefoonnummerEditText);
+//        saveButton = view.findViewById(R.id.saveButton);
+
+
+        // Get selected date
+        String selectedDate = sessionManager.getSelectedDate();
+        if (!selectedDate.isEmpty()) {
+            geboortedatumTextView.setText(selectedDate);
+        }
+        // Get phone number
+        String telefoonnummer = sessionManager.getTelefoonnummer();
+        if (!telefoonnummer.isEmpty()) {
+            telefoonnummerEditText.setText(telefoonnummer);
+        }
+        // Only allow numbers for the phone number
+        telefoonnummerEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
+        telefoonnummerEditText.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
 
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +92,7 @@ public class ProfileFragment extends Fragment {
                 openPasswordResetActivity();
             }
         });
+
         geboortedatumTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,6 +107,16 @@ public class ProfileFragment extends Fragment {
                 datePickerDialog.show();
             }
         });
+
+//        saveButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String telefoonnummer = telefoonnummerEditText.getText().toString();
+//                // Save the phone number
+//                sessionManager.setTelefoonnummer(telefoonnummer);
+//                Toast.makeText(requireContext(), "Uw gegevens zijn opgeslagen", Toast.LENGTH_SHORT).show();
+//            }
+//        });
         return view;
     }
 
@@ -116,6 +148,9 @@ public class ProfileFragment extends Fragment {
             // Update the date of birth TextView with the selected date
             String selectedDate = String.format(Locale.getDefault(), "%02d-%02d-%04d", dayOfMonth, monthOfYear + 1, year);
             geboortedatumTextView.setText(selectedDate);
+
+            // Save the selected date
+            sessionManager.setSelectedDate(selectedDate);
         }
     };
 
