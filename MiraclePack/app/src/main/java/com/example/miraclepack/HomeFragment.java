@@ -3,33 +3,26 @@ package com.example.miraclepack;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.IBinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.w3c.dom.Text;
-
-import java.io.IOException;
-import java.util.UUID;
 
 
 public class HomeFragment extends Fragment {
@@ -52,15 +45,12 @@ public class HomeFragment extends Fragment {
     private int batteryPercentage = 60;
     private String batteryState;
     private Button bluetoothButton;
-    private BluetoothAdapter BA;
-    private BluetoothSocket BS;
-    private BluetoothDevice bluetoothDevice;
-    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private BluetoothConnection bluetooth;
     private static final int BLUETOOTH_PERMISSION_CODE = 1;
     private static final int BLUETOOTH_ADMIN_PERMISSION_CODE = 2;
     private static final int BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE = 3;
     private static final int PERMISSION_ALL = 4;
+    private AppService appService;
 
 
     public HomeFragment() {
@@ -112,23 +102,16 @@ public class HomeFragment extends Fragment {
             }
         });
         bluetoothButton.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("MissingPermission")
+
             @Override
             public void onClick(View v) {
-                if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED){
-                    try {   //try catch method to catch any exceptions for when the connection cannot be established
-                        bluetoothDevice = bluetooth.getBA().getRemoteDevice(new byte[] {0x00,0x21,0x13,0x00,0x6C,0x7A}); //HC-05 module mac address for a direct connection
-                        int counter = 0;
-                        do {
-                            BS = bluetoothDevice.createRfcommSocketToServiceRecord(MY_UUID);    // to make an connection possible an UUID is required, the stated MY_UUID is the most universal UUID available
-                            BS.connect();
-                            counter++;
-                        } while(!BS.isConnected() && counter < 3);  //If the bluetooth socket is not connected we try to make a connection multiple times
-
-                    }catch (Exception e){
-                        Toast.makeText(getContext(),"Kan apparaat niet vinden", Toast.LENGTH_SHORT).show(); //User feedback if an connection cannot be established
-                    }
-//                    Log.d("BluetoothTest", "Bonded: " + BS.isConnected());    //only necessary for debugging and error validation with logcat
+                if (appService != null){
+                    appService.getBluetooth().makeConnection(getContext());
+                    appService.getBluetooth().setupInputOutputStream(getContext());
+                    appService.getBluetooth().inputStreamDataProcessing(new byte[]{123, 39, 49, 39,
+                            58, 32, 70, 97, 108, 115, 101, 44, 32, 39, 48, 39, 58, 32, 70, 97, 108,
+                            115, 101, 44, 32, 39, 51, 39, 58, 32, 70, 97, 108, 115, 101, 44, 32, 39,
+                            50, 39, 58, 32, 70, 97, 108, 115, 101, 125, 59});
                 }
             }
         });
@@ -136,7 +119,14 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
-        public static boolean hasPermissions(Context context, String... permissions) {
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bindWithService();
+    }
+
+    public static boolean hasPermissions(Context context, String... permissions) {
         if (context != null && permissions != null) {
             for (String permission : permissions) {
                 if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
@@ -248,4 +238,23 @@ public class HomeFragment extends Fragment {
             return true;
         }
     }
+    private void bindWithService() {
+        Intent serviceIntent = new Intent(getContext(), AppService.class);
+        getActivity().bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+           AppService.MyBinder binder = (AppService.MyBinder) service;
+           appService = binder.getService();
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
 }
+
