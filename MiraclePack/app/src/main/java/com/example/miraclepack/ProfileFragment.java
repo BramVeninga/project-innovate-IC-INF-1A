@@ -27,7 +27,6 @@ public class ProfileFragment extends Fragment {
 
     private Button signOutButton;
     private Button passwordResetButton;
-//    private Button saveButton;
     private SessionManager sessionManager;
     private TextView emailTextView;
     private TextView geboortedatumTextView;
@@ -52,8 +51,6 @@ public class ProfileFragment extends Fragment {
         String loggedInEmail = getLoggedInEmail();
         emailTextView.setText(loggedInEmail);
         telefoonnummerEditText = view.findViewById(R.id.TelefoonnummerEditText);
-//        saveButton = view.findViewById(R.id.saveButton);
-
 
         // Get selected date
         String selectedDate = sessionManager.getSelectedDate();
@@ -107,16 +104,6 @@ public class ProfileFragment extends Fragment {
                 datePickerDialog.show();
             }
         });
-
-//        saveButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String telefoonnummer = telefoonnummerEditText.getText().toString();
-//                // Save the phone number
-//                sessionManager.setTelefoonnummer(telefoonnummer);
-//                Toast.makeText(requireContext(), "Uw gegevens zijn opgeslagen", Toast.LENGTH_SHORT).show();
-//            }
-//        });
         return view;
     }
 

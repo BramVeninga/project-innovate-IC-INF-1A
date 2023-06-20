@@ -75,7 +75,7 @@
         <LinearLayout
             android:id="@+id/backpackInfoSection"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_295sdp"
+            android:layout_height="@dimen/_280sdp"
             android:layout_margin="@dimen/_10sdp"
             android:background="@drawable/roundstyle"
             android:backgroundTint="@color/houseStyleColor"
@@ -188,9 +188,9 @@
 
 
             <Button
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:gravity="center"
                 android:id="@+id/buttonPasswordReset"
                 android:layout_width="@dimen/_230sdp"
@@ -204,26 +204,11 @@
                 android:textStyle="bold">
             </Button>
 
-<!--            <Button-->
-<!--                android:id="@+id/saveButton"-->
-<!--                android:layout_marginStart="@dimen/_5sdp"-->
-<!--                android:layout_marginTop="@dimen/_3sdp"-->
-<!--                android:layout_marginEnd="@dimen/_5sdp"-->
-<!--                android:gravity="center"-->
-<!--                android:layout_width="@dimen/_230sdp"-->
-<!--                android:layout_height="@dimen/_39sdp"-->
-<!--                android:backgroundTint="@color/white"-->
-<!--                android:orientation="vertical"-->
-<!--                android:text="Gegevens opslaan"-->
-<!--                android:textColor="@color/mainTextColor"-->
-<!--                android:textSize="@dimen/_15sdp"-->
-<!--                android:textStyle="bold" />-->
-
             <Button
                 android:id="@+id/buttonSignOut"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:gravity="center"
                 android:layout_width="@dimen/_150sdp"
                 android:layout_height="@dimen/_39sdp"
