@@ -51,13 +51,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/textView"
+                <EditText
+                    android:id="@+id/usernameEditText"
                     android:layout_width="123dp"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
-                    android:text="Username"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:imeOptions="actionDone"
+                    android:hint="Username" />
 
                 <ImageView
                     android:id="@+id/imageViewEditProfilePicture"
@@ -115,7 +116,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:gravity="center_vertical"
-                android:id="@+id/Telefoonnummerbalk"
+                android:id="@+id/phonenumberBox"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_39sdp"
                 android:background="@drawable/roundstyle"
@@ -126,18 +127,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <EditText
-                        android:id="@+id/TelefoonnummerEditText"
+                        android:id="@+id/phonenumberEditText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:minHeight="48dp"
-                        android:text="@string/telefoonnummer"
+                        android:hint="Telefoonnummer"
                         android:textColor="@color/mainTextColor"
                         android:textSize="@dimen/_15sdp"
                         android:textStyle="bold" />
 
                     <ImageView
-                        android:id="@+id/imageViewEditTelefoonnummer"
+                        android:id="@+id/imageViewEditPhonenumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -152,7 +152,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:gravity="center_vertical"
-                android:id="@+id/Geboortedatumbalk"
+                android:id="@+id/birthdateBox"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_39sdp"
                 android:background="@drawable/roundstyle"
@@ -163,20 +163,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <TextView
-                        android:id="@+id/GeboortedatumTextView"
+                        android:id="@+id/birthdateTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_4sdp"
                         android:gravity="center"
                         android:minHeight="48dp"
-
                         android:text="Geboorte datum"
                         android:textColor="@color/mainTextColor"
                         android:textSize="@dimen/_15sdp"
                         android:textStyle="bold" />
 
                     <ImageView
-                        android:id="@+id/imageViewEditGeboortedatum"
+                        android:id="@+id/imageViewEditBirthdate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"

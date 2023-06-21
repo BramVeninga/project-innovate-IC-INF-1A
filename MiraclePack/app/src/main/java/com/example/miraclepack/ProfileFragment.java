@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -29,8 +33,9 @@ public class ProfileFragment extends Fragment {
     private Button passwordResetButton;
     private SessionManager sessionManager;
     private TextView emailTextView;
-    private TextView geboortedatumTextView;
-    private EditText telefoonnummerEditText;
+    private TextView birthdateTextView;
+    private EditText phonenumberEditText;
+    private EditText usernameEditText;
     private SQLiteDatabase database;
 
 
@@ -45,26 +50,36 @@ public class ProfileFragment extends Fragment {
         DatabaseHelper dbHelper = new DatabaseHelper(requireContext());
         database = dbHelper.getReadableDatabase();
 
-        geboortedatumTextView = view.findViewById(R.id.GeboortedatumTextView);
         signOutButton = view.findViewById(R.id.buttonSignOut);
         emailTextView = view.findViewById(R.id.EmailTextView);
+        birthdateTextView = view.findViewById(R.id.birthdateTextView);
+        phonenumberEditText = view.findViewById(R.id.phonenumberEditText);
+        usernameEditText = view.findViewById(R.id.usernameEditText);
+        passwordResetButton = view.findViewById(R.id.buttonPasswordReset);
+
+        usernameEditText.setSingleLine(true);
         String loggedInEmail = getLoggedInEmail();
         emailTextView.setText(loggedInEmail);
-        telefoonnummerEditText = view.findViewById(R.id.TelefoonnummerEditText);
 
         // Get selected date
         String selectedDate = sessionManager.getSelectedDate();
         if (!selectedDate.isEmpty()) {
-            geboortedatumTextView.setText(selectedDate);
+            birthdateTextView.setText(selectedDate);
         }
         // Get phone number
-        String telefoonnummer = sessionManager.getTelefoonnummer();
-        if (!telefoonnummer.isEmpty()) {
-            telefoonnummerEditText.setText(telefoonnummer);
+        String phonenumber = sessionManager.getPhonenumber();
+        if (!phonenumber.isEmpty()) {
+            phonenumberEditText.setText(phonenumber);
         }
+        // Get Username
+        String username = sessionManager.getUsername();
+        if (!username.isEmpty()) {
+            usernameEditText.setText(username);
+        }
+
         // Only allow numbers for the phone number
-        telefoonnummerEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
-        telefoonnummerEditText.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
+        phonenumberEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
+        phonenumberEditText.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
 
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +97,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        passwordResetButton = view.findViewById(R.id.buttonPasswordReset);
         passwordResetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,7 +104,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        geboortedatumTextView.setOnClickListener(new View.OnClickListener() {
+        birthdateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Get the current date
@@ -104,6 +118,43 @@ public class ProfileFragment extends Fragment {
                 datePickerDialog.show();
             }
         });
+        // Save the phone number in the sessionManager
+        phonenumberEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Save phone number
+                sessionManager.setPhonenumber(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Do nothing
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Do nothing
+            }
+        });
+
+        usernameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Save username
+                sessionManager.setUsername(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Do nothing
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Do nothing
+            }
+        });
+
         return view;
     }
 
@@ -134,7 +185,7 @@ public class ProfileFragment extends Fragment {
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             // Update the date of birth TextView with the selected date
             String selectedDate = String.format(Locale.getDefault(), "%02d-%02d-%04d", dayOfMonth, monthOfYear + 1, year);
-            geboortedatumTextView.setText(selectedDate);
+            birthdateTextView.setText(selectedDate);
 
             // Save the selected date
             sessionManager.setSelectedDate(selectedDate);
