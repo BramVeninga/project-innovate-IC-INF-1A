@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -243,11 +244,18 @@ public class AppService extends Service implements LocationListener {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NOTIFICATION_POLICY)
                 == PackageManager.PERMISSION_GRANTED) {
             try {
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra("fragment", "bag"); // Stel het doelfragment in als "bag"
+
+                PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE); // Voeg de FLAG_IMMUTABLE-vlag toe
+
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                         .setSmallIcon(R.drawable.baseline_notifications_24)
                         .setContentTitle("Waarschuwing!")
                         .setContentText("Je bent mogelijk iets vergeten. Tik om het overzicht van de tas te bekijken!")
-                        .setPriority(NotificationCompat.PRIORITY_HIGH);
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setContentIntent(pendingIntent) // Stel de intent in als de klikintentie
+                        .setAutoCancel(true); // Sluit de notificatie nadat erop is geklikt
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
                 notificationManager.notify(NOTIFICATION_ID, builder.build());

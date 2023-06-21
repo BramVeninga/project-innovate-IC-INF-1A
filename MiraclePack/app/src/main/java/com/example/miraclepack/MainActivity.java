@@ -65,10 +65,12 @@ public class MainActivity extends AppCompatActivity {
             setTitle("Miracle-Pack");
         } else if (fragment instanceof BagFragment) {
             setTitle("Tas");
+        } else if (fragment instanceof ProfileFragment) {
+            setTitle("Profiel");
+        } else if (fragment instanceof SettingsFragment) {
+            setTitle("Instellingen");
         } else if (fragment instanceof LoginFragment) {
-            setTitle("Inhoud van de tas");
-        } else if (fragment instanceof AboutFragment) {
-            setTitle("Over ons");
+            setTitle("Inloggen");
         }
     }
 
