@@ -8,6 +8,10 @@ public class SessionManager {
     private static final String KEY_IS_LOGGED_IN = "is_logged_in";
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_EMAIL = "email";
+    private static final String KEY_SELECTED_DATE = "selected_date";
+    private static final String KEY_TELEFOONNUMMER = "telefoonnummer";
+
+
 
 
     private SharedPreferences sharedPreferences;
@@ -48,4 +52,21 @@ public class SessionManager {
         return sharedPreferences.getString(KEY_EMAIL, "");
     }
 
+    public void setSelectedDate(String selectedDate) {
+        editor.putString(KEY_SELECTED_DATE, selectedDate);
+        editor.apply();
+    }
+
+    public String getSelectedDate() {
+        return sharedPreferences.getString(KEY_SELECTED_DATE, "");
+    }
+
+    public void setTelefoonnummer(String telefoonnummer) {
+        editor.putString(KEY_TELEFOONNUMMER, telefoonnummer);
+        editor.apply();
+    }
+
+    public String getTelefoonnummer() {
+        return sharedPreferences.getString(KEY_TELEFOONNUMMER, "");
+    }
 }

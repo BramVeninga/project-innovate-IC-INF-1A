@@ -38,10 +38,11 @@ public class AppService extends Service implements LocationListener {
     private ArrayList<Compartment> matchingCompartments;
     private Configuration selectedWeekday;
     private boolean isInList = false;
-
+    private BluetoothConnection bluetooth;
     @Override
     public void onCreate() {
         super.onCreate();
+        bluetooth = new BluetoothConnection();
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         myDB = MyDatabaseHelper.getInstance(this);
         geofenceList = myDB.getAllGeofences();
@@ -303,5 +304,13 @@ public class AppService extends Service implements LocationListener {
 
     public void setSelectedWeekday(Configuration selectedWeekday) {
         this.selectedWeekday = selectedWeekday;
+    }
+
+    public BluetoothConnection getBluetooth() {
+        return bluetooth;
+    }
+
+    public void setBluetooth(BluetoothConnection bluetooth) {
+        this.bluetooth = bluetooth;
     }
 }

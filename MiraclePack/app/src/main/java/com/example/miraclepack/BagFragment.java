@@ -110,10 +110,10 @@ public class BagFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        bindService();
+        bindWithService();
     }
 
-    private void bindService() {
+    private void bindWithService() {
         Intent serviceIntent = new Intent(getContext(), AppService.class);
         getActivity().bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
     }

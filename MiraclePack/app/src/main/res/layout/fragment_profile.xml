@@ -75,8 +75,8 @@
         <LinearLayout
             android:id="@+id/backpackInfoSection"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_255sdp"
-            android:layout_margin="@dimen/_12sdp"
+            android:layout_height="@dimen/_280sdp"
+            android:layout_margin="@dimen/_10sdp"
             android:background="@drawable/roundstyle"
             android:backgroundTint="@color/houseStyleColor"
             android:orientation="vertical"
@@ -126,7 +126,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <EditText
-                        android:id="@+id/TelefoonnummerTextView"
+                        android:id="@+id/TelefoonnummerEditText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"

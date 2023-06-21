@@ -24,11 +24,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
         // Check if the user is logged in
         sessionManager = new SessionManager(this);
-        if (sessionManager.isLoggedIn()) {
-            replaceFragment(new HomeFragment());
-        } else {
-            replaceFragment(new LoginFragment());
-        }
+        replaceFragment(new HomeFragment());
 
         // Check if the user came from the AddActivity page
         if (checkIfUserNavigatedBack()) {
@@ -46,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 if (sessionManager.isLoggedIn()) {
                     replaceFragment(new ProfileFragment());
                 } else {
-                    replaceFragment(new LoginFragment()); // Show the LoginFragment for the user to log in
+                    replaceFragment(new LoginFragment()); // Show the LoginFragment for the user to login
                 }
             } else if (itemId == R.id.settings) {
                 replaceFragment(new SettingsFragment());
