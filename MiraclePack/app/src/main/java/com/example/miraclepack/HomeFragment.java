@@ -8,6 +8,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -102,7 +103,11 @@ public class HomeFragment extends Fragment {
         setBatteryImageState();
         setConfigName();
         isGpsConnected();
-        checkBluetoothEnabled(bluetooth.getBA(), BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE);
+
+        // API level must be greater than 31
+        if (!(Build.VERSION.SDK_INT > 31)) {
+            checkBluetoothEnabled(bluetooth.getBA(), BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE);
+        }
 
         // Button that opens the bagfragment
         viewContentButton.setOnClickListener(new View.OnClickListener() {
