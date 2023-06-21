@@ -30,7 +30,7 @@ import java.util.UUID;
 
 public class BluetoothConnection extends AppCompatActivity {
 
-    public static final byte[] targetBluetoothAddress = {0x30, 0x24, 0x32, (byte) 0x82, 0x4D, 0x66};
+    public static final byte[] targetBluetoothAddress = {0x00, 0x21, 0x13, 0x00, 0x6C, 0x7A};
     private BluetoothAdapter BA;
     private BluetoothSocket BS;
     private BluetoothDevice bluetoothDevice;
@@ -41,6 +41,7 @@ public class BluetoothConnection extends AppCompatActivity {
 //    private final BluetoothSocket mmSocket;
     private InputStream mmInStream;
     private OutputStream mmOutStream;
+    private byte[] sendMessage = {115, 101, 110, 100, 59};
     private byte[] mmBuffer; // mmBuffer store for the stream
     private static final String TAG = "MY_APP_DEBUG_TAG";
 
@@ -59,7 +60,7 @@ public class BluetoothConnection extends AppCompatActivity {
     public void makeConnection(Context context) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED) {
             try {   //try catch method to catch any exceptions for when the connection cannot be established
-                bluetoothDevice = bluetooth.getBA().getRemoteDevice(targetBluetoothAddress); //HC-05 module mac address for a direct connection
+                bluetoothDevice = this.getBA().getRemoteDevice(targetBluetoothAddress); //HC-05 module mac address for a direct connection
                 int counter = 0;
                 do {
                     BS = bluetoothDevice.createRfcommSocketToServiceRecord(MY_UUID);    // to make an connection possible an UUID is required, the stated MY_UUID is the most universal UUID available
@@ -86,18 +87,14 @@ public class BluetoothConnection extends AppCompatActivity {
         }
     }
 
+    public ArrayList<Compartment> inputOutputStream() {
+        outputStreamWrite(sendMessage);
+        byte[] inputBytes = inputStreamDataCollection();
+        return inputStreamDataProcessing(inputBytes);
+    }
+
     @SuppressLint("MissingPermission")
-
-    public void setupInputOutputStream(Context context) {
-        try {
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED) {
-                bluetoothDevice = bluetooth.getBA().getRemoteDevice(targetBluetoothAddress); //HC-05 module mac address for a direct connection
-                BS = bluetoothDevice.createRfcommSocketToServiceRecord(MY_UUID);
-            }
-        }catch(Exception e){
-            Toast.makeText(context, "Kan apparaat niet vinden2", Toast.LENGTH_SHORT).show();
-        }
-
+    public void setupInputOutputStream() {
         InputStream tmpIn = null;
         OutputStream tmpOut = null;
 
@@ -118,26 +115,32 @@ public class BluetoothConnection extends AppCompatActivity {
         mmOutStream = tmpOut;
     }
 
+    public void outputStreamWrite(byte[] message) {
+        try {
+            mmOutStream.write(message);
+        }catch (Exception e){
+            Log.e(TAG, "Error occurred when writing with the output stream", e);
+        }
+    }
+
     public byte[] inputStreamDataCollection() {
         byte[] message = new byte[1024];
-        mmBuffer = new byte[1024];
-        int numBytes = 0; // bytes returned from read()
+        byte[] tempBuffer = new byte[1024];
+        int bufferByte = 0; // bytes returned from read
+        int counter = 0;
         try {
-            // Read from the InputStream.
-            numBytes = mmInStream.read(mmBuffer);
-        } catch (IOException e) {
+            while (counter >= 1023) {
+                bufferByte = mmInStream.read();
+                tempBuffer[counter++] = (byte)bufferByte;
+                if (bufferByte == 59) {
+                    message = tempBuffer;
+                    return message;
+                }
+            }
+        }catch (Exception e){
             Log.d(TAG, "Input stream was disconnected", e);
         }
-        int counter = 0;
-        byte currentByte = 0;
-        int messageCounter = 0;
-        // Keep listening to the InputStream until an exception occurs.
-            for (byte Byte: mmBuffer) {
-                currentByte = Byte;
-                message[counter++] = Byte;
-                if(currentByte == 59) return message; // 59 is the ascii value for an ;
-        }
-            return message;
+        return message;
     }
 
     //This method takes an byte Array from the inputStream and turns it into an ArrayList which only
@@ -145,7 +148,9 @@ public class BluetoothConnection extends AppCompatActivity {
     public ArrayList<Compartment> inputStreamDataProcessing(byte[] input){
         String inputString = getMicroPythonDictContent(input);
         ArrayList<String[]> compartmentDataPostSplit = dictContentToMatrix(inputString);
-        return dictMatrixToCompartmentList(compartmentDataPostSplit);
+        ArrayList<Compartment> result = dictMatrixToCompartmentList(compartmentDataPostSplit);
+        if (result == null) return new ArrayList<>();
+        return result;
     }
 
     //Takes a microPython dictionary, represented through ASCII in a byte Array,
@@ -155,17 +160,29 @@ public class BluetoothConnection extends AppCompatActivity {
         int openingAccoladeIndex = 0;
         int closingAccoladeIndex = 0;
         //Turn the byte array into a String
+        if (!checkArrayFilled(input)) return null;
         String inputString = new String(input, StandardCharsets.UTF_8);
         //Strip the accolades from the String
         openingAccoladeIndex = inputString.lastIndexOf("{");
         closingAccoladeIndex = inputString.lastIndexOf("}");
         inputString = inputString.substring(++openingAccoladeIndex, closingAccoladeIndex);
+        Log.d("BluetoothMessage", "Message: " + inputString);
         return inputString;
+    }
+
+    public static boolean checkArrayFilled(byte[] bytes) {
+        for (byte b : bytes) {
+            if (b != 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     //Takes a string, which has a microPython dictionary as content, and turns it into a matrix with String Arrays.
     @NonNull
     private static ArrayList<String[]> dictContentToMatrix(String inputString) {
+        if (inputString == null) return null;
         ArrayList<String[]> compartmentDataPostSplit = new ArrayList<>();
         //First split the string into an array
         String[] inputArray = inputString.split(",");
@@ -185,6 +202,7 @@ public class BluetoothConnection extends AppCompatActivity {
     //which the bluetooth device says are filled.
     @NonNull
     private static ArrayList<Compartment> dictMatrixToCompartmentList(ArrayList<String[]> compartmentDataPostSplit) {
+        if (compartmentDataPostSplit == null) return null;
         ArrayList<Compartment> filledCompartments = new ArrayList<>();
         for (String[] compartmentArray : compartmentDataPostSplit) {
             //Check if the compartment is filled, if so add it to the list

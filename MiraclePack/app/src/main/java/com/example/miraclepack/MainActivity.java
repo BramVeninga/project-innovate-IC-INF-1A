@@ -26,6 +26,12 @@ public class MainActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         replaceFragment(new HomeFragment());
 
+        // Check if the user came from the AddActivity page
+        if (checkIfUserNavigatedBack()) {
+            replaceFragment(new BagFragment());
+            setTitle("Tas");
+        }
+
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.home) {
@@ -69,5 +75,14 @@ public class MainActivity extends AppCompatActivity {
     public void openSignUpActivity(View view) {
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
+    }
+
+    public boolean checkIfUserNavigatedBack() {
+        boolean backToBagFragment = false;
+        Intent backIntent = getIntent();
+        if (backIntent != null){
+            backToBagFragment = backIntent.getBooleanExtra("navigatedBack", false);
+        }
+        return backToBagFragment;
     }
 }
