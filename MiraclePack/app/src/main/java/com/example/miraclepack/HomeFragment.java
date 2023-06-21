@@ -30,7 +30,6 @@ public class HomeFragment extends Fragment {
     private Button viewContentButton;
     private boolean bluetoothConnected = false;
     private boolean bluetoothAllowed = true;
-    private boolean batteryCharging = false;
     private String configNameString = "Inhoud van de tas";
     private boolean gpsConnected = true;
     private boolean gpsAllowed = true;
@@ -38,12 +37,8 @@ public class HomeFragment extends Fragment {
     private ImageView gpsImage;
     private ImageView bluetoothImage;
     private TextView bluetoothText;
-    private ImageView batteryImage;
-    private TextView batteryText;
     private TextView name;
     private TextView configName;
-    private int batteryPercentage = 60;
-    private String batteryState;
     private Button bluetoothButton;
     private BluetoothConnection bluetooth;
     private static final int BLUETOOTH_PERMISSION_CODE = 1;
@@ -76,8 +71,6 @@ public class HomeFragment extends Fragment {
         bluetoothButton = view.findViewById(R.id.bluetoothAddDevice);
         bluetoothText = view.findViewById(R.id.bluetoothState);
         bluetoothImage = view.findViewById(R.id.bluetoothStatusImage);
-        batteryText = view.findViewById(R.id.batteryPercentage);
-        batteryImage = view.findViewById(R.id.batteryStatusImage);
         configName = view.findViewById(R.id.configName);
         gpsImage = view.findViewById(R.id.gpsStateImage);
         gpsText = view.findViewById(R.id.gpsState);
@@ -88,8 +81,6 @@ public class HomeFragment extends Fragment {
 
         // Functions
         setBluetoothState();
-        setBatteryState();
-        setBatteryImageState();
         setConfigName();
         isGpsConnected();
         checkBluetoothEnabled(bluetooth.getBA(), BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE);
@@ -172,47 +163,6 @@ public class HomeFragment extends Fragment {
             bluetoothImage.setImageResource(R.drawable.baseline_bluetooth_connected_24);
             return true;
         }
-    }
-
-    // Set the battery image
-    public void setBatteryImageState() {
-        if (!setBluetoothState()) {
-            batteryText.setText("Geen batterij gevonden");
-            batteryImage.setImageResource(R.drawable.baseline_battery_unknown_24);
-        }
-        else if (batteryCharging) {
-            batteryImage.setImageResource(R.drawable.baseline_battery_charging_full_24);
-        }
-        else if (batteryPercentage <= 100 && batteryPercentage >= 87.5) {
-            batteryImage.setImageResource(R.drawable.baseline_battery_full_24);
-        }
-        else if (batteryPercentage < 87.5 && batteryPercentage >= 75 ) {
-            batteryImage.setImageResource(R.drawable.baseline_battery_6_bar_24);
-        }
-        else if (batteryPercentage < 75 && batteryPercentage >= 62.5 ) {
-            batteryImage.setImageResource(R.drawable.baseline_battery_5_bar_24);
-        }
-        else if (batteryPercentage < 62.5 && batteryPercentage >= 50 ) {
-            batteryImage.setImageResource(R.drawable.baseline_battery_4_bar_24);
-        }
-        else if (batteryPercentage < 50 && batteryPercentage >= 37.5 ) {
-            batteryImage.setImageResource(R.drawable.baseline_battery_3_bar_24);
-        }
-        else if (batteryPercentage < 37.5 && batteryPercentage >= 25 ) {
-            batteryImage.setImageResource(R.drawable.baseline_battery_2_bar_24);
-        }
-        else if (batteryPercentage < 25 && batteryPercentage >= 12.5 ) {
-            batteryImage.setImageResource(R.drawable.baseline_battery_1_bar_24);
-        }
-        else if (batteryPercentage < 12.5 && batteryPercentage >= 0 ) {
-            batteryImage.setImageResource(R.drawable.baseline_battery_alert_24);
-        }
-    }
-
-    // Set the battery text
-    public void setBatteryState() {
-        batteryState = String.valueOf(batteryPercentage);
-        batteryText.setText(batteryState + "%");
     }
 
     // Set the config name
