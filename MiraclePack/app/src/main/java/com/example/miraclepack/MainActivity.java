@@ -14,7 +14,6 @@ import com.example.miraclepack.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
-    private boolean isLoggedIn = false;
     private SessionManager sessionManager;
 
     @Override
@@ -24,12 +23,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
         // Check if the user is logged in
-        isLoggedIn = checkIfLoggedIn();
         sessionManager = new SessionManager(this);
-        if (sessionManager.isLoggedIn()) {
-            replaceFragment(new HomeFragment());
-        } else {
-            replaceFragment(new LoginFragment());
+        replaceFragment(new HomeFragment());
+
+        // Check if the user came from the AddActivity page
+        if (checkIfUserNavigatedBack()) {
+            replaceFragment(new BagFragment());
+            setTitle("Tas");
         }
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 if (sessionManager.isLoggedIn()) {
                     replaceFragment(new ProfileFragment());
                 } else {
-                    replaceFragment(new LoginFragment()); // Show the LoginFragment for the user to log in
+                    replaceFragment(new LoginFragment()); // Show the LoginFragment for the user to login
                 }
             } else if (itemId == R.id.settings) {
                 replaceFragment(new SettingsFragment());
@@ -77,8 +77,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private boolean checkIfLoggedIn() {
-        // Add your logic here to check if the user is logged in
-        return false;
+    public boolean checkIfUserNavigatedBack() {
+        boolean backToBagFragment = false;
+        Intent backIntent = getIntent();
+        if (backIntent != null){
+            backToBagFragment = backIntent.getBooleanExtra("navigatedBack", false);
+        }
+        return backToBagFragment;
     }
 }

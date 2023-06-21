@@ -73,7 +73,10 @@ public class AddActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                replaceFragment(new BagFragment());
+                Intent backIntent = new Intent(AddActivity.this, MainActivity.class);
+                backIntent.putExtra("navigatedBack", true);
+                startActivity(backIntent);
+                finish();
             }
         });
     }
