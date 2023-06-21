@@ -2,22 +2,19 @@ package com.example.miraclepack;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout; // Importeer LinearLayout
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import android.widget.ImageButton;
+
 import androidx.fragment.app.Fragment;
 
 public class SettingsFragment extends Fragment {
 
-    private Button aboutUsButton;
     private View openLocationSettings;
     private View openSupportSettings;
-    private View openAboutUs;
+    private View importDatabase;
+    private View exportDatabase;
 
     // ...
     @Override
@@ -35,7 +32,8 @@ public class SettingsFragment extends Fragment {
         // Retrieve button from settings layout
         openLocationSettings = view.findViewById(R.id.locationButton);
         openSupportSettings = view.findViewById(R.id.support);
-        openAboutUs = view.findViewById(R.id.aboutUs);
+        importDatabase = view.findViewById(R.id.importDatabase);
+        exportDatabase = view.findViewById(R.id.exportDatabase);
 
         // Action according to button
         openLocationSettings.setOnClickListener(new View.OnClickListener() {
@@ -56,16 +54,22 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        openAboutUs.setOnClickListener(new View.OnClickListener() {
+        importDatabase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), AboutActivity.class);
+                Intent intent = new Intent(getActivity(), ImportDatabaseActivity.class);
+                startActivity(intent);
+            }
+        });
 
+        exportDatabase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ExportDatabaseActivity.class);
                 startActivity(intent);
             }
         });
 
         return view;
     }
-
 }

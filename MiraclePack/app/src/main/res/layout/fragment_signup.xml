@@ -4,24 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="18dp">
+    android:padding="@dimen/_11sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
-        tools:layout_editor_absoluteX="18dp"
-        tools:layout_editor_absoluteY="18dp">
+        android:background="#FFFFFF">
 
         <EditText
             android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="280dp"
+            android:layout_marginTop="@dimen/_214sdp"
             android:autofillHints=""
             android:hint="@string/wachtwoord"
             android:inputType="textPassword"
-            android:minHeight="48dp"
+            android:minHeight="@dimen/_36sdp"
             app:layout_constraintEnd_toEndOf="@+id/editTextEmail"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -30,26 +28,26 @@
             android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="235dp"
+            android:layout_marginTop="@dimen/_180sdp"
             android:autofillHints=""
             android:hint="@string/email"
             android:inputType="textEmailAddress"
-            android:minHeight="48dp"
+            android:minHeight="@dimen/_36sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <!--        Account aanmaken-->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonMakeAccount"
-            android:layout_width="225dp"
-            android:layout_height="56dp"
-            android:layout_marginStart="70dp"
-            android:layout_marginTop="368dp"
-            android:layout_marginEnd="38dp"
-            android:background="@color/houseStyleColor"
+            android:layout_width="@dimen/_130sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_70sdp"
+            android:layout_marginTop="@dimen/_280sdp"
+            android:background="@drawable/roundstyle"
+            android:backgroundTint="@color/houseStyleColor"
             android:text="@string/account_aanmaken"
             android:textColor="@color/white"
-            android:textSize="15sp"
+            android:textSize="@dimen/_12sdp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.139"

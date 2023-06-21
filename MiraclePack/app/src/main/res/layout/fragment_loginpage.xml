@@ -4,23 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="18dp">
+    android:padding="@dimen/_11sdp"
+    android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
-        tools:layout_editor_absoluteX="18dp"
-        tools:layout_editor_absoluteY="18dp">
+        android:background="@color/white">
 
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="280dp"
+            android:layout_marginTop="@dimen/_214sdp"
             android:hint="@string/wachtwoord1"
             android:inputType="textPassword"
-            android:minHeight="48dp"
+            android:minHeight="@dimen/_36sdp"
             app:layout_constraintEnd_toEndOf="@+id/email"
             app:layout_constraintStart_toStartOf="@+id/email"
             app:layout_constraintTop_toTopOf="parent"
@@ -30,10 +29,10 @@
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="235dp"
+            android:layout_marginTop="@dimen/_180sdp"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
-            android:minHeight="48dp"
+            android:minHeight="@dimen/_36sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:autofillHints="" />
@@ -41,14 +40,15 @@
         <!--        inlog button-->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonLogin"
-            android:layout_width="149dp"
-            android:layout_height="51dp"
-            android:layout_marginStart="113dp"
-            android:layout_marginTop="332dp"
-            android:background="@color/houseStyleColor"
+            android:layout_width="@dimen/_130sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_80sdp"
+            android:layout_marginTop="@dimen/_280sdp"
+            android:background="@drawable/roundstyle"
+            android:backgroundTint="@color/houseStyleColor"
             android:text="@string/inloggen"
             android:textColor="@color/white"
-            android:textSize="15sp"
+            android:textSize="@dimen/_12sdp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/password"
             app:layout_constraintHorizontal_bias="0.008"
@@ -58,14 +58,15 @@
         <!-- Wachtwoord vergeten button -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonPasswordReset"
-            android:layout_width="256dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="56dp"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_45sdp"
+            android:layout_marginTop="@dimen/_43sdp"
             android:text="wachtwoord vergeten"
-            android:textSize="15sp"
+            android:textSize="@dimen/_12sdp"
             android:textStyle="bold"
-            android:background="@color/houseStyleColor"
+            android:background="@drawable/roundstyle"
+            android:backgroundTint="@color/houseStyleColor"
             android:textColor="@color/white"
             android:onClick="openPasswordResetFragment"
             app:layout_constraintStart_toStartOf="parent"
@@ -75,15 +76,16 @@
         <!--        Account aanmaken button-->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonSignUp"
-            android:layout_width="256dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="112dp"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_45sdp"
+            android:layout_marginTop="@dimen/_90sdp"
             android:onClick="openSignUpActivity"
-            android:background="@color/houseStyleColor"
+            android:background="@drawable/roundstyle"
+            android:backgroundTint="@color/houseStyleColor"
             android:textColor="@color/white"
             android:text="nieuw account aanmaken"
-            android:textSize="15sp"
+            android:textSize="@dimen/_12sdp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
