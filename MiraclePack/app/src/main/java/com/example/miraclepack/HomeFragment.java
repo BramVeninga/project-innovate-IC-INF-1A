@@ -108,10 +108,12 @@ public class HomeFragment extends Fragment {
                 if (appService != null){
                     appService.getBluetooth().makeConnection(getContext());
                     appService.getBluetooth().setupInputOutputStream(getContext());
-                    appService.getBluetooth().inputStreamDataProcessing(new byte[]{123, 39, 49, 39,
-                            58, 32, 70, 97, 108, 115, 101, 44, 32, 39, 48, 39, 58, 32, 70, 97, 108,
-                            115, 101, 44, 32, 39, 51, 39, 58, 32, 70, 97, 108, 115, 101, 44, 32, 39,
-                            50, 39, 58, 32, 70, 97, 108, 115, 101, 125, 59});
+                    appService.getBluetooth().inputOutputStream(getContext());
+
+//                    appService.getBluetooth().inputStreamDataProcessing(new byte[]{123, 39, 49, 39,
+//                            58, 32, 70, 97, 108, 115, 101, 44, 32, 39, 48, 39, 58, 32, 70, 97, 108,
+//                            115, 101, 44, 32, 39, 51, 39, 58, 32, 70, 97, 108, 115, 101, 44, 32, 39,
+//                            50, 39, 58, 32, 70, 97, 108, 115, 101, 125, 59});
                 }
             }
         });
