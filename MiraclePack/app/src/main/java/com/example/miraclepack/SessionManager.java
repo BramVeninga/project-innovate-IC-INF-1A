@@ -9,7 +9,8 @@ public class SessionManager {
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_SELECTED_DATE = "selected_date";
-    private static final String KEY_TELEFOONNUMMER = "telefoonnummer";
+    private static final String KEY_PHONENUMBER = "phonenumber";
+    private static final String KEY_USERNAME = "username";
 
 
 
@@ -61,12 +62,22 @@ public class SessionManager {
         return sharedPreferences.getString(KEY_SELECTED_DATE, "");
     }
 
-    public void setTelefoonnummer(String telefoonnummer) {
-        editor.putString(KEY_TELEFOONNUMMER, telefoonnummer);
+    public void setPhonenumber(String phonenumber) {
+        editor.putString(KEY_PHONENUMBER, phonenumber);
         editor.apply();
     }
 
-    public String getTelefoonnummer() {
-        return sharedPreferences.getString(KEY_TELEFOONNUMMER, "");
+    public String getPhonenumber() {
+        return sharedPreferences.getString(KEY_PHONENUMBER, "");
     }
+
+    public void setUsername (String username) {
+        editor.putString(KEY_USERNAME, username);
+        editor.apply();
+    }
+
+    public String getUsername() {
+        return sharedPreferences.getString(KEY_USERNAME, "");
+    }
+
 }

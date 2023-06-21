@@ -203,18 +203,7 @@ public class AppService extends Service implements LocationListener {
     }
 
     public void changeBagStatus() {
-        List<Integer> getAllCompartments = new ArrayList<>();
-        getAllCompartments.add(0);
-        getAllCompartments.add(1);
-        getAllCompartments.add(2);
-
-        matchingCompartments = new ArrayList<>();
-
-        for (Compartment compartment : usedCompartments) {
-            if (getAllCompartments.contains(compartment.getCompartmentId())) {
-                matchingCompartments.add(compartment);
-            }
-        }
+        matchingCompartments = this.getBluetooth().inputOutputStream();
     }
 
     public ArrayList<ConfigurationItem> compareCompartmentsAndConfigurations(Configuration configuration) {
