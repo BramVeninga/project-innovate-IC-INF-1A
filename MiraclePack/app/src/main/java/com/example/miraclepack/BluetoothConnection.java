@@ -87,14 +87,14 @@ public class BluetoothConnection extends AppCompatActivity {
         }
     }
 
-    public void inputOutputStream(Context context) {
+    public ArrayList<Compartment> inputOutputStream() {
         outputStreamWrite(sendMessage);
         byte[] inputBytes = inputStreamDataCollection();
-        inputStreamDataProcessing(inputBytes);
+        return inputStreamDataProcessing(inputBytes);
     }
 
     @SuppressLint("MissingPermission")
-    public void setupInputOutputStream(Context context) {
+    public void setupInputOutputStream() {
         InputStream tmpIn = null;
         OutputStream tmpOut = null;
 
