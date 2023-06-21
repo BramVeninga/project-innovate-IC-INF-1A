@@ -41,14 +41,19 @@
             android:label="Open support" />
 
         <activity
+            android:name=".ExportDatabaseActivity"
+            android:exported="true"
+            android:label="Import database" />
+
+        <activity
+            android:name=".ImportDatabaseActivity"
+            android:exported="true"
+            android:label="Export database" />
+
+        <activity
             android:name=".SignUpActivity"
             android:exported="true"
             android:label="Sign Up" />
-
-        <activity
-            android:name=".AboutActivity"
-            android:exported="true"
-            android:label="Open About Us" />
 
         <activity
             android:name=".PasswordResetActivity"

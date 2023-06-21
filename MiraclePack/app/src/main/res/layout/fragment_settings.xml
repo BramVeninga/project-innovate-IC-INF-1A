@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -22,107 +21,11 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
-                android:id="@+id/bluetoothSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_6sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/location_rounded_style"
-                android:backgroundTint="@color/houseStyleColor"
-                android:clickable="true"
-                android:focusable="true">
-
-                <TextView
-                    android:id="@+id/bluetoothText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|start"
-                    android:layout_weight="1"
-                    android:clickable="false"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:text="Bluetooth"
-                    android:textColor="@color/white"
-                    android:textStyle="bold" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/bluetoothSwitchCompat"
-                    android:layout_width="@dimen/_37sdp"
-                    android:layout_height="@dimen/_37sdp"
-                    android:theme="@style/SwitchTheme" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/notificationSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_6sdp"
-                android:background="@drawable/location_rounded_style"
-                android:backgroundTint="@color/houseStyleColor"
-                android:clickable="true"
-                android:focusable="true">
-
-                <TextView
-                    android:id="@+id/notificationText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|start"
-                    android:layout_weight="1"
-                    android:clickable="false"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:text="Notificaties"
-                    android:textColor="@color/white"
-                    android:textStyle="bold" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/NotificationSwitchCompat"
-                    android:layout_width="@dimen/_37sdp"
-                    android:layout_height="@dimen/_37sdp"
-                    android:theme="@style/SwitchTheme" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/darkModeSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_6sdp"
-                android:background="@drawable/location_rounded_style"
-                android:backgroundTint="@color/houseStyleColor"
-                android:clickable="true"
-                android:focusable="true">
-
-                <TextView
-                    android:id="@+id/darkModeText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|start"
-                    android:layout_weight="1"
-                    android:clickable="false"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:text="Dark-mode"
-                    android:textColor="@color/white"
-                    android:textStyle="bold" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/darkModeSwitchCompat"
-                    android:layout_width="@dimen/_37sdp"
-                    android:layout_height="@dimen/_37sdp"
-                    android:theme="@style/SwitchTheme" />
-
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/locationButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_6sdp"
                 android:background="@drawable/location_rounded_style"
@@ -146,44 +49,9 @@
                     android:id="@+id/openLocationSettings"
                     android:layout_width="@dimen/_37sdp"
                     android:layout_height="@dimen/_37sdp"
-                    android:contentDescription="Locatie instellen"
                     android:background="@drawable/baseline_navigate_next_24"
-                    android:clickable="false" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/aboutUs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_6sdp"
-                android:background="@drawable/location_rounded_style"
-                android:backgroundTint="@color/houseStyleColor"
-                android:clickable="true"
-                android:focusable="true">
-
-                <TextView
-                    android:id="@+id/aboutUsText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|start"
-                    android:layout_weight="1"
                     android:clickable="false"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:text="Over ons"
-                    android:textColor="@color/white"
-                    android:textStyle="bold" />
-
-                <ImageButton
-                    android:id="@+id/aboutUsButton"
-                    android:layout_width="@dimen/_37sdp"
-                    android:layout_height="@dimen/_37sdp"
-                    android:contentDescription="Over Ons"
-                    android:background="@drawable/baseline_navigate_next_24"
-                    android:clickable="false" />
-
+                    android:contentDescription="Locatie instellen" />
             </LinearLayout>
 
             <LinearLayout
@@ -220,9 +88,75 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/importDatabase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_6sdp"
+                android:background="@drawable/location_rounded_style"
+                android:backgroundTint="@color/houseStyleColor"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:id="@+id/importText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:text="Database importeren"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/importButton"
+                    android:layout_width="@dimen/_37sdp"
+                    android:layout_height="@dimen/_37sdp"
+                    android:contentDescription="Database importeren"
+                    android:background="@drawable/baseline_navigate_next_24"
+                    android:clickable="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/exportDatabase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_6sdp"
+                android:background="@drawable/location_rounded_style"
+                android:backgroundTint="@color/houseStyleColor"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:id="@+id/exportText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:text="Database exporteren"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/exportButton"
+                    android:layout_width="@dimen/_37sdp"
+                    android:layout_height="@dimen/_37sdp"
+                    android:contentDescription="Database exporteren"
+                    android:background="@drawable/baseline_navigate_next_24"
+                    android:clickable="false" />
+
+            </LinearLayout>
 
         </LinearLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
