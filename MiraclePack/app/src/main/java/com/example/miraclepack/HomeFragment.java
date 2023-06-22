@@ -1,9 +1,7 @@
 package com.example.miraclepack;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothSocket;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -87,7 +85,7 @@ public class HomeFragment extends Fragment {
 
         // API level must be greater than 31
         if (!(Build.VERSION.SDK_INT > 31)) {
-            checkBluetoothEnabled(bluetooth.getBA(), BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE);
+            checkBluetoothEnabled(bluetooth.getBluetoothAdapter(), BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE);
         }
 
         // Button that opens the bagfragment

@@ -18,55 +18,48 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.UUID;
 
 
 public class BluetoothConnection extends AppCompatActivity {
 
-    public static final byte[] targetBluetoothAddress = {0x00, 0x21, 0x13, 0x00, 0x6C, 0x7A};
-    private BluetoothAdapter BA;
-    private BluetoothSocket BS;
+    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothSocket bluetoothSocket;
     private BluetoothDevice bluetoothDevice;
-    private BluetoothConnection bluetooth;
-
+    public static final byte[] targetBluetoothAddress = {0x00, 0x21, 0x13, 0x00, 0x6C, 0x7A};
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    private Handler handler;
-//    private final BluetoothSocket mmSocket;
     private InputStream mmInStream;
     private OutputStream mmOutStream;
     private byte[] sendMessage = {115, 101, 110, 100, 59};
-    private byte[] mmBuffer; // mmBuffer store for the stream
     private static final String TAG = "MY_APP_DEBUG_TAG";
 
     public BluetoothConnection() {
-        this.BA = BluetoothAdapter.getDefaultAdapter();
+        this.bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     }
-    public BluetoothAdapter getBA() {
-        return BA;
-    }
-
-    public void setBA(BluetoothAdapter BA) {
-        this.BA = BA;
+    public BluetoothAdapter getBluetoothAdapter() {
+        return bluetoothAdapter;
     }
 
+    public void setBluetoothAdapter(BluetoothAdapter bluetoothAdapter) {
+        this.bluetoothAdapter = bluetoothAdapter;
+    }
+
+    //Do a maximum of three attempts to connect with the MiraclePack, if it fails notify the user.
     @SuppressLint("MissingPermission")
     public void makeConnection(Context context) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED) {
             try {   //try catch method to catch any exceptions for when the connection cannot be established
-                bluetoothDevice = this.getBA().getRemoteDevice(targetBluetoothAddress); //HC-05 module mac address for a direct connection
+                bluetoothDevice = this.getBluetoothAdapter().getRemoteDevice(targetBluetoothAddress); //HC-05 module mac address for a direct connection
                 int counter = 0;
                 do {
-                    BS = bluetoothDevice.createRfcommSocketToServiceRecord(MY_UUID);    // to make an connection possible an UUID is required, the stated MY_UUID is the most universal UUID available
-                    BS.connect();
+                    bluetoothSocket = bluetoothDevice.createRfcommSocketToServiceRecord(MY_UUID);    // to make an connection possible an UUID is required, the stated MY_UUID is the most universal UUID available
+                    bluetoothSocket.connect();
                     counter++;
-                } while (!BS.isConnected() && counter < 3);  //If the bluetooth socket is not connected we try to make a connection multiple times
+                } while (!bluetoothSocket.isConnected() && counter < 3);  //If the bluetooth socket is not connected we try to make a connection multiple times
 
             } catch (Exception e) {
                 Toast.makeText(context, "Kan apparaat niet vinden", Toast.LENGTH_SHORT).show(); //User feedback if an connection cannot be established
@@ -77,8 +70,8 @@ public class BluetoothConnection extends AppCompatActivity {
 
 
     public void getBluetoothPermissions() {
-        BA = BluetoothAdapter.getDefaultAdapter();
-        Log.d("BluetoothTest", String.valueOf(BA));
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        Log.d("BluetoothTest", String.valueOf(bluetoothAdapter));
         if (ContextCompat.checkSelfPermission(getBaseContext(), Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH}, 1);
         }
@@ -87,26 +80,20 @@ public class BluetoothConnection extends AppCompatActivity {
         }
     }
 
-    public ArrayList<Compartment> inputOutputStream() {
-        outputStreamWrite(sendMessage);
-        byte[] inputBytes = inputStreamDataCollection();
-        return inputStreamDataProcessing(inputBytes);
-    }
-
+    //Initialises the input and output stream variables.
     @SuppressLint("MissingPermission")
     public void setupInputOutputStream() {
         InputStream tmpIn = null;
         OutputStream tmpOut = null;
 
-        // Get the input and output streams; using temp objects because
-        // member streams are final.
+        // Get the input and output streams; using temp objects because member streams are final.
         try {
-            tmpIn = BS.getInputStream();
+            tmpIn = bluetoothSocket.getInputStream();
         } catch (Exception e) {
             Log.e(TAG, "Error occurred when creating input stream", e);
         }
         try {
-            tmpOut = BS.getOutputStream();
+            tmpOut = bluetoothSocket.getOutputStream();
         } catch (Exception e) {
             Log.e(TAG, "Error occurred when creating output stream", e);
         }
@@ -115,6 +102,14 @@ public class BluetoothConnection extends AppCompatActivity {
         mmOutStream = tmpOut;
     }
 
+    //Returns a ArrayList with filled compartments from the bluetooth device.
+    public ArrayList<Compartment> getCompartmentDataFromBluetoothDevice() {
+        outputStreamWrite(sendMessage);
+        byte[] inputBytes = inputStreamDataCollection();
+        return inputStreamDataProcessing(inputBytes);
+    }
+
+    //Sends a message to the bluetooth device.
     public void outputStreamWrite(byte[] message) {
         try {
             mmOutStream.write(message);
@@ -123,6 +118,8 @@ public class BluetoothConnection extends AppCompatActivity {
         }
     }
 
+    //Listens to the bluetooth device and returns the message.
+    //All messages send end with an ';' (ASCII code 59)
     public byte[] inputStreamDataCollection() {
         byte[] message = new byte[1024];
         byte[] tempBuffer = new byte[1024];
@@ -170,6 +167,7 @@ public class BluetoothConnection extends AppCompatActivity {
         return inputString;
     }
 
+    //Checks if the byte array is not completely filled with 0's
     public static boolean checkArrayFilled(byte[] bytes) {
         for (byte b : bytes) {
             if (b != 0) {

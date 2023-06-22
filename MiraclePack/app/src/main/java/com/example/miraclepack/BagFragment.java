@@ -95,6 +95,19 @@ public class BagFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        bindWithService();
+    }
+
+    //Binds service to this fragment
+    private void bindWithService() {
+        Intent serviceIntent = new Intent(getContext(), AppService.class);
+        getActivity().bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    //Takes a string, representing a weekday, and sets the current selectedWeekday configuration accordingly.
     private void setSelectedWeekday(String weekday) {
         for (Configuration configuration: weekDays) {
             if (configuration.getWeekday().equals(weekday)) {
@@ -105,17 +118,6 @@ public class BagFragment extends Fragment {
                 return;
             }
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        bindWithService();
-    }
-
-    private void bindWithService() {
-        Intent serviceIntent = new Intent(getContext(), AppService.class);
-        getActivity().bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
     }
 
     //Returns an index fo the Spinner, so the Spinner can be opened with the current day as default.
@@ -130,6 +132,7 @@ public class BagFragment extends Fragment {
         return weekDaySpinnerIndex;
     }
 
+    //Returns the current day as a string
     @Nullable
     private static String getToday() {
         Calendar today = Calendar.getInstance();

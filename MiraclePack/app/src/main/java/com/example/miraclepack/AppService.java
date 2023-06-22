@@ -40,6 +40,7 @@ public class AppService extends Service implements LocationListener {
     private Configuration selectedWeekday;
     private boolean isInList = false;
     private BluetoothConnection bluetooth;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -51,6 +52,41 @@ public class AppService extends Service implements LocationListener {
         Log.d("AppServiceMessage", "Service is gestart");
         setToday();
         changeBagStatus();
+    }
+
+    // Starting foreground service and background location
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        startForeground(NOTIFICATION_ID, createNotification());
+        startLocationUpdates();
+        return START_STICKY;
+    }
+
+    // Kill service if app is closed in task manager
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        stopSelf(); // Stop the service when the app is removed from the recent tasks
+        locationManager.removeUpdates(this); // Stop location updates
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        locationManager.removeUpdates(this);
+    }
+
+    // Ensuring service does not support binding so that other components can't bind to the service
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return myBinder;
+    }
+
+    // Check if current location has changed in order to check for geofence
+    @Override
+    public void onLocationChanged(Location location) {
+        checkGeofences(location);
     }
 
     public MyBinder getMyBinder() {
@@ -89,30 +125,45 @@ public class AppService extends Service implements LocationListener {
         this.usedCompartments = usedCompartments;
     }
 
-    // Starting foreground service and background location
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        startForeground(NOTIFICATION_ID, createNotification());
-        startLocationUpdates();
-        return START_STICKY;
+    public ArrayList<Compartment> getMatchingCompartments() {
+        return matchingCompartments;
     }
 
-    public class MyBinder extends Binder {
-        AppService getService(){
-            return AppService.this;
+    public Configuration getSelectedWeekday() {
+        return selectedWeekday;
+    }
+
+    public void setSelectedWeekday(Configuration selectedWeekday) {
+        this.selectedWeekday = selectedWeekday;
+    }
+
+    public BluetoothConnection getBluetooth() {
+        return bluetooth;
+    }
+
+    public void setBluetooth(BluetoothConnection bluetooth) {
+        this.bluetooth = bluetooth;
+    }
+
+    //Sets the selectedWeekday to today.
+    private void setToday() {
+        List<Configuration> weekDays = myDB.fillConfigurations(myDB.getConfiguration());
+
+        Calendar today = Calendar.getInstance();
+        String day = today.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+
+        for (Configuration configuration: weekDays) {
+            if (configuration.getWeekday().equals(day)) {
+                this.selectedWeekday = configuration;
+                setSelectedWeekday(this.selectedWeekday);
+
+            }
         }
     }
-    // Ensuring service does not support binding so that other components can't bind to the service
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return myBinder;
-    }
 
-    // Check if current location has changed in order to check for geofence
-    @Override
-    public void onLocationChanged(Location location) {
-        checkGeofences(location);
+    //Retrieves the filled compartments from the bluetooth device.
+    public void changeBagStatus() {
+        matchingCompartments = this.getBluetooth().getCompartmentDataFromBluetoothDevice();
     }
 
     private void startLocationUpdates() {
@@ -133,7 +184,6 @@ public class AppService extends Service implements LocationListener {
             if (distance > GEOFENCE_RADIUS && !isLocationInsideGeofence(currentLocation, geofence) && isContentInsideBag()) {
                 showNotification();
             }
-
             break;
         }
     }
@@ -151,64 +201,22 @@ public class AppService extends Service implements LocationListener {
 
     // Check if all content is inside bag according to configuration
     private boolean isContentInsideBag() {
-        List<Integer> getAllCompartments = new ArrayList<>(); // Example list. List according to Pico must be placed here
-        getAllCompartments.add(0);
-        getAllCompartments.add(1);
-        getAllCompartments.add(2);
-
         ArrayList<ConfigurationItem> configurationItems = this.compareCompartmentsAndConfigurations(selectedWeekday);
         boolean contentMissing = false;
         for (ConfigurationItem configurationItem : configurationItems) {
             if (!configurationItem.isStatus()) {
                 contentMissing = true;
-
             }
         }
-
         if (contentMissing) {
             return true;
         }
-
         return false;
     }
 
-    private void setToday() {
-        List<Configuration> weekDays = myDB.fillConfigurations(myDB.getConfiguration());
-
-        Calendar today = Calendar.getInstance();
-        String day = today.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
-
-        for (Configuration configuration: weekDays) {
-            if (configuration.getWeekday().equals(day)) {
-                this.selectedWeekday = configuration;
-                setSelectedWeekday(this.selectedWeekday);
-
-            }
-        }
-    }
-
-    public boolean isCompartmentCorrectlyFilled(int compartmentID, int configurationCompartmentID, String configurationItemName, int counter, int listLength) {
-        if (compartmentID == configurationCompartmentID) {
-            this.isInList = true;
-            if (!configurationItemName.equals("Leeg")) {
-                return true;
-            }
-        }
-
-        if (!isInList && counter >= listLength && configurationItemName.equals("Leeg")) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public void changeBagStatus() {
-        matchingCompartments = this.getBluetooth().inputOutputStream();
-    }
-
+    //Checks if the compartments are filled correctly and sets their filled status to true.
     public ArrayList<ConfigurationItem> compareCompartmentsAndConfigurations(Configuration configuration) {
         ArrayList<ConfigurationItem> configItemList = new ArrayList<>();
-
         configItemList = myDB.fillConfigItems(myDB.getConfigItems(configuration));
 
         for (ConfigurationItem configurationItem : configItemList) {
@@ -225,8 +233,19 @@ public class AppService extends Service implements LocationListener {
         return configItemList;
     }
 
-    public ArrayList<Compartment> getMatchingCompartments() {
-        return matchingCompartments;
+    //Checks if the compartment is filled when it should be filled, or left empty when it should be empty.
+    //It does this according to the configuration.
+    public boolean isCompartmentCorrectlyFilled(int compartmentID, int configurationCompartmentID, String configurationItemName, int counter, int listLength) {
+        if (compartmentID == configurationCompartmentID) {
+            this.isInList = true;
+            if (!configurationItemName.equals("Leeg")) {
+                return true;
+            }
+        }
+        if (!isInList && counter >= listLength && configurationItemName.equals("Leeg")) {
+            return true;
+        }
+        return false;
     }
 
     private void showNotification() {
@@ -257,13 +276,11 @@ public class AppService extends Service implements LocationListener {
     // Creating and building notification and channel
     private Notification createNotification() {
         createNotificationChannel();
-
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.baseline_notifications_24)
                 .setContentTitle("MiraclePack")
                 .setContentText("MiraclePack draait momenteel op de achtergrond...")
                 .setPriority(NotificationCompat.PRIORITY_LOW);
-
         return builder.build();
     }
 
@@ -281,33 +298,9 @@ public class AppService extends Service implements LocationListener {
         }
     }
 
-    // Kill service if app is closed in task manager
-    @Override
-    public void onTaskRemoved(Intent rootIntent) {
-        super.onTaskRemoved(rootIntent);
-        stopSelf(); // Stop the service when the app is removed from the recent tasks
-        locationManager.removeUpdates(this); // Stop location updates
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        locationManager.removeUpdates(this);
-    }
-
-    public Configuration getSelectedWeekday() {
-        return selectedWeekday;
-    }
-
-    public void setSelectedWeekday(Configuration selectedWeekday) {
-        this.selectedWeekday = selectedWeekday;
-    }
-
-    public BluetoothConnection getBluetooth() {
-        return bluetooth;
-    }
-
-    public void setBluetooth(BluetoothConnection bluetooth) {
-        this.bluetooth = bluetooth;
+    public class MyBinder extends Binder {
+        AppService getService(){
+            return AppService.this;
+        }
     }
 }
