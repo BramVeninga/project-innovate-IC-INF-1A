@@ -60,10 +60,22 @@ public class SignUpActivity extends AppCompatActivity
         });
     }
 
-    private boolean performSignUp(String email, String password)
-    {
-        return !email.isEmpty() && !password.isEmpty();
+    private boolean performSignUp(String email, String password) {
+        if (email.isEmpty()) {
+            // Email not provided
+            editTextEmail.setError("Vul een email adres in");
+            return false;
+        }
+
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            // Invalid email
+            editTextEmail.setError("Vul een geldig email adres in");
+            return false;
+        }
+
+        return !password.isEmpty();
     }
+
 }
 
 

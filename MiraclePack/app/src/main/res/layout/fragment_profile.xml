@@ -53,12 +53,12 @@
 
                 <EditText
                     android:id="@+id/usernameEditText"
-                    android:layout_width="123dp"
+                    android:layout_width="110dp"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
                     android:gravity="center"
-                    android:imeOptions="actionDone"
-                    android:hint="Username" />
+                    android:hint="Username"
+                    android:imeOptions="actionDone" />
 
                 <ImageView
                     android:id="@+id/imageViewEditProfilePicture"
@@ -76,8 +76,8 @@
         <LinearLayout
             android:id="@+id/backpackInfoSection"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_280sdp"
-            android:layout_margin="@dimen/_10sdp"
+            android:layout_height="@dimen/_265sdp"
+            android:layout_margin="@dimen/_8sdp"
             android:background="@drawable/roundstyle"
             android:backgroundTint="@color/houseStyleColor"
             android:orientation="vertical"
