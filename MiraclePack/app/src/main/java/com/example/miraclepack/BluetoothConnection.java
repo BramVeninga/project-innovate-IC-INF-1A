@@ -21,7 +21,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.UUID;
 
-
 public class BluetoothConnection extends AppCompatActivity {
 
     public static final byte[] targetBluetoothAddress = {0x00, 0x21, 0x13, 0x00, 0x6C, 0x7A};
@@ -185,11 +184,12 @@ public class BluetoothConnection extends AppCompatActivity {
         int bufferByte = 0; // bytes returned from read
         int counter = 0;
         try {
-            while (counter >= 1023) {
+            while (counter <= 1023) {
                 bufferByte = mmInStream.read();
                 tempBuffer[counter++] = (byte) bufferByte;
                 if (bufferByte == 59) {
                     message = tempBuffer;
+                    Log.d(TAG, "Bluetooth test:" + message);
                     return message;
                 }
             }

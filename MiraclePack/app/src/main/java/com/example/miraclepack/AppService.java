@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class AppService extends Service implements LocationListener {
     private static final int NOTIFICATION_ID = 1;
@@ -51,7 +53,19 @@ public class AppService extends Service implements LocationListener {
         usedCompartments = myDB.getUsedCompartmentsOfCurrentDay();
         Log.d("AppServiceMessage", "Service is gestart");
         setToday();
-        changeBagStatus();
+
+        // Initialise timer and task
+        Timer dataUpdateTimer = new Timer();
+        TimerTask dataUpdateTask = new TimerTask() {
+            @Override
+            public void run() {
+                changeBagStatus();
+            }
+        };
+
+        // Execute method every 10 seconds
+        long updateInterval = 10 * 1000 ; // 10 seconds
+        dataUpdateTimer.schedule(dataUpdateTask, updateInterval, updateInterval);
     }
 
     // Starting foreground service and background location
@@ -202,7 +216,7 @@ public class AppService extends Service implements LocationListener {
     // Check if all content is inside bag according to configuration
     private boolean isContentInsideBag() {
         // The configuration items get updated, with if they are correctly filled.
-        ArrayList<ConfigurationItem> configurationItems = this.compareCompartmentsAndConfigurations(selectedWeekday);
+        ArrayList<ConfigurationItem> configurationItems = compareCompartmentsAndConfigurations(selectedWeekday);
         boolean contentMissing = false;
         for (ConfigurationItem configurationItem : configurationItems) {
             if (!configurationItem.isStatus()) {
