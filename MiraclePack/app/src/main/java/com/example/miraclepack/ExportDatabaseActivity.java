@@ -1,11 +1,13 @@
 package com.example.miraclepack;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -14,6 +16,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.documentfile.provider.DocumentFile;
+import androidx.fragment.app.Fragment;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,6 +46,8 @@ public class ExportDatabaseActivity extends AppCompatActivity {
                                 selectedUri = data.getData();
                                 performExport();
                             }
+                        } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                            finish();
                         }
                     }
                 });
@@ -87,9 +92,10 @@ public class ExportDatabaseActivity extends AppCompatActivity {
                 Toast.makeText(this, "Database geëxporteerd naar: " + exportFilePath, Toast.LENGTH_LONG).show();
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                finish();
             }
         }
-        finish();
     }
 
     private String getDirectoryPath(Uri uri) {

@@ -38,8 +38,9 @@ public class ImportDatabaseActivity extends AppCompatActivity {
                                 importDatabaseFromUri(uri);
                             } else {
                                 Toast.makeText(ImportDatabaseActivity.this, "Failed to pick the file.", Toast.LENGTH_SHORT).show();
-                                finish();
                             }
+                        } else if (result.getResultCode() == RESULT_CANCELED) {
+                            finish();
                         }
                     }
                 });
