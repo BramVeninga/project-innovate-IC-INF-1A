@@ -106,26 +106,16 @@ public class BagFragment extends Fragment {
         addBagContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), AddActivity.class);
-                String configName = "";
-                for (Configuration configuration : weekDays) {
-                    if (weekDaySpinner.getSelectedItem().toString() == configuration.getWeekday()) {
-                        configName = configuration.getName();
-                        break;
-                    }
-                }
-                intent.putExtra("selectedConfig", configName);
-                startActivity(intent);
+                //Opens the AddActivity and passes along the selectedWeekday
+                addBagContentOnClick();
             }
         });
 
         weekDaySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (appService != null) {
-                    recyclerViewSetup(position, BagFragment.this.itemList, appService.getMatchingCompartments());
-                    setSelectedWeekday(weekDaySpinner.getAdapter().getItem(position).toString());
-                }
+                //Sets the weekdaySpinner to the correct item and changes the selectedWeekday to the selected item.
+                weekdaySpinnerOnItemSelected(position);
             }
 
             @Override
@@ -146,6 +136,26 @@ public class BagFragment extends Fragment {
     private void bindWithService() {
         Intent serviceIntent = new Intent(getContext(), AppService.class);
         getActivity().bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    private void addBagContentOnClick() {
+        Intent intent = new Intent(getActivity(), AddActivity.class);
+        String configName = "";
+        for (Configuration configuration: weekDays) {
+            if (weekDaySpinner.getSelectedItem().toString() == configuration.getWeekday()) {
+                configName = configuration.getName();
+                break;
+            }
+        }
+        intent.putExtra("selectedConfig", configName);
+        startActivity(intent);
+    }
+
+    private void weekdaySpinnerOnItemSelected(int position) {
+        if (appService != null) {
+            recyclerViewSetup(position, BagFragment.this.itemList, appService.getMatchingCompartments());
+            setSelectedWeekday(weekDaySpinner.getAdapter().getItem(position).toString());
+        }
     }
 
     //Takes a string, representing a weekday, and sets the current selectedWeekday configuration accordingly.
@@ -185,9 +195,9 @@ public class BagFragment extends Fragment {
     }
 
     //Fills the recyclerView with data from all the compartments relevant to the selected day.
-    private void recyclerViewSetup(Integer count, RecyclerView recyclerView, ArrayList<Compartment> matchingCompartments) {
+    private void recyclerViewSetup(Integer position, RecyclerView recyclerView, ArrayList<Compartment> matchingCompartments) {
         if (appService != null) {
-            ArrayList<ConfigurationItem> configItemList = appService.compareCompartmentsAndConfigurations(weekDays.get(count));
+            ArrayList<ConfigurationItem> configItemList = appService.compareCompartmentsAndConfigurations(weekDays.get(position));
             CustomAdapter recyclerAdapter = new CustomAdapter(getContext(), configItemList);
             recyclerView.setAdapter(recyclerAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
