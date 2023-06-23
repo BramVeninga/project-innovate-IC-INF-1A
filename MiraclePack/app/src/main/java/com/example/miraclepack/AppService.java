@@ -64,7 +64,7 @@ public class AppService extends Service implements LocationListener {
         };
 
         // Execute method every 10 seconds
-        long updateInterval = 10 * 1000 ; // 10 seconds
+        long updateInterval = 5 * 1000 ; // 5 seconds
         dataUpdateTimer.schedule(dataUpdateTask, updateInterval, updateInterval);
     }
 
