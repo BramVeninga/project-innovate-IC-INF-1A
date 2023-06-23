@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
@@ -80,11 +79,9 @@ public class LoginFragment extends Fragment {
         });
 
 
-        buttonPasswordReset.setOnClickListener(new View.OnClickListener()
-        {
+        buttonPasswordReset.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 // Launch the PasswordResetActivity
                 Intent intent = new Intent(requireContext(), PasswordResetActivity.class);
                 startActivity(intent);

@@ -23,11 +23,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE_USERS);
-    }
-
     public static String getColumnEmail() {
         return COLUMN_EMAIL;
     }
@@ -42,6 +37,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (Query != null) {
             db.execSQL(Query);
         }
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(CREATE_TABLE_USERS);
     }
 
     @Override

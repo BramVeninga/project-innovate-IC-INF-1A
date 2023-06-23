@@ -3,10 +3,10 @@ package com.example.miraclepack;
 import android.location.Location;
 
 public class Geofence {
-    private String name;
-    private double latitude;
-    private double longitude;
-    private float radius;
+    private final String name;
+    private final double latitude;
+    private final double longitude;
+    private final float radius;
 
     public Geofence(String name, double latitude, double longitude, float radius) {
         this.name = name;

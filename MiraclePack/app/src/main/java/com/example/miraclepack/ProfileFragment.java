@@ -2,17 +2,14 @@ package com.example.miraclepack;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -37,7 +34,17 @@ public class ProfileFragment extends Fragment {
     private EditText phonenumberEditText;
     private EditText usernameEditText;
     private SQLiteDatabase database;
+    private final DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            // Update the date of birth TextView with the selected date
+            String selectedDate = String.format(Locale.getDefault(), "%02d-%02d-%04d", dayOfMonth, monthOfYear + 1, year);
+            birthdateTextView.setText(selectedDate);
 
+            // Save the selected date
+            sessionManager.setSelectedDate(selectedDate);
+        }
+    };
 
     public ProfileFragment() {
         // Empty constructor
@@ -179,18 +186,6 @@ public class ProfileFragment extends Fragment {
         Intent intent = new Intent(getActivity(), PasswordResetActivity.class);
         startActivity(intent);
     }
-
-    private DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            // Update the date of birth TextView with the selected date
-            String selectedDate = String.format(Locale.getDefault(), "%02d-%02d-%04d", dayOfMonth, monthOfYear + 1, year);
-            birthdateTextView.setText(selectedDate);
-
-            // Save the selected date
-            sessionManager.setSelectedDate(selectedDate);
-        }
-    };
 
 }
 

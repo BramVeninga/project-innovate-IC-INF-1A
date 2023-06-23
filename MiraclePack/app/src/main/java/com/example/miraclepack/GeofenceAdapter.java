@@ -16,9 +16,9 @@ import java.util.List;
 
 public class GeofenceAdapter extends RecyclerView.Adapter<GeofenceAdapter.MyViewHolder> {
 
-    private Context context;
-    private List<Geofence> geofences;
-    private MyDatabaseHelper myDB;
+    private final Context context;
+    private final List<Geofence> geofences;
+    private final MyDatabaseHelper myDB;
 
     GeofenceAdapter(Context context, List<Geofence> geofences) {
         this.context = context;
@@ -44,35 +44,6 @@ public class GeofenceAdapter extends RecyclerView.Adapter<GeofenceAdapter.MyView
     @Override
     public int getItemCount() {
         return geofences.size();
-    }
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView nameTextView;
-        private ImageButton deleteLocationButton;
-
-        public MyViewHolder(@NonNull View itemView) {
-            super(itemView);
-            nameTextView = itemView.findViewById(R.id.nameTextView);
-            deleteLocationButton = itemView.findViewById(R.id.deleteLocation);
-
-            // Button that deletes a geofence from the database
-            deleteLocationButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getBindingAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        Geofence geofence = geofences.get(position);
-                        showDeleteConfirmationDialog(geofence);
-                    }
-                }
-            });
-        }
-
-        // Setting name for geofence to show in recycler view
-        public void bind(Geofence geofence) {
-            nameTextView.setText(geofence.getName());
-        }
     }
 
     // Confirmation dialog when deleting geofence
@@ -102,6 +73,35 @@ public class GeofenceAdapter extends RecyclerView.Adapter<GeofenceAdapter.MyView
         if (position != -1) {
             geofences.remove(position);
             notifyItemRemoved(position);
+        }
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+
+        private final TextView nameTextView;
+        private final ImageButton deleteLocationButton;
+
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+            nameTextView = itemView.findViewById(R.id.nameTextView);
+            deleteLocationButton = itemView.findViewById(R.id.deleteLocation);
+
+            // Button that deletes a geofence from the database
+            deleteLocationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getBindingAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Geofence geofence = geofences.get(position);
+                        showDeleteConfirmationDialog(geofence);
+                    }
+                }
+            });
+        }
+
+        // Setting name for geofence to show in recycler view
+        public void bind(Geofence geofence) {
+            nameTextView.setText(geofence.getName());
         }
     }
 }

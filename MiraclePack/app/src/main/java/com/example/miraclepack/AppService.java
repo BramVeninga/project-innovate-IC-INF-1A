@@ -152,7 +152,7 @@ public class AppService extends Service implements LocationListener {
         Calendar today = Calendar.getInstance();
         String day = today.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
 
-        for (Configuration configuration: weekDays) {
+        for (Configuration configuration : weekDays) {
             if (configuration.getWeekday().equals(day)) {
                 this.selectedWeekday = configuration;
                 setSelectedWeekday(this.selectedWeekday);
@@ -206,12 +206,10 @@ public class AppService extends Service implements LocationListener {
         for (ConfigurationItem configurationItem : configurationItems) {
             if (!configurationItem.isStatus()) {
                 contentMissing = true;
+                break;
             }
         }
-        if (contentMissing) {
-            return true;
-        }
-        return false;
+        return contentMissing;
     }
 
     //Checks if the compartments are filled correctly and sets their filled status to true.
@@ -242,10 +240,7 @@ public class AppService extends Service implements LocationListener {
                 return true;
             }
         }
-        if (!isInList && counter >= listLength && configurationItemName.equals("Leeg")) {
-            return true;
-        }
-        return false;
+        return !isInList && counter >= listLength && configurationItemName.equals("Leeg");
     }
 
     private void showNotification() {
@@ -299,7 +294,7 @@ public class AppService extends Service implements LocationListener {
     }
 
     public class MyBinder extends Binder {
-        AppService getService(){
+        AppService getService() {
             return AppService.this;
         }
     }

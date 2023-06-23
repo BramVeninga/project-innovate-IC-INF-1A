@@ -25,13 +25,17 @@ import androidx.fragment.app.FragmentTransaction;
 
 
 public class HomeFragment extends Fragment {
+    private static final int BLUETOOTH_PERMISSION_CODE = 1;
+    private static final int BLUETOOTH_ADMIN_PERMISSION_CODE = 2;
+    private static final int BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE = 3;
+    private static final int PERMISSION_ALL = 4;
     // Variables
     private Button viewContentButton;
-    private boolean bluetoothConnected = false;
-    private boolean bluetoothAllowed = true;
-    private String configNameString = "Inhoud van de tas";
-    private boolean gpsConnected = true;
-    private boolean gpsAllowed = true;
+    private final boolean bluetoothConnected = false;
+    private final boolean bluetoothAllowed = true;
+    private final String configNameString = "Inhoud van de tas";
+    private final boolean gpsConnected = true;
+    private final boolean gpsAllowed = true;
     private TextView gpsText;
     private ImageView gpsImage;
     private ImageView bluetoothImage;
@@ -40,15 +44,34 @@ public class HomeFragment extends Fragment {
     private TextView configName;
     private Button bluetoothButton;
     private BluetoothConnection bluetooth;
-    private static final int BLUETOOTH_PERMISSION_CODE = 1;
-    private static final int BLUETOOTH_ADMIN_PERMISSION_CODE = 2;
-    private static final int BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE = 3;
-    private static final int PERMISSION_ALL = 4;
     private AppService appService;
+    private final ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            AppService.MyBinder binder = (AppService.MyBinder) service;
+            appService = binder.getService();
 
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
 
     public HomeFragment() {
         // Required empty public constructor
+    }
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @Override
@@ -99,7 +122,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                if (appService != null){
+                if (appService != null) {
                     appService.getBluetooth().makeConnection(getContext());
                     appService.getBluetooth().setupInputOutputStream();
                 }
@@ -116,17 +139,6 @@ public class HomeFragment extends Fragment {
         bindWithService();
     }
 
-    public static boolean hasPermissions(Context context, String... permissions) {
-        if (context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     public void checkBluetoothEnabled(BluetoothAdapter BA, int BLUETOOTH_ENABLE_REQUEST_PERMISSION_CODE) { //method to check if the Bluetooth Adapter is enabled
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED) {
             if (BA != null && !BA.isEnabled()) {
@@ -135,6 +147,7 @@ public class HomeFragment extends Fragment {
             }
         }
     }
+
     // Replace the fragment
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
@@ -151,13 +164,11 @@ public class HomeFragment extends Fragment {
             bluetoothText.setText("Bluetooth uitgeschakeld");
             bluetoothImage.setImageResource(R.drawable.baseline_bluetooth_disabled_24);
             return false;
-        }
-        else if (!bluetoothConnected) {
+        } else if (!bluetoothConnected) {
             bluetoothText.setText("Niet verbonden");
             bluetoothImage.setImageResource(R.drawable.baseline_bluetooth_24);
             return false;
-        }
-        else {
+        } else {
             bluetoothText.setText("Verbonden");
             bluetoothImage.setImageResource(R.drawable.baseline_bluetooth_connected_24);
             return true;
@@ -175,35 +186,20 @@ public class HomeFragment extends Fragment {
             gpsText.setText("Gps inschakelen");
             gpsImage.setImageResource(R.drawable.baseline_gps_off_24);
             return false;
-        }
-        else if (!gpsConnected) {
+        } else if (!gpsConnected) {
             gpsText.setText("Gps verbinden");
             gpsImage.setImageResource(R.drawable.baseline_gps_not_fixed_24);
             return false;
-        }
-        else {
+        } else {
             gpsText.setText("Verbonden");
             gpsImage.setImageResource(R.drawable.baseline_gps_fixed_24);
             return true;
         }
     }
+
     private void bindWithService() {
         Intent serviceIntent = new Intent(getContext(), AppService.class);
         getActivity().bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
     }
-
-    private ServiceConnection connection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            //Gets an instance of the appService object.
-           AppService.MyBinder binder = (AppService.MyBinder) service;
-           appService = binder.getService();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-
-        }
-    };
 }
 

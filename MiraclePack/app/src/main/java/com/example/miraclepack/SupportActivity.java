@@ -2,8 +2,9 @@ package com.example.miraclepack;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.widget.Toast;
 import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SupportActivity extends AppCompatActivity {
