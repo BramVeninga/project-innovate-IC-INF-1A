@@ -114,10 +114,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                         "\t('presetZaterdag', 'Saturday')",
                 "INSERT INTO " + TABLE_COMPARTMENT + " (" + COLUMN_COMPARTMENT_ID + ", " + COLUMN_DESCRIPTION + ")\n" +
                         "VALUES\n" +
-                        "\t(0, 'Laptop compartment'),\n" +
-                        "\t(1, 'First main compartment'),\n" +
-                        "\t(2, 'Second main compartment'),\n" +
-                        "\t(3, 'Small compartment')",
+                        "\t(0, 'Laptop vak'),\n" +
+                        "\t(1, 'Voor vak'),\n" +
+                        "\t(2, 'Waterfles vak'),\n" +
+                        "\t(3, 'Grote vak')",
                 "INSERT INTO " + TABLE_CONFIG_ITEM + " (" + COLUMN_NAME + ", " + COLUMN_COMPARTMENT_ID + ")\n" +
                         "VALUES\n" +
                         "\t('presetZondag', 0),\n" +
@@ -159,17 +159,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONFIG);
         onCreate(db);
     }
-
-//    Cursor readAllData() {
-//        String query = "SELECT * FROM"; // Query to select all data
-//        SQLiteDatabase db = this.getReadableDatabase();
-//
-//        Cursor cursor = null;
-//        if(db != null) {
-//            cursor = db.rawQuery(query, null);
-//        }
-//        return cursor;
-//    }
 
     //Adds an item too the ConfigurationItem table, according to the ConfigurationItem object
     public void updateConfigItem(ConfigurationItem item) {
