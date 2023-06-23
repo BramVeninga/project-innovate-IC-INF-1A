@@ -1,0 +1,52 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.MiraclePack" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/black</item>
+    </style>
+
+    <style name="AppBottomNavigationView" parent="Widget.Design.BottomNavigationView">
+        <item name="android:background">@android:color/white</item>
+        <item name="android:theme">@style/BottomNavigationTheme</item>
+    </style>
+
+    <style name="BottomNavigationTheme">
+        <item name="colorSurface">@android:color/white</item>
+    </style>
+
+    <style name="FloatingActionButtonShape" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="LocationRecyclerShape" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8%</item>
+        <item name="android:background">@color/houseStyleColor</item>
+    </style>
+
+    <style name="DrawableTheme" parent="">
+        <item name="android:colorAccent">@android:color/white</item>
+    </style>
+
+    <style name="BackButtonTheme" parent="">
+        <item name="android:homeAsUpIndicator">@drawable/baseline_arrow_back_24</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="actionMenuTextColor">@color/white</item>
+    </style>
+
+    <style name="SwitchTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Active thumb color & Active track color(30% transparency) -->
+        <item name="colorControlActivated">@color/white</item>
+        <!-- Inactive thumb color -->
+        <item name="colorSwitchThumbNormal">@color/white</item>
+        <!-- Inactive track color(30% transparency) -->
+        <item name="android:colorForeground">@color/white</item>
+        ...
+    </style>
+
+</resources>

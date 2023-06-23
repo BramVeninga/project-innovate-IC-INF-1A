@@ -1,0 +1,15 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.MiraclePack.Dark" parent="Base.Theme.MiraclePack">
+        <item name="colorPrimary">@color/dark_primary</item>
+        <item name="colorPrimaryVariant">@color/dark_primary_variant</item>
+        <item name="colorSecondary">@color/dark_secondary</item>
+        <!-- Voeg hier extra donkere modus kleuren toe indien nodig -->
+    </style>
+
+    <!-- Donkere modus kleuren -->
+    <color name="dark_primary">#222222</color>
+    <color name="dark_primary_variant">#444444</color>
+    <color name="dark_secondary">#FF0000</color>
+    <!-- Voeg hier extra donkere modus kleuren toe indien nodig -->
+</resources>

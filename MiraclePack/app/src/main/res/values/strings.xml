@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Miracle-Pack</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="nieuw_account_aanmaken">Nieuw account aanmaken?</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="inloggen">Inloggen</string>
+    <string name="wachtwoord_vergeten">Wachtwoord vergeten?</string>
+    <string name="account_aanmaken">Account aanmaken</string>
+    <string name="herhaal_wachtwoord">Herhaal wachtwoord</string>
+    <string name="wachtwoord">Wachtwoord</string>
+    <string name="wachtwoord2">Wachtwoord</string>
+    <string name="verzenden">Verzenden</string>
+    <string name="test">Test</string>
+    <string name="wachtwoord1">Wachtwoord</string>
+    <string name="uitloggen">Uitloggen</string>
+    <string name="wachtwoord_veranderen">wachtwoord veranderen</string>
+    <string name="select_picture">Select Picture</string>
+    <string name="textview">TextView</string>
+    <string name="telefoonnummer">Telefoonnummer</string>
+
+
+    <string-array name="weekdays">
+        <item>Maandag</item>
+        <item>Dinsdag</item>
+        <item>Woensdag</item>
+        <item>Donderdag</item>
+        <item>Vrijdag</item>
+        <item>Zaterdag</item>
+        <item>Zondag</item>
+    </string-array>
+
+</resources>
