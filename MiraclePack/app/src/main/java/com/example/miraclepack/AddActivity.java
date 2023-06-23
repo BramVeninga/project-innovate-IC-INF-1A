@@ -1,20 +1,18 @@
 package com.example.miraclepack;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +38,10 @@ public class AddActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String selectedConfig = intent.getStringExtra("selectedConfig");
 
-        itemNameInput = (EditText) findViewById(R.id.itemName);
-        compartmentNameSpinner = (Spinner) findViewById(R.id.compartmentNameSpinner);
-        addButton = (Button) findViewById(R.id.addButton);
-        backButton = (ImageButton) findViewById(R.id.backButton);
+        itemNameInput = findViewById(R.id.itemName);
+        compartmentNameSpinner = findViewById(R.id.compartmentNameSpinner);
+        addButton = findViewById(R.id.addButton);
+        backButton = findViewById(R.id.backButton);
         compartments = new ArrayList<>();
         myDB = new MyDatabaseHelper(AddActivity.this);
 
@@ -93,7 +91,7 @@ public class AddActivity extends AppCompatActivity {
     public void fillCompartmentNameSpinner(List<Compartment> compartmentsList) {
         compartmentsList = myDB.fillCompartments(myDB.getCompartments());
         ArrayAdapter<String> adapter = new ArrayAdapter<>(AddActivity.this, android.R.layout.simple_spinner_item);
-        for (Compartment compartment: compartmentsList) {
+        for (Compartment compartment : compartmentsList) {
             adapter.add(compartment.getDescription());
         }
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

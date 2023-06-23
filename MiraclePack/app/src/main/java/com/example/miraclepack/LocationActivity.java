@@ -40,6 +40,17 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
     private List<Geofence> geofenceList;
     private FloatingActionButton addLocation;
 
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,7 +187,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
 
     private void startLocationUpdates() {
         try {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0L, (float) 0, (LocationListener) this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0L, (float) 0, this);
         } catch (SecurityException e) {
             e.printStackTrace();
         }
@@ -212,17 +223,6 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
-        return true;
-    }
-
-    public static boolean hasPermissions(Context context, String... permissions) {
-        if (context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
         return true;
     }
 }

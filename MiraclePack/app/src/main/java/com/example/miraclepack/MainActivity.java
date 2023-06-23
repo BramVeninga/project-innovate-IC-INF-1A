@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean checkIfUserNavigatedBack() {
         boolean backToBagFragment = false;
         Intent backIntent = getIntent();
-        if (backIntent != null){
+        if (backIntent != null) {
             backToBagFragment = backIntent.getBooleanExtra("navigatedBack", false);
         }
         return backToBagFragment;

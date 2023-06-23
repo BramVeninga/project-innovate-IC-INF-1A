@@ -31,7 +31,6 @@ import java.util.Locale;
 //On this page an user can select a weekday and the user will then be show, a list of items belonging to that configuration.
 public class BagFragment extends Fragment {
 
-    private FloatingActionButton addBagContent;
     private MyDatabaseHelper myDB;
     private List<Configuration> weekDays;
     private Configuration selectedWeekday;
@@ -40,9 +39,51 @@ public class BagFragment extends Fragment {
     private ArrayList<ConfigurationItem> configItems;
     private AppService appService;
     private boolean serviceBound = false;
+    private final ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            AppService.MyBinder binder = (AppService.MyBinder) service;
+            appService = binder.getService();
+            serviceBound = true;
+
+            selectedWeekday = appService.getSelectedWeekday();
+
+            Integer weekDaySpinnerIndex = getWeekdaySpinnerIndex(weekDays);
+            weekDaySpinner.setSelection(determineSpinnerStartIndex(weekDays, selectedWeekday.getWeekday()));
+
+            recyclerViewSetup(weekDaySpinnerIndex, itemList, appService.getMatchingCompartments());
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            serviceBound = false;
+        }
+    };
 
     public BagFragment() {
         // Required empty public constructor
+    }
+
+    //Returns the current day as a string
+    @Nullable
+    private static String getToday() {
+        Calendar today = Calendar.getInstance();
+        String day = today.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+        return day;
+    }
+
+    //Gets the position of the entered day from the list. Defaults to -1 if there is no configuration for said day.
+    @NonNull
+    private static Integer determineSpinnerStartIndex(List<Configuration> list, String day) {
+        Integer count = 0;
+        for (Configuration configuration : list) {
+            if (day.equals(configuration.getWeekday())) {
+                return count;
+            } else {
+                count++;
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -54,8 +95,8 @@ public class BagFragment extends Fragment {
 
         //retrieves Views from layout
         weekDaySpinner = view.findViewById(R.id.weekdaySpinner);
-        itemList = (RecyclerView) view.findViewById(R.id.itemList);
-        addBagContent = view.findViewById(R.id.addBagContent);
+        itemList = view.findViewById(R.id.itemList);
+        FloatingActionButton addBagContent = view.findViewById(R.id.addBagContent);
 
         //fills the adapter and attaches it to the Spinner
         weekDays = myDB.fillConfigurations(myDB.getConfiguration());
@@ -67,7 +108,7 @@ public class BagFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddActivity.class);
                 String configName = "";
-                for (Configuration configuration: weekDays) {
+                for (Configuration configuration : weekDays) {
                     if (weekDaySpinner.getSelectedItem().toString() == configuration.getWeekday()) {
                         configName = configuration.getName();
                         break;
@@ -109,7 +150,7 @@ public class BagFragment extends Fragment {
 
     //Takes a string, representing a weekday, and sets the current selectedWeekday configuration accordingly.
     private void setSelectedWeekday(String weekday) {
-        for (Configuration configuration: weekDays) {
+        for (Configuration configuration : weekDays) {
             if (configuration.getWeekday().equals(weekday)) {
                 this.selectedWeekday = configuration;
                 if (appService != null) {
@@ -132,19 +173,11 @@ public class BagFragment extends Fragment {
         return weekDaySpinnerIndex;
     }
 
-    //Returns the current day as a string
-    @Nullable
-    private static String getToday() {
-        Calendar today = Calendar.getInstance();
-        String day = today.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
-        return day;
-    }
-
     //Returns an adapter with all the configurations from the SQLite database.
     @NonNull
     private ArrayAdapter<String> setWeekdaySpinnerAdapter(List<Configuration> configList) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item);
-        for (Configuration configuration: configList) {
+        for (Configuration configuration : configList) {
             adapter.add(configuration.getWeekday());
         }
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -160,39 +193,4 @@ public class BagFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         }
     }
-
-    //Gets the position of the entered day from the list. Defaults to -1 if there is no configuration for said day.
-    @NonNull
-    private static Integer determineSpinnerStartIndex(List<Configuration> list, String day) {
-        Integer count = 0;
-        for (Configuration configuration: list) {
-            if(day.equals(configuration.getWeekday())) {
-                return count;
-            } else {
-                count++;
-            }
-        }
-        return -1;
-    }
-
-    private ServiceConnection connection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            AppService.MyBinder binder = (AppService.MyBinder) service;
-            appService = binder.getService();
-            serviceBound = true;
-
-            selectedWeekday = appService.getSelectedWeekday();
-
-            Integer weekDaySpinnerIndex = getWeekdaySpinnerIndex(weekDays);
-            weekDaySpinner.setSelection(determineSpinnerStartIndex(weekDays, selectedWeekday.getWeekday()));
-
-            recyclerViewSetup(weekDaySpinnerIndex, itemList, appService.getMatchingCompartments());
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            serviceBound = false;
-        }
-    };
 }

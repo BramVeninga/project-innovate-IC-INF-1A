@@ -13,11 +13,9 @@ public class SessionManager {
     private static final String KEY_USERNAME = "username";
 
 
-
-
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
-    private Context context;
+    private final SharedPreferences sharedPreferences;
+    private final SharedPreferences.Editor editor;
+    private final Context context;
 
     public SessionManager(Context context) {
         this.context = context;
@@ -25,13 +23,17 @@ public class SessionManager {
         editor = sharedPreferences.edit();
     }
 
+    public boolean isLoggedIn() {
+        return sharedPreferences.getBoolean(KEY_IS_LOGGED_IN, false);
+    }
+
     public void setLoggedIn(boolean isLoggedIn) {
         editor.putBoolean(KEY_IS_LOGGED_IN, isLoggedIn);
         editor.apply();
     }
 
-    public boolean isLoggedIn() {
-        return sharedPreferences.getBoolean(KEY_IS_LOGGED_IN, false);
+    public String getPassword() {
+        return sharedPreferences.getString(KEY_PASSWORD, "");
     }
 
     public void setPassword(String password) {
@@ -39,8 +41,8 @@ public class SessionManager {
         editor.apply();
     }
 
-    public String getPassword() {
-        return sharedPreferences.getString(KEY_PASSWORD, "");
+    public String getEmail() {
+        return sharedPreferences.getString(KEY_EMAIL, "");
     }
 
     public void setEmail(String email) {
@@ -49,8 +51,8 @@ public class SessionManager {
         editor.apply();
     }
 
-    public String getEmail() {
-        return sharedPreferences.getString(KEY_EMAIL, "");
+    public String getSelectedDate() {
+        return sharedPreferences.getString(KEY_SELECTED_DATE, "");
     }
 
     public void setSelectedDate(String selectedDate) {
@@ -58,8 +60,8 @@ public class SessionManager {
         editor.apply();
     }
 
-    public String getSelectedDate() {
-        return sharedPreferences.getString(KEY_SELECTED_DATE, "");
+    public String getPhonenumber() {
+        return sharedPreferences.getString(KEY_PHONENUMBER, "");
     }
 
     public void setPhonenumber(String phonenumber) {
@@ -67,17 +69,13 @@ public class SessionManager {
         editor.apply();
     }
 
-    public String getPhonenumber() {
-        return sharedPreferences.getString(KEY_PHONENUMBER, "");
-    }
-
-    public void setUsername (String username) {
-        editor.putString(KEY_USERNAME, username);
-        editor.apply();
-    }
-
     public String getUsername() {
         return sharedPreferences.getString(KEY_USERNAME, "");
+    }
+
+    public void setUsername(String username) {
+        editor.putString(KEY_USERNAME, username);
+        editor.apply();
     }
 
 }

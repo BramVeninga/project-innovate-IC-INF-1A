@@ -1,8 +1,6 @@
 package com.example.miraclepack;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +15,9 @@ import java.util.ArrayList;
 //This class is a blueprint that is used to create the adapter used for the recyclerView that shows all the items of a given configuration
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
-    private Context context;
-    private ArrayList<ConfigurationItem> configItems;
-    private MyDatabaseHelper myDB;
+    private final Context context;
+    private final ArrayList<ConfigurationItem> configItems;
+    private final MyDatabaseHelper myDB;
 
     CustomAdapter(Context context, ArrayList<ConfigurationItem> configItems) {
         this.context = context;
@@ -29,6 +27,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             this.myDB.filloutCompInConfigItem(this.myDB.getCompartment(configItem.getCompartment().getCompartmentId().toString()), configItem);
         }
     }
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,11 +43,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
         if (configItems.get(position).isStatus()) {
             holder.bagStatus.setImageResource(R.drawable.matching_circle);
-        }
-        else if (!configItems.get(position).isStatus()){
+        } else if (!configItems.get(position).isStatus()) {
             holder.bagStatus.setImageResource(R.drawable.non_matching_circle);
-        }
-        else if (configItems.get(position).getName() == "Leeg") {
+        } else if (configItems.get(position).getName() == "Leeg") {
             holder.bagStatus.setImageResource(R.drawable.default_circle);
         }
     }
@@ -62,6 +59,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
         TextView item_name_txt, compartment_id_txt;
         ImageView bagStatus;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             item_name_txt = itemView.findViewById(R.id.item_name_txt);

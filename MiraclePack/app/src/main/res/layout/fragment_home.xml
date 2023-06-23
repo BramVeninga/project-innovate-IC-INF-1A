@@ -30,8 +30,8 @@
             android:layout_margin="@dimen/_12sdp"
             android:background="@drawable/roundstyle"
             android:backgroundTint="@color/houseStyleColor"
-            android:orientation="vertical"
             android:gravity="center_horizontal"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="@+id/viewContentButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,24 +44,24 @@
                 android:layout_height="@dimen/_173sdp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:background="@drawable/toproundstyle"
                 android:backgroundTint="@color/white"
                 android:padding="@dimen/_10sdp"
                 android:src="@drawable/backpack" />
 
             <TextView
-                android:text="configName"
                 android:id="@+id/configName"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_42sdp"
-                android:background="@drawable/bottomroundstyle"
-                android:backgroundTint="@color/white"
-                android:gravity="center"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/bottomroundstyle"
+                android:backgroundTint="@color/white"
+                android:gravity="center"
+                android:text="configName"
                 android:textColor="@color/textColor"
                 android:textSize="@dimen/_20sdp"
                 android:textStyle="bold" />
@@ -99,10 +99,10 @@
                     android:src="@drawable/baseline_bluetooth_24" />
 
                 <TextView
-                    android:text="bluetoothConnection"
                     android:id="@+id/bluetoothState"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="bluetoothConnection"
                     android:textColor="@color/mainTextColor"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="bold" />
@@ -112,11 +112,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="@dimen/_4sdp"
+                    android:backgroundTint="@color/houseStyleColor"
+                    android:gravity="center"
+                    android:padding="@dimen/_2sdp"
                     android:text="Apparaat toevoegen"
                     android:textSize="@dimen/_10sdp"
-                    android:backgroundTint="@color/houseStyleColor"
-                    android:padding="@dimen/_2sdp"
-                    android:gravity="center"
                     android:visibility="visible" />
 
             </LinearLayout>
@@ -138,11 +138,11 @@
                     android:src="@drawable/baseline_gps_fixed_24" />
 
                 <TextView
-                    android:text="gpsConnection"
                     android:id="@+id/gpsState"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
+                    android:text="gpsConnection"
                     android:textColor="@color/mainTextColor"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="bold" />

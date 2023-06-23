@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -15,17 +14,18 @@ import java.util.List;
 
 //This class deals with creating and exchange data with the database that holds all the information about the configurations, compartments and items.
 public class MyDatabaseHelper extends SQLiteOpenHelper {
+    public static final String TABLE_GEOFENCE = "geofence";
+    public static final String COLUMN_GEOFENCE_LATITUDE = "LATITUDE";
+    public static final String COLUMN_GEOFENCE_LONGITUDE = "LONGITUDE";
+    public static final String COLUMN_GEOFENCE_RADIUS = "RADIUS";
+    public static final String COLUMN_GEOFENCE_NAME = "NAME";
     private static final String DATABASE_NAME = "MiraclePack.db";
     private static final int DATABASE_VERSION = 3;
-    private static MyDatabaseHelper instance;
-
     // Tables
     private static final String TABLE_ITEM = "item";
     private static final String TABLE_CONFIG = "config";
     private static final String TABLE_COMPARTMENT = "compartment";
     private static final String TABLE_CONFIG_ITEM = "configItem";
-    public static final String TABLE_GEOFENCE = "geofence";
-
     // Columns
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_NAME = "name";
@@ -33,14 +33,48 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_ITEM_NAME = "itemID";
     private static final String COLUMN_COMPARTMENT_ID = "compartmentID";
-    public static final String COLUMN_GEOFENCE_LATITUDE = "LATITUDE";
-    public static final String COLUMN_GEOFENCE_LONGITUDE = "LONGITUDE";
-    public static final String COLUMN_GEOFENCE_RADIUS = "RADIUS";
-    public static final String COLUMN_GEOFENCE_NAME = "NAME";
+    private static MyDatabaseHelper instance;
 
 
     public MyDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    //Takes the queries from the String array and adds executes the queries.
+    private static void addDataToDB(SQLiteDatabase db, String[] queries) {
+        for (String query : queries) {
+            addData(db, query);
+        }
+    }
+
+//    String createConfigItemTableQuery = "CREATE TABLE " + TABLE_CONFIG_ITEM + " (" +
+//            COLUMN_ITEM_ID + " INT, " +
+//            COLUMN_CONFIG_ID + " INT, " +
+//            COLUMN_COMPARTMENT_ID + " INT, " +
+//            "FOREIGN KEY (" + COLUMN_ITEM_ID + ") REFERENCES " + TABLE_ITEM + "(" + COLUMN_ID + "), " +
+//            "FOREIGN KEY (" + COLUMN_CONFIG_ID + ") REFERENCES " + TABLE_CONFIG + "(" + COLUMN_ID + "), " +
+//            "FOREIGN KEY (" + COLUMN_COMPARTMENT_ID + ") REFERENCES " + TABLE_COMPARTMENT + "(" + COLUMN_ID + "))";
+//        db.execSQL(createConfigItemTableQuery);
+//
+//    String createLoginTableQuery = "CREATE TABLE " + TABLE_LOGIN + " (" +
+//            COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//            COLUMN_EMAIL + " VARCHAR(255), " +
+//            COLUMN_PASSWORD + " VARCHAR(255))";
+//        db.execSQL(createLoginTableQuery);
+
+    //Checks if the query is not null, and then executes the query
+    private static void addData(SQLiteDatabase db, String Query) {
+        if (Query != null) {
+            db.execSQL(Query);
+        }
+    }
+
+    // Ensuring that only one instance of the class is created and providing a global access point to retrieve that instance
+    public static synchronized MyDatabaseHelper getInstance(Context context) {
+        if (instance == null) {
+            instance = new MyDatabaseHelper(context.getApplicationContext());
+        }
+        return instance;
     }
 
     //If the database does not exists, the following queries are executed.
@@ -118,35 +152,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         });
     }
 
-//    String createConfigItemTableQuery = "CREATE TABLE " + TABLE_CONFIG_ITEM + " (" +
-//            COLUMN_ITEM_ID + " INT, " +
-//            COLUMN_CONFIG_ID + " INT, " +
-//            COLUMN_COMPARTMENT_ID + " INT, " +
-//            "FOREIGN KEY (" + COLUMN_ITEM_ID + ") REFERENCES " + TABLE_ITEM + "(" + COLUMN_ID + "), " +
-//            "FOREIGN KEY (" + COLUMN_CONFIG_ID + ") REFERENCES " + TABLE_CONFIG + "(" + COLUMN_ID + "), " +
-//            "FOREIGN KEY (" + COLUMN_COMPARTMENT_ID + ") REFERENCES " + TABLE_COMPARTMENT + "(" + COLUMN_ID + "))";
-//        db.execSQL(createConfigItemTableQuery);
-//
-//    String createLoginTableQuery = "CREATE TABLE " + TABLE_LOGIN + " (" +
-//            COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-//            COLUMN_EMAIL + " VARCHAR(255), " +
-//            COLUMN_PASSWORD + " VARCHAR(255))";
-//        db.execSQL(createLoginTableQuery);
-
-    //Takes the queries from the String array and adds executes the queries.
-    private static void addDataToDB(SQLiteDatabase db, String[] queries) {
-        for (String query : queries) {
-            addData(db, query);
-        }
-    }
-
-    //Checks if the query is not null, and then executes the query
-    private static void addData(SQLiteDatabase db, String Query) {
-        if (Query != null) {
-            db.execSQL(Query);
-        }
-    }
-
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONFIG_ITEM);
@@ -154,6 +159,17 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONFIG);
         onCreate(db);
     }
+
+//    Cursor readAllData() {
+//        String query = "SELECT * FROM"; // Query to select all data
+//        SQLiteDatabase db = this.getReadableDatabase();
+//
+//        Cursor cursor = null;
+//        if(db != null) {
+//            cursor = db.rawQuery(query, null);
+//        }
+//        return cursor;
+//    }
 
     //Adds an item too the ConfigurationItem table, according to the ConfigurationItem object
     public void updateConfigItem(ConfigurationItem item) {
@@ -169,26 +185,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         database.close();
     }
 
-//    Cursor readAllData() {
-//        String query = "SELECT * FROM"; // Query to select all data
-//        SQLiteDatabase db = this.getReadableDatabase();
-//
-//        Cursor cursor = null;
-//        if(db != null) {
-//            cursor = db.rawQuery(query, null);
-//        }
-//        return cursor;
-//    }
-
-
     //Returns multiple rows of the ConfigurationItem table, according to the name of a Configuration object
-    public Cursor getConfigItems (Configuration configuration){
+    public Cursor getConfigItems(Configuration configuration) {
         SQLiteDatabase database = this.getReadableDatabase();
         return database.query(TABLE_CONFIG_ITEM, new String[]{COLUMN_NAME, COLUMN_COMPARTMENT_ID, COLUMN_ITEM_NAME}, COLUMN_NAME + "=?", new String[]{configuration.getName()}, null, null, null);
     }
 
     //Takes multiple rows from the ConfigurationItem Table, and fills a Arraylist with new ConfigurationItems
-    public ArrayList<ConfigurationItem> fillConfigItems (Cursor query){
+    public ArrayList<ConfigurationItem> fillConfigItems(Cursor query) {
         ArrayList<ConfigurationItem> configItems = new ArrayList<>();
         if (query.moveToFirst()) {
             do {
@@ -211,19 +215,19 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     //Returns a row with the compartmentID of a compartment with a given description.
-    public Cursor getCompartmentId (ConfigurationItem item){
+    public Cursor getCompartmentId(ConfigurationItem item) {
         SQLiteDatabase database = this.getReadableDatabase();
         return database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID}, COLUMN_DESCRIPTION + "=?", new String[]{item.getCompartment().getDescription()}, null, null, null);
     }
 
     //Returns a row with a compartment, with a given compartmentID
-    public Cursor getCompartment (String compId){
+    public Cursor getCompartment(String compId) {
         SQLiteDatabase database = this.getReadableDatabase();
         return database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID, COLUMN_DESCRIPTION}, COLUMN_COMPARTMENT_ID + "=?", new String[]{compId}, null, null, null);
     }
 
     //Takes a row with a compartment and sets it in a ConfigurationItem
-    public void filloutCompInConfigItem (Cursor query, ConfigurationItem configItem){
+    public void filloutCompInConfigItem(Cursor query, ConfigurationItem configItem) {
         if (query.moveToFirst()) {
             do {
                 int compId = query.getInt(0);
@@ -236,13 +240,13 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     //Returns multiple rows with all the compartments form the Compartment Table
-    public Cursor getCompartments () {
+    public Cursor getCompartments() {
         SQLiteDatabase database = this.getReadableDatabase();
         return database.query(TABLE_COMPARTMENT, new String[]{COLUMN_COMPARTMENT_ID, COLUMN_DESCRIPTION}, null, null, null, null, null);
     }
 
     //Takes multiple rows form the compartment table filled with CompartmentID's and descriptions, and adds them to an arraylist.
-    public List<Compartment> fillCompartments (Cursor query){
+    public List<Compartment> fillCompartments(Cursor query) {
         List<Compartment> compartments = new ArrayList<>();
         if (query.moveToFirst()) {
             do {
@@ -257,13 +261,13 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     //Returns multiple rows, with all the configurations from the Configuration table
-    public Cursor getConfiguration () {
+    public Cursor getConfiguration() {
         SQLiteDatabase database = this.getReadableDatabase();
         return database.query(TABLE_CONFIG, new String[]{COLUMN_NAME, COLUMN_WEEKDAY}, null, null, null, null, null);
     }
 
     //Takes multiple rows with configurations from the Configuration table, and puts them in an arraylist
-    public List<Configuration> fillConfigurations (Cursor query){
+    public List<Configuration> fillConfigurations(Cursor query) {
         List<Configuration> configurations = new ArrayList<>();
         if (query.moveToFirst()) {
             do {
@@ -360,13 +364,5 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return geofenceList;
-    }
-
-    // Ensuring that only one instance of the class is created and providing a global access point to retrieve that instance
-    public static synchronized MyDatabaseHelper getInstance(Context context) {
-        if (instance == null) {
-            instance = new MyDatabaseHelper(context.getApplicationContext());
-        }
-        return instance;
     }
 }

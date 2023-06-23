@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     tools:context=".SettingsFragment">
 
@@ -82,9 +82,9 @@
                     android:id="@+id/supportButton"
                     android:layout_width="@dimen/_37sdp"
                     android:layout_height="@dimen/_37sdp"
-                    android:contentDescription="Hulp en ondersteuning"
                     android:background="@drawable/baseline_navigate_next_24"
-                    android:clickable="false" />
+                    android:clickable="false"
+                    android:contentDescription="Hulp en ondersteuning" />
 
             </LinearLayout>
 
@@ -116,9 +116,9 @@
                     android:id="@+id/importButton"
                     android:layout_width="@dimen/_37sdp"
                     android:layout_height="@dimen/_37sdp"
-                    android:contentDescription="Database importeren"
                     android:background="@drawable/baseline_navigate_next_24"
-                    android:clickable="false" />
+                    android:clickable="false"
+                    android:contentDescription="Database importeren" />
 
             </LinearLayout>
 
@@ -150,9 +150,9 @@
                     android:id="@+id/exportButton"
                     android:layout_width="@dimen/_37sdp"
                     android:layout_height="@dimen/_37sdp"
-                    android:contentDescription="Database exporteren"
                     android:background="@drawable/baseline_navigate_next_24"
-                    android:clickable="false" />
+                    android:clickable="false"
+                    android:contentDescription="Database exporteren" />
 
             </LinearLayout>
 

@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:icon="@drawable/baseline_home_24"
         android:id="@+id/home"
-        android:title="Home"/>
+        android:icon="@drawable/baseline_home_24"
+        android:title="Home" />
     <item
-        android:icon="@drawable/baseline_shopping_bag_24"
         android:id="@+id/bag"
-        android:title="Tas"/>
+        android:icon="@drawable/baseline_shopping_bag_24"
+        android:title="Tas" />
     <item
-        android:icon="@drawable/baseline_person_24"
         android:id="@+id/profile"
-        android:title="Profiel"/>
+        android:icon="@drawable/baseline_person_24"
+        android:title="Profiel" />
     <item
-        android:icon="@drawable/baseline_settings_24"
         android:id="@+id/settings"
-        android:title="Instellingen"/>
+        android:icon="@drawable/baseline_settings_24"
+        android:title="Instellingen" />
 </menu>
