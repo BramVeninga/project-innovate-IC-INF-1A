@@ -195,9 +195,9 @@ public class HomeFragment extends Fragment {
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            //Gets an instance of the appService object.
            AppService.MyBinder binder = (AppService.MyBinder) service;
            appService = binder.getService();
-
         }
 
         @Override
