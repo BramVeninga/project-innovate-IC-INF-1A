@@ -201,6 +201,7 @@ public class AppService extends Service implements LocationListener {
 
     // Check if all content is inside bag according to configuration
     private boolean isContentInsideBag() {
+        // The configuration items get updated, with if they are correctly filled.
         ArrayList<ConfigurationItem> configurationItems = this.compareCompartmentsAndConfigurations(selectedWeekday);
         boolean contentMissing = false;
         for (ConfigurationItem configurationItem : configurationItems) {
@@ -214,6 +215,7 @@ public class AppService extends Service implements LocationListener {
 
     //Checks if the compartments are filled correctly and sets their filled status to true.
     public ArrayList<ConfigurationItem> compareCompartmentsAndConfigurations(Configuration configuration) {
+        this.changeBagStatus();
         ArrayList<ConfigurationItem> configItemList = new ArrayList<>();
         configItemList = myDB.fillConfigItems(myDB.getConfigItems(configuration));
 

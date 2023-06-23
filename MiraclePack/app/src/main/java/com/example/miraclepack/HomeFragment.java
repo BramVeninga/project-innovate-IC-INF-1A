@@ -118,6 +118,7 @@ public class HomeFragment extends Fragment {
                 replaceFragment(new BagFragment());
             }
         });
+
         bluetoothButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
